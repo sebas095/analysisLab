@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+const app = require('../app');
+const debug = require('debug')('analysislab:server');
+const http = require('http');
+const os = require('os');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+const port = process.env.PORT || '3000';
+
+/**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port, err => {
+  if (err) throw err;
+  console.log('Starting server\nAvailable on:'.yellow);
+  const ifaces = os.networkInterfaces();
+  Object.keys(ifaces).forEach(dev => {
+    ifaces[dev].forEach(details => {
+      if (details.family === 'IPv4') {
+        console.log(` http://${details.address}:${port}`.green);
+      }
+    });
+  });
+});
+
+server.on('error', onError);
+
+process.on('SIGINT', () => {
+  console.log("\nShutdown the server, bye (:".yellow);
+  process.exit();
+});
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}

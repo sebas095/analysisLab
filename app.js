@@ -2,10 +2,14 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 const partials = require('express-partials');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 require('colors');
+
+const env = process.env.NODE_ENV || 'dev';
+const config = require('./config/' + env);
 
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -20,10 +24,18 @@ app.set('view engine', 'ejs');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(partials());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// mongo config
+mongoose.Promise = global.Promise;
+mongoose.connect(config.db.url);
+app.db = mongoose.connection;
+app.on('open', () => {
+  console.log('connected to db'.yellow);
+});
 
 // routes
 index(app, '/');

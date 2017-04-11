@@ -25,12 +25,12 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port, err => {
+server.listen(port, (err) => {
   if (err) throw err;
   console.log('Starting server\nAvailable on:'.yellow);
   const ifaces = os.networkInterfaces();
-  Object.keys(ifaces).forEach(dev => {
-    ifaces[dev].forEach(details => {
+  Object.keys(ifaces).forEach((dev) => {
+    ifaces[dev].forEach((details) => {
       if (details.family === 'IPv4') {
         console.log(` http://${details.address}:${port}`.green);
       }
@@ -40,15 +40,21 @@ server.listen(port, err => {
 
 server.on('error', onError);
 
+process.on('SIGINT', function() {
+  console.log('\nShutdown the server, bye (:'.yellow);
+  app.db.close();
+  process.exit();
+});
+
 process.on('SIGINT', () => {
-  console.log("\nShutdown the server, bye (:".yellow);
+  console.log('\nShutdown the server, bye (:'.yellow);
   process.exit();
 });
 
 /**
- * Event listener for HTTP server "error" event.
- */
-
+* Event listener for HTTP server "error" even
+* @param  {error} error - HTTP error
+*/
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;

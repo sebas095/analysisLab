@@ -8,4 +8,4 @@ module.exports = (app, mountPoint) => {
   });
 
   app.use(mountPoint, router);
-}
+};

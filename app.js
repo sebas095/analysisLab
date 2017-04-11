@@ -12,6 +12,8 @@ const env = process.env.NODE_ENV || 'dev';
 const config = require('./config/' + env);
 
 const index = require('./routes/index');
+const session = require('./routes/session');
+const account = require('./routes/account');
 const users = require('./routes/users');
 
 const app = express();
@@ -39,6 +41,8 @@ app.on('open', () => {
 
 // routes
 index(app, '/');
+session(app, '/session');
+account(app, '/account');
 users(app, '/users');
 
 // catch 404 and forward to error handler
@@ -52,7 +56,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = env === 'dev' ? err : {};
 
   // render the error page
   res.status(err.status || 500);

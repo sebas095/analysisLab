@@ -1,2 +1,2 @@
-exports.user = require('./users');
-exports.session = require('./session');
+exports.userController = require('./users');
+exports.sessionController = require('./session');

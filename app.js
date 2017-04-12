@@ -10,6 +10,7 @@ const logger = require('morgan');
 const methodOverride = require('method-override');
 const partials = require('express-partials');
 const path = require('path');
+const expSession = require('express-session');
 
 require('colors');
 require('./config/passport')(passport);
@@ -38,7 +39,7 @@ app.use(partials());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 
-app.use(session({
+app.use(expSession({
   secret: config.secret,
   resave: false,
   saveUninitialized: false,

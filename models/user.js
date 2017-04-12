@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const timestamp = require('mongoose-timestamp');
 const bcrypt = require('bcrypt');
 const {Schema} = mongoose;
 const SALT_WORK_FACTOR = 10;
@@ -16,10 +17,18 @@ const UserSchema = new Schema({
     type: String,
     require: true,
     unique: true,
+    validate(email) {
+      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
+    },
   },
   rol: {
     type: String,
     require: true,
+  },
+  state: {
+    type: String,
+    enum: ['0', '1', '2', '3'],
+    default: '0', // 0 : pending, 1 : admin, 2 : user ok, 3 : user disabled
   },
   password: {
     type: String,
@@ -48,15 +57,14 @@ UserSchema.pre('save', function(next) {
   }
 });
 
-UserSchema.methods.comparePassword = function(candidatePassword) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(isMatch);
-    });
+UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, isMatch);
   });
 };
 
+userSchema.plugin(timestamp);
 module.exports = mongoose.model('User', UserSchema);

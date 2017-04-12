@@ -1,12 +1,18 @@
 const express = require('express');
-const path = require('path');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const flash = require('connect-flash');
+
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 const partials = require('express-partials');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+const path = require('path');
+
 require('colors');
+require('./config/passport')(passport);
 
 const env = process.env.NODE_ENV || 'dev';
 const config = require('./config/' + env);
@@ -30,6 +36,16 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(partials());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
+
+app.use(session({
+  secret: config.secret,
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 // mongo config
 mongoose.Promise = global.Promise;

@@ -1,4 +1,6 @@
 <div style="text-align: center;">
   <img src="/img/404.gif" alt="404">
 </div>
-<pre><%= error.stack %></pre>
+<% if (error.stack) { %>
+  <pre><%= error.stack %></pre>
+<% } %>

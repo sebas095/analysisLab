@@ -1,4 +1,9 @@
 const User = require('../models/user');
+const {auth} = require('../config/email');
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport(
+  `smtps://${auth.user}:${auth.pass}@smtp.gmail.com`
+);
 
 exports.loginRequired = (req, res, next) => {
   if (req.isAuthenticated()) return next();
@@ -27,8 +32,36 @@ exports.recoveryPassword = (req, res) => {
 
 // POST /account/emailRecovery
 exports.sendEmail = (req, res) => {
-  // TODO
-  // send link /account/recovery
+  const {email} = req.body;
+  User.findOne({email: email}, (err, user) => {
+    if (err) console.log(err);
+    else if (user) {
+      const mailOptions = {
+        from: 'Administración',
+        to: user.email,
+        subject: 'Recuperación de contraseña',
+        html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p><br>
+          Para una nueva contraseña deberás acceder a la siguiente dirección:
+          <br><a href="${HOST}/account/recovery">Recuperar Contraseña</a>
+          <br><br><br>Att,<br><br> Equipo Administrativo`,
+      };
+
+      transporter.sendMail(mailOptions, (err, res) => {
+        if (err) console.log(err);
+        req.flash(
+          'loginMessage',
+          'Revisa el correo para terminar la recuperación de contraseña'
+        );
+        res.redirect(`/session/login`);
+      });
+    } else {
+      req.flash(
+        'loginMessage',
+        `La cuenta con el correo ${email} no se encuentra registrada`
+      );
+      res.redirect(`/session/login`);
+    }
+  });
 };
 
 // POST /account/recovery -- Create new password form

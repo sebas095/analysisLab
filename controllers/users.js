@@ -1,4 +1,9 @@
 const User = require('../models/user');
+const {auth} = require('../config/email');
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport(
+  `smtps://${auth.user}:${auth.pass}@smtp.gmail.com`
+);
 
 exports.newUser = (req, res) => {
   res.render('users/new');
@@ -106,4 +111,130 @@ exports.changeState = (req, res) => {
     );
     res.redirect(`/users/${id}`);
   });
+};
+
+exports.accountApproval = (req, res) => {
+  const {email} = req.body;
+  if (req.body.account === 'accept') {
+    User.findByOneAndUpdate({
+      email: email,
+    }, {status: '2'}, {new: true}, (err, user) => {
+      if (err) {
+        console.log('Error: ', err);
+        return res.send(500, err);
+      } else if (user) {
+        const mailOptions = {
+          from: 'Administración',
+          to: user.email,
+          subject: 'Estado de aprobación de cuenta',
+          html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p><br>
+            Se le informa que su cuenta ha sido aprobada, si deseas ingresar
+            ve a la siguiente dirección:<br><a href="${HOST}/session/login">
+            Iniciar sesión</a><br><br><br>Att,<br><br>
+            Equipo Administrativo`,
+        };
+
+        transporter.sendMail(mailOptions, (err, res) => {
+          if (err) console.log(err);
+          res.redirect(req.originalUrl);
+        });
+      } else {
+        req.flash(
+          'pendingUsers',
+          `No existe el usuario con el correo ${email}`
+        );
+        res.redirect(req.originalUrl);
+      }
+    });
+  } else {
+    User.findOneAndRemove({email: email}, (err, user) => {
+      if (err) {
+        console.log('Error: ', err);
+        return res.send(500, err);
+      } else if (user) {
+        const mailOptions = {
+          from: 'Administración',
+          to: user.email,
+          subject: 'Estado de aprobación de cuenta',
+          html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p><br>
+            Se le informa que su cuenta ha sido rechazada.<br><br><br>
+            Att,<br><br>Equipo Administrativo`,
+        };
+
+        transporter.sendMail(mailOptions, (err, res) => {
+          if (err) console.log(err);
+          res.redirect(req.originalUrl);
+        });
+      } else {
+        req.flash(
+          'pendingUsers',
+          `No existe el usuario con el correo ${email}`
+        );
+        res.redirect(req.originalUrl);
+      }
+    });
+  }
+};
+
+exports.deactivateAccount = (req, res) => {
+  const {email} = req.body;
+  if (req.body.account === 'accept') {
+    User.findByOneAndUpdate({
+      email: email,
+    }, {status: '3'}, {new: true}, (err, user) => {
+      if (err) {
+        console.log('Error: ', err);
+        return res.send(500, err);
+      } else if (user) {
+        const mailOptions = {
+          from: 'Administración',
+          to: user.email,
+          subject: 'Desactivación de cuenta',
+          html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p><br>
+            Se le informa que su cuenta ha sido desactivada exitosamente.
+            <br><br><br>Att,<br><br>Equipo Administrativo`,
+        };
+
+        transporter.sendMail(mailOptions, (err, res) => {
+          if (err) console.log(err);
+          res.redirect(req.originalUrl);
+        });
+      } else {
+        req.flash(
+          'pendingDeactivateUsers',
+          `No existe el usuario con el correo ${email}`
+        );
+        res.redirect(req.originalUrl);
+      }
+    });
+  } else {
+    User.findByOneAndUpdate({
+      email: email,
+    }, {status: '2'}, {new: true}, (err, user) => {
+      if (err) {
+        console.log('Error: ', err);
+        return res.send(500, err);
+      } else if (user) {
+        const mailOptions = {
+          from: 'Administración',
+          to: user.email,
+          subject: 'Desactivación de cuenta',
+          html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p><br>
+            Se le informa que su cuenta no ha sido desactivada.
+            <br><br><br>Att,<br><br>Equipo Administrativo`,
+        };
+
+        transporter.sendMail(mailOptions, (err, res) => {
+          if (err) console.log(err);
+          res.redirect(req.originalUrl);
+        });
+      } else {
+        req.flash(
+          'pendingDeactivateUsers',
+          `No existe el usuario con el correo ${email}`
+        );
+        res.redirect(req.originalUrl);
+      }
+    });
+  }
 };

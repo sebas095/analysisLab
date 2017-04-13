@@ -48,8 +48,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+global.HOST = config.url;
 // mongo config
-mongoose.Promise = global.Promise;
 mongoose.connect(config.db.url);
 app.db = mongoose.connection;
 app.on('open', () => {
@@ -58,7 +58,7 @@ app.on('open', () => {
 
 // routes
 index(app, '/');
-session(app, '/session');
+session(app, '/session', passport);
 account(app, '/account');
 users(app, '/users');
 

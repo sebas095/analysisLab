@@ -27,8 +27,9 @@ const UserSchema = new Schema({
   },
   state: {
     type: String,
-    enum: ['0', '1', '2', '3'],
-    default: '0', // 0 : pending, 1 : admin, 2 : user ok, 3 : user disabled
+    enum: ['0', '1', '2', '3', '4'],
+    default: '0',
+    // 0: pending, 1: admin, 2: user ok, 3: user disabled, 4: removal request
   },
   password: {
     type: String,

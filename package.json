@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "prod": "NODE_ENV='prod' npm start",
     "test": "mocha ./test"
   },
   "dependencies": {

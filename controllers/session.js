@@ -34,8 +34,10 @@ exports.recoveryPassword = (req, res) => {
 exports.sendEmail = (req, res) => {
   const {email} = req.body;
   User.findOne({email: email}, (err, user) => {
-    if (err) console.log(err);
-    else if (user) {
+    if (err) {
+      console.log('Error: ', err);
+      return res.send(500, err);
+    } else if (user) {
       const mailOptions = {
         from: 'Administración',
         to: user.email,
@@ -70,7 +72,8 @@ exports.changePassword = (req, res) => {
     email: req.body.email,
   }, req.body, {new: true}, (err, user) => {
     if (err) {
-      console.log(err);
+      console.log('Error: ', err);
+      return res.send(500, err);
     } else if (user) {
       req.flash(
         'loginMessage',

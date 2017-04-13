@@ -13,8 +13,10 @@ exports.newUser = (req, res) => {
 // POST /users/register -- Create a new user
 exports.createUser = (req, res) => {
   User.find({}, (err, users) => {
-    if (err) console.log(err);
-    else if (users.length === 0) {
+    if (err) {
+      console.log('Error: ', err);
+      return res.send(500, err);
+    } else if (users.length === 0) {
       req.body.state = '1';
     } else {
       req.body.state = '0';
@@ -34,10 +36,11 @@ exports.createUser = (req, res) => {
 
 // PUT /users/:id -- Modifies user data
 exports.updateUser = (req, res) => {
-  const {id} = req.params;
+  const id = req.params.id || req.user._id;
   User.findByIdAndUpdate(id, req.body, {new: true}, (err, user) => {
     if (err) {
-      console.log(err);
+      console.log('Error: ', err);
+      return res.send(500, err);
     } else if (req.originalUrl === '/users/admin') {
       req.flash('adminMessage', 'Los datos han sido actualizados exitosamente');
       res.redirect('/users/admin');
@@ -64,7 +67,8 @@ exports.deleteUser = (req, res) => {
 exports.getUsers = (req, res) => {
   User.find({}, (err, users) => {
     if (err) {
-      console.log(err);
+      console.log('Error: ', err);
+      return res.send(500, err);
     } else if (users) {
       users = users.filter((user) => user._id !== req.user._id);
       res.render('users/admin', {
@@ -80,10 +84,12 @@ exports.getUsers = (req, res) => {
 };
 
 // GET /users/pending/deactive -- Users with pending account for deactivate
-exports.DeactivatePendingAccount = (req, res) => {
+exports.deactivatePendingAccount = (req, res) => {
   User.find({state: '4'}, (err, users) => {
-    if (err) console.log(err);
-    else if (users) {
+    if (err) {
+      console.log('Error: ', err);
+      return res.send(500, err);
+    } else if (users) {
       res.render('users/deactivate', {
         users: users,
         user: req.user,
@@ -99,8 +105,10 @@ exports.DeactivatePendingAccount = (req, res) => {
 // GET /users/pending/approve -- Users with pending account for approve
 exports.pendingUsers = (req, res) => {
   User.find({state: '0'}, (err, users) => {
-    if (err) console.log(err);
-    else if (users) {
+    if (err) {
+      console.log('Error: ', err);
+      return res.send(500, err);
+    } else if (users) {
       res.render('users/pending', {
         users: users,
         user: req.user,

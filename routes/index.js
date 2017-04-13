@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {sessionController} = require('../controllers');
+const {userController, sessionController} = require('../controllers');
 
 module.exports = (app, mountPoint) => {
   // GET home page.
@@ -14,6 +14,9 @@ module.exports = (app, mountPoint) => {
       message: req.flash('userMessage'),
     });
   });
+
+  // PUT
+  router.put('/profile', sessionController.loginRequired, userController.updateUser);
 
   app.use(mountPoint, router);
 };

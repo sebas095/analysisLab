@@ -19,7 +19,7 @@ exports.createUser = (req, res) => {
     } else {
       req.body.state = '0';
       req.flash(
-        'registerMessage',
+        'indexMessage',
         'Pronto el administrador revisara tu solicitud de cuenta ' +
         'y se te notificara por correo electrónico'
       );
@@ -39,11 +39,11 @@ exports.updateUser = (req, res) => {
     if (err) {
       console.log(err);
     } else if (req.originalUrl === '/users/admin') {
-      req.flash('userMessage', 'Los datos han sido actualizados exitosamente');
+      req.flash('adminMessage', 'Los datos han sido actualizados exitosamente');
       res.redirect('/users/admin');
     } else {
       req.flash('userMessage', 'Sus datos han sido actualizados exitosamente');
-      res.redirect(`/users/${id}`);
+      res.redirect(`/profile`);
     }
   });
 };
@@ -55,7 +55,7 @@ exports.deleteUser = (req, res) => {
     status: req.body.status,
   }, {new: true}, (err, user) => {
     if (err) console.log(err);
-    req.flash('userMessage', 'El estado de la cuenta ha sido actualizada');
+    req.flash('adminMessage', 'El estado de la cuenta ha sido actualizada');
     res.redirect('/users/admin');
   });
 };
@@ -67,9 +67,13 @@ exports.getUsers = (req, res) => {
       console.log(err);
     } else if (users) {
       users = users.filter((user) => user._id !== req.user._id);
-      res.render('users/admin', {users: users, user: req.user, message: ''});
+      res.render('users/admin', {
+        users: users,
+        user: req.user,
+        message: req.flash('adminMessage'),
+      });
     } else {
-      req.flash('userMessage', 'No hay usuarios disponibles');
+      req.flash('indexMessage', 'No hay usuarios disponibles');
       res.redirect('/');
     }
   });
@@ -83,10 +87,10 @@ exports.DeactivatePendingAccount = (req, res) => {
       res.render('users/deactivate', {
         users: users,
         user: req.user,
-        message: '',
+        message: req.flash('pendingDeactivateUsers'),
       });
     } else {
-      req.flash('userMessage', 'No hay usuarios disponibles');
+      req.flash('indexMessage', 'No hay usuarios disponibles');
       res.redirect('/');
     }
   });
@@ -100,10 +104,10 @@ exports.pendingUsers = (req, res) => {
       res.render('users/pending', {
         users: users,
         user: req.user,
-        message: '',
+        message: req.flash('pendingUsers'),
       });
     } else {
-      req.flash('userMessage', 'No hay usuarios disponibles');
+      req.flash('indexMessage', 'No hay usuarios disponibles');
       res.redirect('/');
     }
   });
@@ -119,7 +123,7 @@ exports.changeState = (req, res) => {
       'Pronto el administrador revisara tu solicitud ' +
       'y se te notificara por correo electrónico'
     );
-    res.redirect(`/users/${id}`);
+    res.redirect(`/profile`);
   });
 };
 

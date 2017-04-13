@@ -5,10 +5,12 @@ const transporter = nodemailer.createTransport(
   `smtps://${auth.user}:${auth.pass}@smtp.gmail.com`
 );
 
+// GET /users/register -- Register form
 exports.newUser = (req, res) => {
   res.render('users/new');
 };
 
+// POST /users/register -- Create a new user
 exports.createUser = (req, res) => {
   User.find({}, (err, users) => {
     if (err) console.log(err);
@@ -30,6 +32,7 @@ exports.createUser = (req, res) => {
   });
 };
 
+// PUT /users/:id -- Modifies user data
 exports.updateUser = (req, res) => {
   const {id} = req.params;
   User.findByIdAndUpdate(id, req.body, {new: true}, (err, user) => {
@@ -45,15 +48,19 @@ exports.updateUser = (req, res) => {
   });
 };
 
+// DELETE /users/:id -- Deactivate user account
 exports.deleteUser = (req, res) => {
   const {id} = req.params;
-  User.findByIdAndUpdate(id, req.body, {new: true}, (err, user) => {
+  User.findByIdAndUpdate(id, {
+    status: req.body.status,
+  }, {new: true}, (err, user) => {
     if (err) console.log(err);
     req.flash('userMessage', 'El estado de la cuenta ha sido actualizada');
     res.redirect('/users/admin');
   });
 };
 
+// GET /users -- Return all the users
 exports.getUsers = (req, res) => {
   User.find({}, (err, users) => {
     if (err) {
@@ -68,6 +75,7 @@ exports.getUsers = (req, res) => {
   });
 };
 
+// GET /users/pending/deactive -- Users with pending account for deactivate
 exports.DeactivatePendingAccount = (req, res) => {
   User.find({state: '4'}, (err, users) => {
     if (err) console.log(err);
@@ -84,6 +92,7 @@ exports.DeactivatePendingAccount = (req, res) => {
   });
 };
 
+// GET /users/pending/approve -- Users with pending account for approve
 exports.pendingUsers = (req, res) => {
   User.find({state: '0'}, (err, users) => {
     if (err) console.log(err);
@@ -100,6 +109,7 @@ exports.pendingUsers = (req, res) => {
   });
 };
 
+// PUT /users/:id/deactiveAccount -- Request for deactivate account
 exports.changeState = (req, res) => {
   const {id} = req.params;
   User.findByIdAndUpdate(id, {status: '4'}, {new: true}, (err, user) => {
@@ -113,6 +123,7 @@ exports.changeState = (req, res) => {
   });
 };
 
+// PUT /users/accountApproval -- Users account approval
 exports.accountApproval = (req, res) => {
   const {email} = req.body;
   if (req.body.account === 'accept') {
@@ -176,6 +187,7 @@ exports.accountApproval = (req, res) => {
   }
 };
 
+// PUT /users/deactivateAccount -- Users deactivate account
 exports.deactivateAccount = (req, res) => {
   const {email} = req.body;
   if (req.body.account === 'accept') {

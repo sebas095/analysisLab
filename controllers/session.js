@@ -10,7 +10,7 @@ exports.loginRequired = (req, res, next) => {
   res.redirect('/session/login');
 };
 
-// Get /login  -- Login form
+// GET /login -- Login form
 exports.new = (req, res) => {
   if (req.isAuthenticated())
     res.redirect('/profile');
@@ -30,7 +30,7 @@ exports.recoveryPassword = (req, res) => {
   res.render('session/recovery');
 };
 
-// POST /account/emailRecovery
+// POST /account/emailRecovery -- Send email for request a new password
 exports.sendEmail = (req, res) => {
   const {email} = req.body;
   User.findOne({email: email}, (err, user) => {

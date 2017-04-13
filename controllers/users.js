@@ -1,5 +1,9 @@
 const User = require('../models/user');
 
+exports.newUser = (req, res) => {
+  res.render('users/new');
+};
+
 exports.createUser = (req, res) => {
   User.find({}, (err, users) => {
     if (err) console.log(err);

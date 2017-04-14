@@ -251,7 +251,7 @@ exports.accountApproval = (req, res) => {
             Equipo Administrativo`,
           };
 
-          transporter.sendMail(mailOptions, (err, res) => {
+          transporter.sendMail(mailOptions, (err) => {
             if (err) console.log(err);
             res.redirect(req.originalUrl);
           });
@@ -282,7 +282,7 @@ exports.accountApproval = (req, res) => {
             Att,<br><br>Equipo Administrativo`,
           };
 
-          transporter.sendMail(mailOptions, (err, res) => {
+          transporter.sendMail(mailOptions, (err) => {
             if (err) console.log(err);
             res.redirect(req.originalUrl);
           });
@@ -326,7 +326,7 @@ exports.deactivateAccount = (req, res) => {
             <br><br><br>Att,<br><br>Equipo Administrativo`,
           };
 
-          transporter.sendMail(mailOptions, (err, res) => {
+          transporter.sendMail(mailOptions, (err) => {
             if (err) console.log(err);
             res.redirect(req.originalUrl);
           });
@@ -359,7 +359,7 @@ exports.deactivateAccount = (req, res) => {
               <br><br><br>Att,<br><br>Equipo Administrativo`,
             };
 
-            transporter.sendMail(mailOptions, (err, res) => {
+            transporter.sendMail(mailOptions, (err) => {
               if (err) console.log(err);
               res.redirect(req.originalUrl);
             });

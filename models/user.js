@@ -41,7 +41,7 @@ const UserSchema = new Schema({
 // Encrypt the password
 UserSchema.pre('save', function(next) {
   let user = this;
-  if (user.isModified('password') || user.isNew) {
+  if (this.isModified('password') || this.isNew) {
     bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
       if (err) {
         return next(err);

@@ -28,8 +28,14 @@ module.exports = (passport) => {
           req.flash('loginMessage', 'Usuario no encontrado.')
         );
 
-      user.comparePassword(password, (isMatch) => {
-        if (!isMatch)
+      user.comparePassword(password, (err, isMatch) => {
+        if (err) {
+          return done(
+            null,
+            false,
+            req.flash('loginMessage', 'Problemas para iniciar sesión')
+          );
+        } else if (!isMatch)
           return done(
             null,
             false,

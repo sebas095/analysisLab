@@ -6,19 +6,19 @@ module.exports = (app, mountPoint) => {
   // GET
   router.get('/', sessionController.loginRequired, userController.getUsers);
   router.get('/register', userController.newUser);
-  router.get('/users/pending/approve', sessionController.loginRequired, userController.pendingUsers);
-  router.get('/users/pending/deactivate', sessionController.loginRequired, userController.deactivatePendingAccount);
+  router.get('/pending/approve', sessionController.loginRequired, userController.pendingUsers);
+  router.get('/pending/deactivate', sessionController.loginRequired, userController.deactivatePendingAccount);
 
   // POST
-  router.post('/users/register', userController.createUser);
+  router.post('/register', userController.createUser);
 
   // PUT
-  router.put('/users/:id', sessionController.loginRequired, userController.updateUser);
-  router.put('/users/accountApproval', sessionController.loginRequired, userController.accountApproval);
-  router.put('/users/deactivateAccount', sessionController.loginRequired, userController.deactivateAccount);
+  router.put('/:id', sessionController.loginRequired, userController.updateUser);
+  router.put('/accountApproval', sessionController.loginRequired, userController.accountApproval);
+  router.put('/deactivateAccount', sessionController.loginRequired, userController.deactivateAccount);
 
   // DELETE
-  router.delete('/users/:id', sessionController.loginRequired, userController.deleteUser);
+  router.delete('/:id', sessionController.loginRequired, userController.deleteUser);
 
   app.use(mountPoint, router);
 };

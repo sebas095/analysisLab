@@ -19,9 +19,9 @@ const env = process.env.NODE_ENV || 'dev';
 const config = require('./config/' + env);
 
 const index = require('./routes/index');
+const users = require('./routes/users');
 const session = require('./routes/session');
 const account = require('./routes/account');
-const users = require('./routes/users');
 
 const app = express();
 
@@ -58,9 +58,9 @@ app.on('open', () => {
 
 // routes
 index(app, '/');
-session(app, '/session', passport);
-account(app, '/account');
 users(app, '/users');
+account(app, '/account');
+session(app, '/session', passport);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

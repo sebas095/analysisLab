@@ -1,1 +1,9 @@
-<h2>Bienvenido</h2>
+<div class="">
+  <% if (message.length > 0) { %>
+    <div class="alert alert-info alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <p><%= message %></p>
+    </div>
+  <% } %>
+  <h2>Bienvenido</h2>
+</div>

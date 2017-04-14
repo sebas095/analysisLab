@@ -9,7 +9,9 @@ module.exports = (app, mountPoint) => {
 
   // POST
   router.post('/emailRecovery', sessionController.sendEmail);
-  router.post('/recovery', sessionController.changePassword);
+
+  // PUT
+  router.put('/recovery/:id1/:id2', sessionController.changePassword);
 
   app.use(mountPoint, router);
 };

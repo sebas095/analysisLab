@@ -42,7 +42,7 @@ module.exports = (passport) => {
             req.flash('loginMessage', 'La contraseña es incorrecta')
           );
         else {
-          if (user.state === '0' || user.state === '3') {
+          if (user.state === '0' || user.state === '3' || user.state === '5') {
             return done(
               null,
               false,

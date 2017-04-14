@@ -36,7 +36,11 @@ exports.sendEmail = (req, res) => {
   User.findOne({email: email}, (err, user) => {
     if (err) {
       console.log('Error: ', err);
-      return res.send(500, err);
+      req.flash(
+        'loginMessage',
+        'Hubo problemas para iniciar sesión, intenta de nuevo'
+      );
+      return res.redirect('/session/login');
     } else if (user) {
       const id1 = user._id.slice(user._id.length / 2);
       const id2 = user._id.slice(0, user._id.length / 2);
@@ -81,7 +85,11 @@ exports.changePassword = (req, res) => {
     }, {new: true}, (err, user) => {
       if (err) {
         console.log('Error: ', err);
-        return res.send(500, err);
+        req.flash(
+          'loginMessage',
+          'Hubo problemas para cambiar la contraseña, intenta de nuevo'
+        );
+        return res.redirect(req.originalUrl);
       } else if (user) {
         req.flash(
           'loginMessage',

@@ -12,13 +12,19 @@
     <div>
       <label for="rol">Rol</label>
       <select name="rol" id="rol">
-        <option value="administrador">Administrador</option>
+        <%# <option value="administrador">Administrador</option>%>
         <option value="responsable técnico">Responsable Técnico</option>
         <option value="director del laboratorio" selected>Director del Laboratorio</option>
         <option value="técnico del laboratorio">Técnico del Laboratorio</option>
         <option value="auxiliar administrativo">Auxiliar Administrativo</option>
       </select>
     </div>
+    <% if (!isAdmin) { %>
+      <div>
+        <input type="checkbox" name="status" value="admin">
+        <label for="status">¿Eres Administrador del Sistema?</label>
+      </div>
+    <% } %>
     <div>
       <label for="email">Correo Electrónico</label>
       <input type="email" name="email" id="email">

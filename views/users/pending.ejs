@@ -5,4 +5,49 @@
       <p><%= message %></p>
     </div>
   <% } %>
+  <h3>Aprobación de cuentas</h3>
+  <% for (let usr of users) { %>
+    <div class="row">
+      <form class="" action="/users/accountApproval?_method=put" method="post" id="form-<%= usr._id %>">
+        <div>
+          <label for="firstname">Nombre(s)</label>
+          <input type="text" name="firstname" id="firstname" value="<%= usr.firstname %>" disabled>
+        </div>
+        <div>
+          <label for="lastname">Apellido(s)</label>
+          <input type="text" name="lastname" id="lastname" value="<%= usr.lastname %>" disabled>
+        </div>
+        <div>
+          <label for="rol">Rol</label>
+          <select name="rol" id="rol">
+            <option value="responsable técnico" <% if (usr.rol === 'responsable técnico') { %> selected <% } %> >
+              Responsable Técnico
+            </option>
+            <option value="director del laboratorio" <% if (usr.rol === 'director del laboratorio') { %> selected <% } %> >
+              Director del Laboratorio
+              </option>
+            <option value="técnico del laboratorio" <% if (usr.rol === 'técnico del laboratorio') { %> selected <% } %> >
+              Técnico del Laboratorio
+            </option>
+            <option value="auxiliar administrativo" <% if (usr.rol === 'auxiliar administrativo') { %> selected <% } %> >
+              Auxiliar Administrativo
+            </option>
+          </select>
+        </div>
+        <div>
+          <input type="hidden" name="account" id="account-<%= usr._id %>">
+          <input type="checkbox" name="status" id="status" value="admin" <% if (usr.state === '5') { %> checked <% } %> >
+          <label for="status">¿Será Administrador del Sistema?</label>
+        </div>
+        <div>
+          <label for="mail">Correo Electrónico</label>
+          <input type="email" name="mail" id="mail" value="<%= usr.email %>" disabled>
+          <input type="hidden" name="email" id="email" value="<%= usr.email %>">
+        </div>
+        <button class="btn btn-success accept" id="accept-<%= usr._id %>">Aprobar</button>
+        <button class="btn btn-danger reject" id="reject-<%= usr._id %>">Rechazar</button>
+      </form>
+    </div>
+  <% } %>
+  <script src="/js/account.js"></script>
 </div>

@@ -13,9 +13,10 @@ module.exports = (app, mountPoint) => {
   router.post('/register', userController.createUser);
 
   // PUT
-  router.put('/:id', sessionController.loginRequired, userController.updateUser);
   router.put('/accountApproval', sessionController.loginRequired, userController.accountApproval);
   router.put('/deactivateAccount', sessionController.loginRequired, userController.deactivateAccount);
+  router.put('/:id/deactiveAccount', sessionController.loginRequired, userController.changeState);
+  router.put('/:id', sessionController.loginRequired, userController.updateUser);
 
   // DELETE
   router.delete('/:id', sessionController.loginRequired, userController.deleteUser);

@@ -29,5 +29,11 @@
     <button id="save" type="submit" class="btn btn-success">Enviar</button>
     <button id="edit" type="button" class="btn btn-info">Editar</button>
   </form>
+  <% if (user.state === '2') { %>
+    <form class="" action="/users/<%= user._id %>/deactiveAccount?_method=put" method="post"
+      onsubmit="return confirm('¿Estas seguro que deseas solicitar la desactivación de tú cuenta?')">
+      <button id="deactivate" type="submit" class="btn btn-danger">Desactivar</button>
+    </form>
+  <% } %>
   <script src="/js/editProfile.js"></script>
 </div>

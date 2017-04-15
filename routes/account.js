@@ -4,8 +4,8 @@ const {sessionController} = require('../controllers');
 
 module.exports = (app, mountPoint) => {
   // GET
-  router.get('/recovery/:token', sessionController.recoveryPassword);
   router.get('/newPassword', sessionController.newPassword);
+  router.get('/recovery/:token', sessionController.recoveryPassword);
 
   // POST
   router.post('/emailRecovery', sessionController.sendEmail);

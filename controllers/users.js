@@ -119,7 +119,7 @@ exports.getUsers = (req, res) => {
           'intenta de nuevo'
         );
         res.redirect('/');
-      } else if (users) {
+      } else if (users.length > 0) {
         users = users.filter((user) => user._id !== req.user._id);
         res.render('users/admin', {
           users: users,
@@ -149,14 +149,17 @@ exports.deactivatePendingAccount = (req, res) => {
           'intenta de nuevo'
         );
         res.redirect('/');
-      } else if (users) {
+      } else if (users.length > 0) {
         res.render('users/deactivate', {
           users: users,
           user: req.user,
           message: req.flash('pendingDeactivateUsers'),
         });
       } else {
-        req.flash('indexMessage', 'No hay usuarios disponibles');
+        req.flash(
+          'indexMessage',
+          'No hay usuarios disponibles para la desactivación de cuentas'
+        );
         res.redirect('/');
       }
     });
@@ -169,7 +172,10 @@ exports.deactivatePendingAccount = (req, res) => {
 // GET /users/pending/approve -- Users with pending account for approve
 exports.pendingUsers = (req, res) => {
   if (req.user.state.includes('1')) {
-    User.find({state: '0'}, (err, users) => {
+    User.find({$or: [
+      {state: '0'},
+      {state: '5'},
+    ]}, (err, users) => {
       if (err) {
         console.log('Error: ', err);
         req.flash(
@@ -178,14 +184,17 @@ exports.pendingUsers = (req, res) => {
           'intenta de nuevo'
         );
         res.redirect('/');
-      } else if (users) {
+      } else if (users.length > 0) {
         res.render('users/pending', {
           users: users,
           user: req.user,
           message: req.flash('pendingUsers'),
         });
       } else {
-        req.flash('indexMessage', 'No hay usuarios disponibles');
+        req.flash(
+          'indexMessage',
+          'No hay usuarios disponibles para la aprobación de cuentas'
+        );
         res.redirect('/');
       }
     });
@@ -205,12 +214,12 @@ exports.changeState = (req, res) => {
         'indexMessage',
         'Hubo problemas desactivando la cuenta del usuario'
       );
-      res.redirect('/');
+      return res.redirect('/');
     }
     req.flash(
       'userMessage',
       'Pronto el administrador revisara tu solicitud ' +
-      'y se te notificara por correo electrónico'
+      `y se te notificara por correo electrónico(${user.email})`
     );
     res.redirect(`/profile`);
   });
@@ -219,6 +228,7 @@ exports.changeState = (req, res) => {
 // PUT /users/accountApproval -- Users account approval
 exports.accountApproval = (req, res) => {
   if (req.user.state.includes('1')) {
+    console.log(req.body);
     const {email} = req.body;
     let status;
 
@@ -229,7 +239,7 @@ exports.accountApproval = (req, res) => {
         status = '2';
       }
 
-      User.findByOneAndUpdate({
+      User.findOneAndUpdate({
         email: email,
       }, {state: status}, {new: true}, (err, user) => {
         if (err) {
@@ -253,14 +263,14 @@ exports.accountApproval = (req, res) => {
 
           transporter.sendMail(mailOptions, (err) => {
             if (err) console.log(err);
-            res.redirect(req.originalUrl);
+            res.redirect('/users/pending/approve');
           });
         } else {
           req.flash(
             'pendingUsers',
             `No existe el usuario con el correo ${email}`
           );
-          res.redirect(req.originalUrl);
+          res.redirect('/users/pending/approve');
         }
       });
     } else {
@@ -284,14 +294,14 @@ exports.accountApproval = (req, res) => {
 
           transporter.sendMail(mailOptions, (err) => {
             if (err) console.log(err);
-            res.redirect(req.originalUrl);
+            res.redirect('/users/pending/approve');
           });
         } else {
           req.flash(
             'pendingUsers',
             `No existe el usuario con el correo ${email}`
           );
-          res.redirect(req.originalUrl);
+          res.redirect('users/accountApproval');
         }
       });
     }
@@ -306,7 +316,7 @@ exports.deactivateAccount = (req, res) => {
   if (req.user.state.includes('1')) {
     const {email} = req.body;
     if (req.body.account === 'accept') {
-      User.findByOneAndUpdate({
+      User.findOneAndUpdate({
         email: email,
       }, {state: '3'}, {new: true}, (err, user) => {
         if (err) {
@@ -328,18 +338,18 @@ exports.deactivateAccount = (req, res) => {
 
           transporter.sendMail(mailOptions, (err) => {
             if (err) console.log(err);
-            res.redirect(req.originalUrl);
+            res.redirect('/users/pending/deactivate');
           });
         } else {
           req.flash(
             'pendingDeactivateUsers',
             `No existe el usuario con el correo ${email}`
           );
-          res.redirect(req.originalUrl);
+          res.redirect('/users/pending/deactivate');
         }
       });
     } else {
-        User.findByOneAndUpdate({
+        User.findOneAndUpdate({
           email: email,
         }, {state: '2'}, {new: true}, (err, user) => {
           if (err) {
@@ -361,14 +371,14 @@ exports.deactivateAccount = (req, res) => {
 
             transporter.sendMail(mailOptions, (err) => {
               if (err) console.log(err);
-              res.redirect(req.originalUrl);
+              res.redirect('/users/pending/deactivate');
             });
           } else {
             req.flash(
               'pendingDeactivateUsers',
               `No existe el usuario con el correo ${email}`
             );
-            res.redirect(req.originalUrl);
+            res.redirect('/users/pending/deactivate');
           }
       });
     }

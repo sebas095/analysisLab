@@ -6,7 +6,7 @@
     </div>
   <% } %>
   <h3>Recuperar contraseña</h3>
-  <form class="" action="/account/recovery/<%= id1 %>/<%= id2 %>/<%= uid %>?_method=put" method="post">
+  <form class="" action="/account/recovery/<%= token %>?_method=put" method="post">
     <div>
       <label for="password">Nueva Contraseña</label>
       <input type="password" name="password" id="password">

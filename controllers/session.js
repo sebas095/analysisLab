@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const {auth} = require('../config/email');
-const uuid = require('uuid');
+const crypto = require('crypto');
+const async = require('async');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport(
@@ -24,67 +25,96 @@ exports.new = (req, res) => {
 
 // GET /account/newPassword -- Request for new password
 exports.newPassword = (req, res) => {
-  res.render('session/newPassword');
+  res.render('session/newPassword', {message: req.flash('error')});
 };
 
-// GET /account/recovery/:id1/:id2 -- New password form
+// GET /account/recovery/:token -- New password form
 exports.recoveryPassword = (req, res) => {
-  res.render('session/recovery', {
-    id1: req.params.id1,
-    id2: req.params.id2,
-    uid: req.params.uid,
-    message: req.flash('recoveryMessage'),
+  User.findOne({
+    resetPasswordToken: req.params.token,
+    resetPasswordExpires: {$gt: Date.now()},
+  }, (err, user) => {
+    if (!user) {
+      req.flash(
+        'error',
+        'El token para resetear la contraseña ' +
+        'es invalido o ya ha expirado'
+      );
+      res.redirect('/account/newPassword');
+    }
+    res.render('session/recovery', {
+      token: req.params.token,
+      message: req.flash('recoveryMessage'),
+    });
   });
 };
 
 // POST /account/emailRecovery -- Send email for request a new password
 exports.sendEmail = (req, res) => {
   const {email} = req.body;
-  User.findOne({email: email}, (err, user) => {
-    if (err) {
-      console.log('Error: ', err);
-      req.flash(
-        'loginMessage',
-        'Hubo problemas para iniciar sesión, intenta de nuevo'
-      );
-      return res.redirect('/session/login');
-    } else if (user) {
-      const uid = uuid.v4();
-      const id = user._id.toString();
-      const id1 = id.slice(id.length / 2);
-      const id2 = id.slice(0, id.length / 2);
+  async.waterfall([
+    (done) => {
+      crypto.randomBytes(30, (err, buf) => {
+        const token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    (token, done) => {
+      User.findOne({email: email}, (err, user) => {
+        if (err) {
+          console.log('Error: ', err);
+          req.flash(
+            'loginMessage',
+            'Hubo problemas para iniciar sesión, intenta de nuevo'
+          );
+          return res.redirect('/session/login');
+        } else if (!user) {
+          req.flash(
+            'loginMessage',
+            `La cuenta con el correo ${email} no se encuentra registrada`
+          );
+          return res.redirect(`/session/login`);
+        } else {
+          user.resetPasswordToken = token;
+          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+          user.save((err) => {
+            done(err, token, user);
+          });
+        }
+      });
+    },
+    (token, user, done) => {
       const mailOptions = {
         from: 'Administración',
         to: user.email,
         subject: 'Recuperación de contraseña',
         html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p><br>
           Para una nueva contraseña deberás acceder a la siguiente dirección:
-          <br><a href="${HOST}/account/recovery/${id1}/${id2}/${uid}">
-          Recuperar Contraseña</a><br><br><br>Att,<br><br>
-          Equipo Administrativo`,
+          <br><a href="${HOST}/account/recovery/${token}">
+          Recuperar Contraseña</a><br><br>Si usted no lo solicitó, ignore
+          este correo electrónico y su contraseña permanecerá sin cambios.
+          <br><br><br>Att,<br><br>Equipo Administrativo`,
       };
 
       transporter.sendMail(mailOptions, (err) => {
         if (err) console.log(err);
         req.flash(
           'loginMessage',
-          'Revisa el correo para terminar la recuperación de contraseña'
+          `Revisa el correo ${user.email} para completar
+          la recuperación de contraseña`
         );
-        res.redirect(`/session/login`);
+        done(err, 'done');
       });
-    } else {
-      req.flash(
-        'loginMessage',
-        `La cuenta con el correo ${email} no se encuentra registrada`
-      );
-      res.redirect(`/session/login`);
-    }
+    },
+  ], (err) => {
+    if (err) console.log(err);
+    res.redirect(`/session/login`);
   });
 };
 
-// PUT /account/recovery/:id1/:id2 -- Create new password form
+// PUT /account/recovery/:token -- Create new password form
 exports.changePassword = (req, res) => {
-  const id = req.params.id2 + req.params.id1;
+  const token = req.params.token;
   if (req.body.password !== req.body.cpassword) {
     req.flash('recoveryMessage', 'Las contraseñas no coinciden');
     res.redirect(req.originalUrl);
@@ -109,7 +139,7 @@ exports.changePassword = (req, res) => {
         }
 
         req.body.password = hash;
-        User.findByIdAndUpdate(id, {
+        User.findOneAndUpdate({resetPasswordToken: token}, {
           password: req.body.password,
         }, {new: true}, (err, user) => {
           if (err) {

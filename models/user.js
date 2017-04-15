@@ -36,6 +36,8 @@ const UserSchema = new Schema({
     type: String,
     require: true,
   },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
 // Encrypt the password

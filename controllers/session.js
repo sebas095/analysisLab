@@ -139,9 +139,10 @@ exports.changePassword = (req, res) => {
         }
 
         req.body.password = hash;
-        User.findOneAndUpdate({resetPasswordToken: token}, {
-          password: req.body.password,
-        }, {new: true}, (err, user) => {
+        User.findOneAndUpdate({
+          resetPasswordToken: token,
+          resetPasswordExpires: {$gt: Date.now()},
+        }, {password: req.body.password}, {new: true}, (err, user) => {
           if (err) {
             console.log('Error: ', err);
             req.flash(
@@ -158,8 +159,8 @@ exports.changePassword = (req, res) => {
           } else {
             req.flash(
               'loginMessage',
-              `La cuenta con el correo ${req.body.email} ' +
-              'no se encuentra registrada`
+              `La cuenta con el correo ${req.body.email} no se ` +
+              `encuentra registrada o el token ha expirado, intenta de nuevo`
             );
             res.redirect(`/session/login`);
           }

@@ -9,11 +9,11 @@
   <form class="" action="/account/recovery/<%= token %>?_method=put" method="post">
     <div>
       <label for="password">Nueva Contraseña</label>
-      <input type="password" name="password" id="password">
+      <input type="password" name="password" id="password" required>
     </div>
     <div>
       <label for="cpassword">Confirmar Contraseña</label>
-      <input type="password" name="cpassword" id="cpassword">
+      <input type="password" name="cpassword" id="cpassword" required>
     </div>
     <button class="btn btn-success">Enviar</button>
   </form>

@@ -11,7 +11,7 @@
       <form class="adminForm" action="/users/<%= usr._id %>?_method=put" method="post" id="form-<%= usr._id %>">
         <div>
           <label for="firstname">Nombre(s)</label>
-          <input type="text" name="firstname" id="firstname" value="<%= usr.firstname %>">
+          <input type="text" name="firstname" id="firstname" value="<%= usr.firstname %>" required>
         </div>
         <div>
           <label for="lastname">Apellido(s)</label>
@@ -19,7 +19,7 @@
         </div>
         <div>
           <label for="rol">Rol</label>
-          <select name="rol" id="rol">
+          <select name="rol" id="rol" required>
             <option value="responsable técnico" <% if (usr.rol === 'responsable técnico') { %> selected <% } %> >
               Responsable Técnico
             </option>
@@ -40,7 +40,7 @@
         </div>
         <div>
           <label for="email">Correo Electrónico</label>
-          <input type="email" name="email" id="email" value="<%= usr.email %>">
+          <input type="email" name="email" id="email" value="<%= usr.email %>" required>
         </div>
         <button class="btn btn-success save" id="save-<%= usr._id %>">Guardar</button>
         <button class="btn btn-info edit" id="edit-<%= usr._id %>">Editar</button>

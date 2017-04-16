@@ -66,6 +66,7 @@ app.use((req, res, next) => {
       res.locals.session = {
         firstname: user.firstname,
         lastname: user.lastname,
+        rol: user.rol,
       };
       next();
     });

@@ -62,7 +62,44 @@ exports.createUser = (req, res) => {
         );
         return res.redirect('/');
       }
-      res.redirect(`/`);
+      User.find({state: '1'}, (err, users) => {
+        if (err) {
+          console.log(err);
+          req.flash(
+            'indexMessage',
+            'Hubo problemas en el registro, intenta de nuevo'
+          );
+          return res.redirect('/');
+        } else if (users.length > 0) {
+          let emails = '';
+          for (let i = 0; i < users.length; i++) {
+            if (i > 0) emails += ',';
+            emails += users[i].email;
+          }
+
+          const mailOptions = {
+            from: 'Administración',
+            to: emails,
+            subject: 'Estado de aprobación de cuenta',
+            html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
+              hay cuentas pendientes para su aprobación, si deseas ingresar ve a
+               la siguiente dirección:<br><a href="${HOST}/users/pending/approve">
+              Iniciar sesión</a><br><br><br>Att,<br><br>
+              Equipo Administrativo`,
+          };
+
+          transporter.sendMail(mailOptions, (err) => {
+            if (err) console.log(err);
+            res.redirect(`/`);
+          });
+        } else {
+          req.flash(
+            'indexMessage',
+            'Hubo problemas en el servidor'
+          );
+          res.redirect(`/`);
+        }
+      });
     });
   });
 };
@@ -270,10 +307,10 @@ exports.accountApproval = (req, res) => {
             to: user.email,
             subject: 'Estado de aprobación de cuenta',
             html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-            <br>Se le informa que su cuenta ha sido aprobada, si deseas ingresar
-            ve a la siguiente dirección:<br><a href="${HOST}/session/login">
-            Iniciar sesión</a><br><br><br>Att,<br><br>
-            Equipo Administrativo`,
+              <br>Se le informa que su cuenta ha sido aprobada, si deseas ingresar
+              ve a la siguiente dirección:<br><a href="${HOST}/session/login">
+              Iniciar sesión</a><br><br><br>Att,<br><br>
+              Equipo Administrativo`,
           };
 
           transporter.sendMail(mailOptions, (err) => {
@@ -303,8 +340,8 @@ exports.accountApproval = (req, res) => {
             to: user.email,
             subject: 'Estado de aprobación de cuenta',
             html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-            <br>Se le informa que su cuenta ha sido rechazada.<br><br><br>
-            Att,<br><br>Equipo Administrativo`,
+              <br>Se le informa que su cuenta ha sido rechazada.<br><br><br>
+              Att,<br><br>Equipo Administrativo`,
           };
 
           transporter.sendMail(mailOptions, (err) => {
@@ -347,8 +384,8 @@ exports.deactivateAccount = (req, res) => {
             to: user.email,
             subject: 'Desactivación de cuenta',
             html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-            <br>Se le informa que su cuenta ha sido desactivada exitosamente.
-            <br><br><br>Att,<br><br>Equipo Administrativo`,
+              <br>Se le informa que su cuenta ha sido desactivada exitosamente.
+              <br><br><br>Att,<br><br>Equipo Administrativo`,
           };
 
           transporter.sendMail(mailOptions, (err) => {
@@ -380,8 +417,8 @@ exports.deactivateAccount = (req, res) => {
               to: user.email,
               subject: 'Desactivación de cuenta',
               html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-              <br>Se le informa que su cuenta no ha sido desactivada.
-              <br><br><br>Att,<br><br>Equipo Administrativo`,
+                <br>Se le informa que su cuenta no ha sido desactivada.
+                <br><br><br>Att,<br><br>Equipo Administrativo`,
             };
 
             transporter.sendMail(mailOptions, (err) => {

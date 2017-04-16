@@ -16,15 +16,15 @@
     </div>
     <div>
       <label for="firstname">Nombre(s)</label>
-      <input type="text" name="firstname" id="firstname" value="<%= user.firstname %>">
+      <input type="text" name="firstname" id="firstname" value="<%= user.firstname %>" required>
     </div>
     <div>
       <label for="lastname">Apellido(s)</label>
-      <input type="text" name="lastname" id="lastname" value="<%= user.lastname %>">
+      <input type="text" name="lastname" id="lastname" value="<%= user.lastname %>" required>
     </div>
     <div>
       <label for="email">Correo Electrónico</label>
-      <input type="email" name="email" id="email" value="<%= user.email %>">
+      <input type="email" name="email" id="email" value="<%= user.email %>" required>
     </div>
     <button id="save" type="submit" class="btn btn-success">Enviar</button>
     <button id="edit" type="button" class="btn btn-info">Editar</button>

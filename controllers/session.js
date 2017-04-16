@@ -117,54 +117,86 @@ exports.changePassword = (req, res) => {
   const token = req.params.token;
   if (req.body.password !== req.body.cpassword) {
     req.flash('recoveryMessage', 'Las contraseñas no coinciden');
-    res.redirect(req.originalUrl);
+    res.redirect(`/account/recovery/${token}`);
   } else {
-    bcrypt.genSalt(10, (err, salt) => {
+    User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: {$gt: Date.now()},
+    }, (err, usr) => {
       if (err) {
         console.log('Error: ', err);
         req.flash(
-          'loginMessage',
+          'recoveryMessage',
           'Hubo problemas para cambiar la contraseña, intenta de nuevo'
         );
-        return res.redirect(req.originalUrl);
+        return res.redirect(`/account/recovery/${token}`);
       }
-      bcrypt.hash(req.body.password, salt, (err, hash) => {
+      usr.comparePassword(req.body.password, (err, isMatch) => {
         if (err) {
           console.log('Error: ', err);
           req.flash(
-            'loginMessage',
+            'recoveryMessage',
             'Hubo problemas para cambiar la contraseña, intenta de nuevo'
           );
-          return res.redirect(req.originalUrl);
+          return res.redirect(`/account/recovery/${token}`);
+        } else if (isMatch) {
+          req.flash(
+            'recoveryMessage',
+            'Esa contraseña era la que tenias anteriormente, ' +
+            'por favor intenta de nuevo con otra contraseña'
+          );
+          return res.redirect(`/account/recovery/${token}`);
+        } else {
+          async.waterfall([
+            (done) => {
+              bcrypt.genSalt(10, (err, salt) => {
+                if (err) return done(err, salt);
+                done(null, salt);
+              });
+            },
+            (salt, done) => {
+              bcrypt.hash(req.body.password, salt, (err, hash) => {
+                if (err) return done(err);
+                req.body.password = hash;
+                done(null, req.body.password);
+              });
+            },
+            (password, done) => {
+              User.findOneAndUpdate({
+                resetPasswordToken: token,
+                resetPasswordExpires: {$gt: Date.now()},
+              }, {password: password}, {new: true}, (err, user) => {
+                if (err) {
+                  console.log('Error: ', err);
+                  return done(err);
+                } else if (user) {
+                  req.flash(
+                    'loginMessage',
+                    'Su contraseña ha sido actualizada exitosamente'
+                  );
+                  done(null, 'done');
+                } else {
+                  req.flash(
+                    'loginMessage',
+                    `La cuenta con el correo ${req.body.email} no se ` +
+                    `encuentra registrada o el token ha expirado, ` +
+                    `intenta de nuevo`
+                  );
+                  done(null, 'done');
+                }
+              });
+            },
+          ], (err) => {
+            if (err) {
+              req.flash(
+                'recoveryMessage',
+                'Hubo problemas para cambiar la contraseña, intenta de nuevo'
+              );
+              return res.redirect(`/account/recovery/${token}`);
+            }
+            res.redirect(`/session/login`);
+          });
         }
-
-        req.body.password = hash;
-        User.findOneAndUpdate({
-          resetPasswordToken: token,
-          resetPasswordExpires: {$gt: Date.now()},
-        }, {password: req.body.password}, {new: true}, (err, user) => {
-          if (err) {
-            console.log('Error: ', err);
-            req.flash(
-              'loginMessage',
-              'Hubo problemas para cambiar la contraseña, intenta de nuevo'
-            );
-            return res.redirect(req.originalUrl);
-          } else if (user) {
-            req.flash(
-              'loginMessage',
-              'Su contraseña ha sido actualizada exitosamente'
-            );
-            res.redirect(`/session/login`);
-          } else {
-            req.flash(
-              'loginMessage',
-              `La cuenta con el correo ${req.body.email} no se ` +
-              `encuentra registrada o el token ha expirado, intenta de nuevo`
-            );
-            res.redirect(`/session/login`);
-          }
-        });
       });
     });
   }

@@ -25,7 +25,7 @@ npm start or yarn start
 | /profile                |   GET    |  Return user data          |               |
 | /profile                |   PUT    |  Modifies user data         |               |
 | /users/register         |   GET    |  Page to register users    |               |
-| /users/register         |   POST   |  Creates a new user        |  <ul><li>firstname</li><li>lastName</li><li>rol</li><li>email</li><li>password</li></ul>  |
+| /users/register         |   POST   |  Creates a new user        |  <ul><li>firstname</li><li>lastname</li><li>rol</li><li>email</li><li>password</li></ul>  |
 | /users/admin            |   GET    |  Page with admin panel    |               |
 | /users/pending/approve  |   GET    |  Page to pending users for account approval |               |
 | /users/accountApproval  |   PUT    |  Approval or rejection of an account       |               |

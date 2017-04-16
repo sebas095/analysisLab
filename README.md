@@ -35,9 +35,9 @@ npm start or yarn start
 | /users/:id              |    PUT   |  Modifies user data        |               |
 | /users/:id              |    DELETE  | Deactivate user account  |               |
 | /account/newPassword    |   GET    | Request for new password   |               |
-| /account/emailRecovery  |   POST   | Email is sent with instructions to recover the password   |               |
+| /account/emailRecovery  |   POST   | Email is sent with instructions to recover the password   |  <ul><li>email</li></ul>             |
 | /account/recovery/:token  |   GET    | Page with password change form  |               |
-| /account/recovery/:token  |   PUT    | Save the new password    |               |
+| /account/recovery/:token  |   PUT    | Save the new password    | <ul><li>password</li><li>confirm password</li></ul>     |
 | /session/login          |   GET    |   Login page               |               |
-| /session/login          |   POST    |  Create a new session     |               |
+| /session/login          |   POST    |  Create a new session     | <ul><li>email</li><li>password</li></ul>     |
 | /session/logout         |   DELETE  |  Destroy a session        |               |

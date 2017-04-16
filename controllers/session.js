@@ -205,5 +205,6 @@ exports.changePassword = (req, res) => {
 // DELETE /logout -- Destroy session
 exports.destroy = (req, res) => {
   req.logout();
+  delete req.session.passport;
   res.redirect('/');
 };

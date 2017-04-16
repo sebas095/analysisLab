@@ -49,7 +49,7 @@ module.exports = (passport) => {
               req.flash('loginMessage', 'Su cuenta no esta activada')
             );
           }
-          return done(null, user, req.flash('loginMessage', 'Bienvenido'));
+          return done(null, user, req.flash('userMessage', 'Bienvenido'));
         }
       });
     });

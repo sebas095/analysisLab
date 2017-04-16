@@ -67,6 +67,7 @@ app.use((req, res, next) => {
         firstname: user.firstname,
         lastname: user.lastname,
         rol: user.rol,
+        state: user.state,
       };
       next();
     });

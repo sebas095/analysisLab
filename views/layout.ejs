@@ -2,17 +2,75 @@
 <html>
   <head>
     <title>Analysis Lab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
-    <% if (typeof(session) == 'object' && session) { %>
-      <h3><%= session.firstname %> <%= session.lastname %></h3>
-    <% } %>
-    <div class="container">
+
+    <header role="banner" class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button data-toggle="collapse-side" data-target=".side-collapse" data-target-2=".side-collapse-container" type="button" class="navbar-toggle pull-left"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+        </div>
+        <div class="navbar-inverse side-collapse in">
+          <nav role="navigation" class="navbar-collapse">
+            <% if (typeof(session) == 'object' && session) { %>
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="/">Analysis Lab</a></li>
+                  <% if (session.state === '1') { %>
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Administración
+                        <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a href="/users/admin">Gestión de Usuarios</a></li>
+                        <li><a href="/users/pending/approve">Aprobación de Cuentas</a></li>
+                        <li><a href="/users/pending/deactivate">Desactivación de Cuentas</a></li>
+                      </ul>
+                    </li>
+                  <% } %>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/profile">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <%= session.firstname %></a>
+                  </li>
+                  <li><a href="#" id="logout">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    Salir</a>
+                    <form action="/session/logout?_method=delete" method="post" id="exit"></form>
+                  </li>
+                </ul>
+              <% } else { %>
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="/">Analysis Lab</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/users/register">
+                    <span class="glyphicon glyphicon-user"></span>
+                    Regitrarse</a>
+                  </li>
+                  <li><a href="/session/login">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    Iniciar Sesión</a>
+                  </li>
+                </ul>
+              <% } %>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class="container side-collapse-container" >
       <%- body %>
     </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/navbar.js"></script>
   </body>
 </html>

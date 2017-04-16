@@ -125,7 +125,6 @@ exports.getUsers = (req, res) => {
        {state: '1'},
        {state: '2'},
        {state: '3'},
-       {state: '4'},
      ],
       _id: {$ne: req.user._id},
     }, (err, users) => {

@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
+    <% if (typeof(session) == 'object' && session) { %>
+      <h3><%= session.firstname %> <%= session.lastname %></h3>
+    <% } %>
     <div class="container">
       <%- body %>
     </div>

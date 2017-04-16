@@ -11,6 +11,7 @@ const methodOverride = require('method-override');
 const partials = require('express-partials');
 const path = require('path');
 const expSession = require('express-session');
+const User = require('./models/user');
 
 require('colors');
 require('./config/passport')(passport);
@@ -54,6 +55,22 @@ mongoose.connect(config.db.url);
 app.db = mongoose.connection;
 app.on('open', () => {
   console.log('connected to db'.yellow);
+});
+
+// Helpers dinamicos:
+app.use((req, res, next) => {
+  if (req.session.passport) {
+    const id = req.session.passport.user;
+    User.findById(id, (err, user) => {
+      if (err) console.log(err);
+      res.locals.session = {
+        firstname: user.firstname,
+        lastname: user.lastname,
+      };
+      next();
+    });
+  } else
+    next();
 });
 
 // routes

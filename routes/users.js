@@ -4,8 +4,8 @@ const {userController, sessionController} = require('../controllers');
 
 module.exports = (app, mountPoint) => {
   // GET
-  router.get('/', sessionController.loginRequired, userController.getUsers);
   router.get('/register', userController.newUser);
+  router.get('/admin', sessionController.loginRequired, userController.getUsers);
   router.get('/pending/approve', sessionController.loginRequired, userController.pendingUsers);
   router.get('/pending/deactivate', sessionController.loginRequired, userController.deactivatePendingAccount);
 

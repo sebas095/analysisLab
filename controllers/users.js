@@ -66,6 +66,12 @@ exports.createUser = (req, res) => {
 // PUT /users/:id -- Modifies user data
 exports.updateUser = (req, res) => {
   const id = req.params.id || req.user._id;
+  if (req.body.status && req.body.status === 'admin') {
+    req.body.state = '1';
+  } else {
+    req.body.state = '2';
+  }
+
   User.findByIdAndUpdate(id, req.body, {new: true}, (err, user) => {
     if (err) {
       console.log('Error: ', err);
@@ -74,7 +80,7 @@ exports.updateUser = (req, res) => {
         'Hubo problemas actualizando los datos, intenta de nuevo'
       );
       return res.redirect('/');
-    } else if (req.originalUrl === '/users/admin') {
+    } else if (req.originalUrl.includes('/users/')) {
       req.flash('adminMessage', 'Los datos han sido actualizados exitosamente');
       res.redirect('/users/admin');
     } else {
@@ -88,6 +94,7 @@ exports.updateUser = (req, res) => {
 exports.deleteUser = (req, res) => {
   if (req.user.state.includes('1')) {
     const {id} = req.params;
+    console.log(req.body);
     User.findByIdAndUpdate(id, {
       state: req.body.status,
     }, {new: true}, (err, user) => {
@@ -107,10 +114,10 @@ exports.deleteUser = (req, res) => {
   }
 };
 
-// GET /users -- Return all the users
+// GET /users/admin -- Return all the users
 exports.getUsers = (req, res) => {
   if (req.user.state.includes('1')) {
-    User.find({}, (err, users) => {
+    User.find({_id: {$ne: req.user._id}}, (err, users) => {
       if (err) {
         console.log('Error: ', err);
         req.flash(
@@ -120,7 +127,6 @@ exports.getUsers = (req, res) => {
         );
         res.redirect('/');
       } else if (users.length > 0) {
-        users = users.filter((user) => user._id !== req.user._id);
         res.render('users/admin', {
           users: users,
           user: req.user,
@@ -219,7 +225,7 @@ exports.changeState = (req, res) => {
     req.flash(
       'userMessage',
       'Pronto el administrador revisara tu solicitud ' +
-      `y se te notificara por correo electrónico(${user.email})`
+      `y se te notificara al correo electrónico de ${user.email}`
     );
     res.redirect(`/profile`);
   });

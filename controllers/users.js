@@ -7,20 +7,24 @@ const transporter = nodemailer.createTransport(
 
 // GET /users/register -- Register form
 exports.newUser = (req, res) => {
-  User.find({}, (err, users) => {
-    if (err) {
-      console.log('Error: ', err);
-      req.flash(
-        'indexMessage',
-        'Hubo problemas con el servidor, intenta de nuevo'
-      );
-      return res.redirect('/');
-    } else if (users.length === 0) {
-      res.render('users/new', {isAdmin: true});
-    } else {
-      res.render('users/new', {isAdmin: false});
-    }
-  });
+  if (!req.isAuthenticated()) {
+    User.find({}, (err, users) => {
+      if (err) {
+        console.log('Error: ', err);
+        req.flash(
+          'indexMessage',
+          'Hubo problemas con el servidor, intenta de nuevo'
+        );
+        return res.redirect('/');
+      } else if (users.length === 0) {
+        res.render('users/new', {isAdmin: true});
+      } else {
+        res.render('users/new', {isAdmin: false});
+      }
+    });
+  } else {
+    res.redirect('/profile');
+  }
 };
 
 // POST /users/register -- Create a new user
@@ -94,7 +98,6 @@ exports.updateUser = (req, res) => {
 exports.deleteUser = (req, res) => {
   if (req.user.state.includes('1')) {
     const {id} = req.params;
-    console.log(req.body);
     User.findByIdAndUpdate(id, {
       state: req.body.status,
     }, {new: true}, (err, user) => {
@@ -117,7 +120,15 @@ exports.deleteUser = (req, res) => {
 // GET /users/admin -- Return all the users
 exports.getUsers = (req, res) => {
   if (req.user.state.includes('1')) {
-    User.find({_id: {$ne: req.user._id}}, (err, users) => {
+    User.find({
+     $or: [
+       {state: '1'},
+       {state: '2'},
+       {state: '3'},
+       {state: '4'},
+     ],
+      _id: {$ne: req.user._id},
+    }, (err, users) => {
       if (err) {
         console.log('Error: ', err);
         req.flash(
@@ -234,7 +245,6 @@ exports.changeState = (req, res) => {
 // PUT /users/accountApproval -- Users account approval
 exports.accountApproval = (req, res) => {
   if (req.user.state.includes('1')) {
-    console.log(req.body);
     const {email} = req.body;
     let status;
 
@@ -247,7 +257,7 @@ exports.accountApproval = (req, res) => {
 
       User.findOneAndUpdate({
         email: email,
-      }, {state: status}, {new: true}, (err, user) => {
+      }, {state: status, rol: req.body.rol}, {new: true}, (err, user) => {
         if (err) {
           console.log('Error: ', err);
           req.flash(

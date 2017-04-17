@@ -51,6 +51,7 @@ app.use(flash());
 
 global.HOST = config.url;
 // mongo config
+mongoose.Promise = global.Promise;
 mongoose.connect(config.db.url);
 app.db = mongoose.connection;
 app.on('open', () => {

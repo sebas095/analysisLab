@@ -1,61 +1,83 @@
-<div class="">
+<div class="row">
   <% if (message.length > 0) { %>
     <div class="alert alert-success alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       <p><%= message %></p>
     </div>
   <% } %>
-  <h3>Administración de cuentas</h3>
-  <% for (let usr of users) { %>
-    <div class="row">
-      <form class="adminForm" action="/users/<%= usr._id %>?_method=put" method="post" id="form-<%= usr._id %>">
-        <div>
-          <label for="firstname">Nombre(s)</label>
-          <input type="text" name="firstname" id="firstname" value="<%= usr.firstname %>" required>
-        </div>
-        <div>
-          <label for="lastname">Apellido(s)</label>
-          <input type="text" name="lastname" id="lastname" value="<%= usr.lastname %>">
-        </div>
-        <div>
-          <label for="rol">Rol</label>
-          <select name="rol" id="rol" required>
-            <option value="responsable técnico" <% if (usr.rol === 'responsable técnico') { %> selected <% } %> >
-              Responsable Técnico
-            </option>
-            <option value="director del laboratorio" <% if (usr.rol === 'director del laboratorio') { %> selected <% } %> >
-              Director del Laboratorio
-              </option>
-            <option value="técnico del laboratorio" <% if (usr.rol === 'técnico del laboratorio') { %> selected <% } %> >
-              Técnico del Laboratorio
-            </option>
-            <option value="auxiliar administrativo" <% if (usr.rol === 'auxiliar administrativo') { %> selected <% } %> >
-              Auxiliar Administrativo
-            </option>
-          </select>
-        </div>
-        <div>
-          <input type="checkbox" name="status" id="status" value="admin" <% if (usr.state === '1') { %> checked <% } %> >
-          <label for="status">Administrador del Sistema</label>
-        </div>
-        <div>
-          <label for="email">Correo Electrónico</label>
-          <input type="email" name="email" id="email" value="<%= usr.email %>" required>
-        </div>
-        <button class="btn btn-success save" id="save-<%= usr._id %>">Guardar</button>
-        <button class="btn btn-info edit" id="edit-<%= usr._id %>">Editar</button>
-        <button class="btn btn-warning activate" id="activate-<%= usr._id %>">
-          <% if (usr.state === '3') { %>
-            Activar Cuenta
-          <% } else { %>
-            Desactivar Cuenta
-          <% } %>
-        </button>
+
+  <div class="col-xs-12 col-sm-12">
+    <h3>Administración de cuentas</h3>
+    <% for (let i = 0, usr = users[i]; i < users.length; i++) { %>
+      <% if (i > 0) { %>
+        <hr>
+      <% } %>
+      <div class="row">
+        <form class="adminForm form-horizontal" action="/users/<%= usr._id %>?_method=put" method="post" id="form-<%= usr._id %>">
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="firstname">Nombre(s)</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="firstname" id="firstname" value="<%= usr.firstname %>" placeholder="Ingresa nombre(s)" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="lastname">Apellido(s)</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="lastname" id="lastname" value="<%= usr.lastname %>" placeholder="Ingresa apellido(s)" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="rol">Rol:</label>
+            <div class="col-sm-5">
+              <select class="form-control" name="rol" id="rol" required>
+                <option value="responsable técnico" <% if (usr.rol === 'responsable técnico') { %> selected <% } %> >
+                  Responsable Técnico
+                </option>
+                <option value="director del laboratorio" <% if (usr.rol === 'director del laboratorio') { %> selected <% } %> >
+                  Director del Laboratorio
+                </option>
+                <option value="técnico del laboratorio" <% if (usr.rol === 'técnico del laboratorio') { %> selected <% } %> >
+                  Técnico del Laboratorio
+                </option>
+                <option value="auxiliar administrativo" <% if (usr.rol === 'auxiliar administrativo') { %> selected <% } %> >
+                  Auxiliar Administrativo
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox col-sm-offset-4 col-sm-6">
+              <label>
+                <input type="checkbox" name="status" id="status" value="admin" <% if (usr.state === '1') { %> checked <% } %> >
+                Administrador del Sistema
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico</label>
+            <div class="col-sm-5">
+              <input type="email" class="form-control" name="email" id="email" value="<%= usr.email %>" placeholder="Ingresa un correo electrónico" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <button class="btn btn-success save" id="save-<%= usr._id %>">Guardar</button>
+              <button class="btn btn-info edit" id="edit-<%= usr._id %>">Editar</button>
+              <button class="btn btn-warning activate" id="activate-<%= usr._id %>">
+                <% if (usr.state === '3') { %>
+                  Activar Cuenta
+                <% } else { %>
+                  Desactivar Cuenta
+                <% } %>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <form action="/users/<%= usr._id %>?_method=delete" method="post" id="deactivateForm-<%= usr._id %>">
+        <input type="hidden" name="status" id="status-<%= usr._id %>">
       </form>
-    </div>
-    <form action="/users/<%= usr._id %>?_method=delete" method="post" id="deactivateForm-<%= usr._id %>">
-      <input type="hidden" name="status" id="status-<%= usr._id %>">
-    </form>
-  <% } %>
+    <% } %>
+  </div>
   <script src="/js/management.js"></script>
 </div>

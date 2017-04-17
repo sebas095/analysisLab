@@ -7,15 +7,17 @@
   <% } %>
   <h3>Desactivación de cuentas</h3>
   <% for (let usr of users) { %>
-    <div class="row">
-      <form class="" action="/users/deactivateAccount?_method=put" method="post" id="form-<%= usr._id %>">
-        <div>
+    <div class="row" style="margin: 15px;">
+      <form class="form-horizontal" action="/users/deactivateAccount?_method=put" method="post" id="form-<%= usr._id %>">
+        <div class="col-sm-6">
           <p>El usuario <%= usr.firstname %> <%= usr.lastname %> solicita la desactivación de su cuenta</p>
           <input type="hidden" name="email" id="email" value="<%= usr.email %>">
           <input type="hidden" name="account" id="account-<%= usr._id %>">
         </div>
-        <button class="btn btn-success accept" id="accept-<%= usr._id %>">Aprobar</button>
-        <button class="btn btn-danger reject" id="reject-<%= usr._id %>">Rechazar</button>
+        <div class="col-sm-6">
+          <button class="btn btn-success accept" id="accept-<%= usr._id %>">Aprobar</button>
+          <button class="btn btn-danger reject" id="reject-<%= usr._id %>">Rechazar</button>
+        </div>
       </form>
     </div>
   <% } %>

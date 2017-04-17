@@ -1,4 +1,4 @@
-<div class="">
+<div class="row">
   <% if (message.length > 0) { %>
     <div class="alert alert-info alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -6,36 +6,48 @@
     </div>
   <% } %>
 
-  <h3>Editar datos del usuario</h3>
-  <form class="" action="/users/<%= user._id %>?_method=put" id="profile" method="post">
-    <div>
-      <p>
-        <strong>Rol:</strong>
-        <%= user.rol %>
-      </p>
-    </div>
-    <div>
-      <label for="firstname">Nombre(s)</label>
-      <input type="text" name="firstname" id="firstname" value="<%= user.firstname %>" required>
-    </div>
-    <div>
-      <label for="lastname">Apellido(s)</label>
-      <input type="text" name="lastname" id="lastname" value="<%= user.lastname %>" required>
-    </div>
-    <div>
-      <label for="email">Correo Electrónico</label>
-      <input type="email" name="email" id="email" value="<%= user.email %>" required>
-    </div>
-    <button id="save" type="submit" class="btn btn-success">Enviar</button>
-    <button id="edit" type="button" class="btn btn-info">Editar</button>
-    <% if (user.state === '2') { %>
-      <button id="deactivate" type="button" class="btn btn-danger">Desactivar Cuenta</button>
-    <% } %>
-  </form>
-  <% if (user.state === '2') { %>
-    <form class="" action="/users/<%= user._id %>/deactiveAccount?_method=put" id="deactivateForm" method="post"
-      onsubmit="return confirm('¿Estas seguro que deseas solicitar la desactivación de tú cuenta?')">
+  <div class="col-xs-12 col-sm-12">
+    <h3>Editar datos del usuario</h3>
+    <form class="form-horizontal" action="/users/<%= user._id %>?_method=put" id="profile" method="post">
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2">Rol:</label>
+        <div class="col-sm-5">
+          <span class="form-control"><%= user.rol %></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="firstname">Nombre(s):</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="firstname" id="firstname" value="<%= user.firstname %>" placeholder="Ingresa nombre(s)" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="lastname">Apellido(s):</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="lastname" id="lastname" value="<%= user.lastname %>" placeholder="Ingresa apellido(s)" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
+        <div class="col-sm-5">
+          <input type="email" class="form-control" name="email" id="email" value="<%= user.email %>" placeholder="Ingresa un correo electrónico" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+          <button id="save" type="submit" class="btn btn-success">Enviar</button>
+          <button id="edit" type="button" class="btn btn-info">Editar</button>
+          <% if (user.state === '2') { %>
+            <button id="deactivate" type="button" class="btn btn-danger">Desactivar Cuenta</button>
+          <% } %>
+        </div>
+      </div>
     </form>
-  <% } %>
+    <% if (user.state === '2') { %>
+      <form class="" action="/users/<%= user._id %>/deactiveAccount?_method=put" id="deactivateForm" method="post"
+        onsubmit="return confirm('¿Estas seguro que deseas solicitar la desactivación de tú cuenta?')">
+      </form>
+    <% } %>
+  </div>
   <script src="/js/editProfile.js"></script>
 </div>

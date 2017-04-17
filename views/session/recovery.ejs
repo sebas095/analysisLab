@@ -5,16 +5,26 @@
       <p><%= message %></p>
     </div>
   <% } %>
-  <h3>Recuperar contraseña</h3>
-  <form class="" action="/account/recovery/<%= token %>?_method=put" method="post">
-    <div>
-      <label for="password">Nueva Contraseña</label>
-      <input type="password" name="password" id="password" required>
-    </div>
-    <div>
-      <label for="cpassword">Confirmar Contraseña</label>
-      <input type="password" name="cpassword" id="cpassword" required>
-    </div>
-    <button class="btn btn-success">Enviar</button>
-  </form>
+  <div class="col-xs-12 col-sm-12">
+    <h3>Recuperar contraseña</h3>
+    <form class="form-horizontal" action="/account/recovery/<%= token %>?_method=put" method="post">
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="password">Nueva Contraseña:</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" name="password" id="password" placeholder="Ingresa una nueva contraseña" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-1 col-sm-3" for="cpassword">Confirmar Contraseña:</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Ingresa nuevamente la contraseña" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-4">
+          <button class="btn btn-success">Enviar</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

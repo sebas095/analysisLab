@@ -8,6 +8,7 @@ This is a prototype for the laboratory of analysis of water and food of the UTP.
 
 ## Requeriments/dependencies
 * [NodeJS](https://nodejs.org/en/)
+* [Mongodb](https://docs.mongodb.com/manual/installation/)
 
 ## Installation
 ```bash

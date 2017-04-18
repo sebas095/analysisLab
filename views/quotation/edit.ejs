@@ -1,0 +1,145 @@
+<div class="row">
+  <% if (message.length > 0) { %>
+    <div class="alert alert-info alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <p><%= message %></p>
+    </div>
+  <% } %>
+  <h3>Cotización</h3>
+  <div class="col-xs-12 col-sm-12">
+    <form class="form-horizontal" action="/quotation/<%= quotation._id %>?_method=put" method="post" id="quotation">
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="businessName">Razón Social:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="businessName" id="businessName" value="<%= quotation.businessName %>" placeholder="Ingresa razón social" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="document">Nit o C.C.:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="document" id="document" value="<%= quotation.document %>" placeholder="Ingresa Nit o C.C." disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="address">Dirección:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="address" id="address" value="<%= quotation.address %>" placeholder="Ingresa dirección" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="phone">Teléfono:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="phone" id="phone" value="<%= quotation.phone %>" placeholder="Ingresa teléfono" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
+        <div class="col-sm-5">
+          <input type="email" class="form-control" name="email" id="email" value="<%= quotation.email %>" placeholder="Ingresa correo electrónico" disabled required>
+        </div>
+      </div>
+
+      <hr>
+      <h3>Información Solicitante</h3>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.firstname">Nombre(s):</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.firstname" id="applicant.firstname" value="<%= quotation.applicant.firstname %>" placeholder="Ingresa nombre(s)" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.lastname">Apellido(s):</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.lastname" id="applicant.lastname" value="<%= quotation.applicant.lastname %>" placeholder="Ingresa apellido(s)" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.document">Cédula:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.document" id="applicant.document" value="<%= quotation.applicant.document %>" placeholder="Ingresa cédula" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.position">Cargo:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.position" id="applicant.position" value="<%= quotation.applicant.position %>" placeholder="Ingresa cargo" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.phone">Teléfono:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.phone" id="applicant.phone" value="<%= quotation.applicant.phone %>" placeholder="Ingresa teléfono" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.email">Correo Electrónico:</label>
+        <div class="col-sm-5">
+          <input type="email" class="form-control" name="applicant.email" id="applicant.email" value="<%= quotation.applicant.email %>" placeholder="Ingresa correo electrónico" disabled required>
+        </div>
+      </div>
+
+      <hr>
+      <h3>Información Muestra</h3>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.type">Tipo de muestra:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="sample.type" id="sample.type" value="<%= quotation.sample.type %>" placeholder="Ingresa tipo de muestra" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.parameter">Parámetro:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="sample.parameter" id="sample.parameter" value="<%= quotation.sample.parameter %>" placeholder="Ingresa parámetro" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.method">Método:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="sample.method" id="sample.method" value="<%= quotation.sample.method %>" placeholder="Ingresa método" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.price">Precio muestra:</label>
+        <div class="col-sm-5">
+          <input type="number" min="0" class="form-control" name="sample.price" id="sample.price" value="<%= quotation.sample.price %>" placeholder="Ingresa precio muestra" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.amount">Número de muestras:</label>
+        <div class="col-sm-5">
+          <input type="number" min="0" class="form-control" name="sample.amount" id="sample.amount" value="<%= quotation.sample.amount %>" placeholder="Ingresa número de muestras" disabled required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.totalPrice">Valor total de muestras:</label>
+        <div class="col-sm-5">
+          <input type="number" min="0" class="form-control" name="sample.totalPrice" id="sample.totalPrice" value="<%= quotation.sample.totalPrice %>" placeholder="Ingresa Valor total de muestras" disabled required>
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="total">Valor Total:</label>
+        <div class="col-sm-5">
+          <input type="number" class="form-control" min="0" name="total" id="total" value="<%= quotation.total %>" placeholder="Ingresa total" disabled required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+          <button id="save" type="submit" class="btn btn-success">Guardar</button>
+          <button id="edit" type="button" class="btn btn-info">Editar</button>
+          <button id="export" type="button" class="btn btn-danger">Exportar a PDF</button>
+          <% if (quotation.state === '1') { %>
+            <button id="deactivate" type="button" class="btn btn-warning">Eliminar Cotización</button>
+          <% } %>
+        </div>
+      </div>
+    </form>
+    <% if (quotation.state === '1') { %>
+      <form action="/quotation/<%= quotation._id %>/deactive?_method=put" id="deactivateForm" method="post">
+      </form>
+    <% } %>
+  </div>
+  <script src="/js/editQuotation.js"></script>
+</div>

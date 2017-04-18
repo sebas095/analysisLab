@@ -88,6 +88,10 @@ const SampleSchema = new Schema({
   * Muestra
  */
 const QuotationSchema = new Schema({
+  createdBy: {
+    type: String,
+    require: true,
+  },
   businessName: {
     type: String,
     require: true,
@@ -122,6 +126,12 @@ const QuotationSchema = new Schema({
   total: {
     type: Number,
     require: true,
+  },
+  state: {
+    type: String,
+    enum: ['0', '1', '2', '3'],
+    default: '0',
+    // 0: pending, 1: ok, 2: removal request, 3: quotation disabled
   },
 });
 

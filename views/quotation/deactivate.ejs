@@ -1,0 +1,24 @@
+<div class="">
+  <% if (message.length > 0) { %>
+    <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <p><%= message %></p>
+    </div>
+  <% } %>
+  <h3>Desactivación de Cotizaciones</h3>
+  <% for (let quotation of quotations) { %>
+    <div class="row" style="margin: 15px;">
+      <form class="form-horizontal" action="/quotation/deactivate/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
+        <div class="col-sm-6">
+          <p>Solicitan la eliminación de la cotización del cliente <%= quotation.applicant.firstname %> <%= quotation.applicant.lastname %></p>
+          <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
+        </div>
+        <div class="col-sm-6">
+          <button class="btn btn-success accept" id="accept-<%= quotation._id %>">Aprobar</button>
+          <button class="btn btn-danger reject" id="reject-<%= quotation._id %>">Rechazar</button>
+        </div>
+      </form>
+    </div>
+  <% } %>
+  <script src="/js/deactivateQuotation.js"></script>
+</div>

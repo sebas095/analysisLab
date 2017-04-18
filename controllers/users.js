@@ -265,7 +265,7 @@ exports.changeState = (req, res) => {
       console.log(err);
       req.flash(
         'indexMessage',
-        'Hubo problemas desactivando la cuenta del usuario'
+        'Hubo problemas en la solicitud de desactivación de la cuenta'
       );
       return res.redirect('/');
     }

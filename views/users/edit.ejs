@@ -44,8 +44,7 @@
       </div>
     </form>
     <% if (user.state === '2') { %>
-      <form class="" action="/users/<%= user._id %>/deactiveAccount?_method=put" id="deactivateForm" method="post"
-        onsubmit="return confirm('¿Estas seguro que deseas solicitar la desactivación de tú cuenta?')">
+      <form class="" action="/users/<%= user._id %>/deactiveAccount?_method=put" id="deactivateForm" method="post">
       </form>
     <% } %>
   </div>

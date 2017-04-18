@@ -1,0 +1,128 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12">
+    <h3>Registro de Cotización</h3>
+    <form class="form-horizontal" action="/quotation/create" method="post">
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="businessName">Razón Social:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="businessName" id="businessName" placeholder="Ingresa razón social" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="document">Nit o C.C.:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="document" id="document" placeholder="Ingresa Nit o C.C." required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="address">Dirección:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="address" id="address" placeholder="Ingresa dirección" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="phone">Teléfono:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="phone" id="phone" placeholder="Ingresa teléfono" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
+        <div class="col-sm-5">
+          <input type="email" class="form-control" name="email" id="email" placeholder="Ingresa correo electrónico" required>
+        </div>
+      </div>
+
+      <hr>
+      <h3>Información Solicitante</h3>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.firstname">Nombre(s):</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.firstname" id="applicant.firstname" placeholder="Ingresa nombre(s)" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.lastname">Apellido(s):</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.lastname" id="applicant.lastname" placeholder="Ingresa apellido(s)" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.document">Cédula:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.document" id="applicant.document" placeholder="Ingresa cédula" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.position">Cargo:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.position" id="applicant.position" placeholder="Ingresa cargo" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.phone">Teléfono:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="applicant.phone" id="applicant.phone" placeholder="Ingresa teléfono" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.email">Correo Electrónico:</label>
+        <div class="col-sm-5">
+          <input type="email" class="form-control" name="applicant.email" id="applicant.email" placeholder="Ingresa correo electrónico" required>
+        </div>
+      </div>
+
+      <hr>
+      <h3>Información Muestra</h3>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.type">Tipo de muestra:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="sample.type" id="sample.type" placeholder="Ingresa tipo de muestra" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.parameter">Parámetro:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="sample.parameter" id="sample.parameter" placeholder="Ingresa parámetro" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.method">Método:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="sample.method" id="sample.method" placeholder="Ingresa método" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.price">Precio muestra:</label>
+        <div class="col-sm-5">
+          <input type="number" min="0" class="form-control" name="sample.price" id="sample.price" placeholder="Ingresa precio muestra" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.amount">Número de muestras:</label>
+        <div class="col-sm-5">
+          <input type="number" min="0" class="form-control" name="sample.amount" id="sample.amount" placeholder="Ingresa número de muestras" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.totalPrice">Valor total de muestras:</label>
+        <div class="col-sm-5">
+          <input type="number" min="0" class="form-control" name="sample.totalPrice" id="sample.totalPrice" placeholder="Ingresa Valor total de muestras" required>
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-group">
+        <label class="control-label col-sm-offset-2 col-sm-2" for="total">Valor Total:</label>
+        <div class="col-sm-5">
+          <input type="number" class="form-control" min="0" name="total" id="total" placeholder="Ingresa total" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-4">
+          <button class="btn btn-success">Enviar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -23,6 +23,7 @@ const index = require('./routes/index');
 const users = require('./routes/users');
 const session = require('./routes/session');
 const account = require('./routes/account');
+const quotation = require('./routes/quotation');
 
 const app = express();
 
@@ -80,6 +81,7 @@ app.use((req, res, next) => {
 index(app, '/');
 users(app, '/users');
 account(app, '/account');
+quotation(app, '/quotation');
 session(app, '/session', passport);
 
 // catch 404 and forward to error handler

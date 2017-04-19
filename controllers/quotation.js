@@ -1,5 +1,13 @@
 const Quotation = require('../models/quotation');
 
+/*
+  Responsable Tecnico --  Crear, revisa
+  Auxiliar administrativo -- Crea
+  Director del laboratorio -- Revisa
+  Busqueda por nit, numero de cotizacion(id)
+  BORRA DE LA BD
+*/
+
 // GET /quotation/new -- Quotation form
 exports.new = (req, res) => {
   res.render('quotation/new');
@@ -150,6 +158,51 @@ exports.getQuotation = (req, res) => {
 exports.edit = (req, res) => {
   const {id} = req.params;
 
+  const applicant = {
+    firstname: req.body['applicant.firstname'],
+    lastname: req.body['applicant.lastname'],
+    document: req.body['applicant.document'],
+    position: req.body['applicant.position'],
+    phone: req.body['applicant.phone'],
+    email: req.body['applicant.email'],
+  };
+
+  const sample = {
+    type: req.body['sample.type'],
+    parameter: req.body['sample.parameter'],
+    method: req.body['sample.method'],
+    price: req.body['sample.price'],
+    amount: req.body['sample.amount'],
+    totalPrice: req.body['sample.totalPrice'],
+  };
+
+  const quotation = {
+    businessName: req.body['businessName'],
+    document: req.body['document'],
+    address: req.body['address'],
+    phone: req.body['phone'],
+    email: req.body['email'],
+    applicant: applicant,
+    sample: sample,
+    total: req.body['total'],
+  };
+
+  console.log(quotation);
+  Quotation.findByIdAndUpdate(id, quotation, (err, data) => {
+    if (err) {
+      console.log('Error: ', err);
+      req.flash(
+        'indexMessage',
+        'Hubo problemas actualizando los datos, intenta de nuevo'
+      );
+      return res.redirect('/');
+    }
+    req.flash(
+      'quotationMessage',
+      'Sus datos han sido actualizados exitosamente'
+    );
+    res.redirect(`/quotation/${id}`);
+  });
 };
 
 // PUT /quotation/:id/deactivate -- Request for deactivate a specific quotation
@@ -243,4 +296,38 @@ exports.deactivate = (req, res) => {
       }
     });
   }
+};
+
+// GET /quotation/search -- Form to search a specific quotation
+exports.search = (req, res) => {
+  res.render('quotation/search', {message: req.flash('searchMessage')});
+};
+
+// POST /quotation/search -- Search a specific quotation
+exports.find = (req, res) => {
+  Quotation.findOne({
+    $or: [
+      {_id: Number(req.body.id)},
+      {document: req.body.id},
+    ],
+  }, (err, data) => {
+    if (err) {
+      console.log('Error: ', err);
+      req.flash(
+        'searchMessage',
+        'Hubo problemas buscando la cotización, ' +
+        'intenta de nuevo'
+      );
+      res.redirect('/quotation/search');
+    } else if (data) {
+      res.redirect(`/quotation/${data._id}`);
+    } else {
+      req.flash(
+        'searchMessage',
+        'No existe la cotización, verifica e ' +
+        'intenta de nuevo'
+      );
+      res.redirect('/quotation/search');
+    }
+  });
 };

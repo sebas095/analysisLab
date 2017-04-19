@@ -21,6 +21,7 @@
     "express-session": "^1.15.2",
     "method-override": "^2.3.8",
     "mongoose": "^4.9.4",
+    "mongoose-auto-increment": "^5.0.1",
     "mongoose-timestamp": "^0.6.0",
     "morgan": "~1.8.1",
     "nodemailer": "^4.0.0",

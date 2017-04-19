@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
+const autoIncrement = require('mongoose-auto-increment');
 const {Schema} = mongoose;
+autoIncrement.initialize(mongoose.connection);
 
 /*
   Solicitante
@@ -10,7 +12,7 @@ const {Schema} = mongoose;
   - Cargo
   - Teléfono
   - Correo
- */
+*/
 const ApplicantSchema = new Schema({
   firstname: {
     type: String,
@@ -49,7 +51,7 @@ const ApplicantSchema = new Schema({
   - Precio muestra
   - Número de muestras
   - Valor total de muestras
- */
+*/
 const SampleSchema = new Schema({
   type: {
     type: String,
@@ -86,7 +88,7 @@ const SampleSchema = new Schema({
   - Email
   * Solicitante
   * Muestra
- */
+*/
 const QuotationSchema = new Schema({
   createdBy: {
     type: String,
@@ -136,4 +138,5 @@ const QuotationSchema = new Schema({
 });
 
 QuotationSchema.plugin(timestamp);
+QuotationSchema.plugin(autoIncrement.plugin, 'Quotation');
 module.exports = mongoose.model('Quotation', QuotationSchema);

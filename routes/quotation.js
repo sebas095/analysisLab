@@ -9,12 +9,14 @@ const {
 module.exports = (app, mountPoint) => {
   // GET
   router.get('/new', quotationController.new);
+  router.get('/search', quotationController.search);
   router.get('/pending/approval', quotationController.pending);
   router.get('/pending/deactivate', quotationController.pendingDeactivate);
   router.get('/:id', quotationController.getQuotation);
 
   // POST
   router.post('/create', quotationController.create);
+  router.post('/search', quotationController.find);
 
   // PUT
   router.put('/approval/:id', quotationController.approval);

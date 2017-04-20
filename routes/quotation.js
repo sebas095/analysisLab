@@ -11,7 +11,7 @@ module.exports = (app, mountPoint) => {
   router.get('/new', quotationController.new);
   router.get('/search', quotationController.search);
   router.get('/pending/approval', quotationController.pending);
-  router.get('/pending/deactivate', quotationController.pendingDeactivate);
+  router.get('/pending/delete', quotationController.pendingDelete);
   router.get('/:id', quotationController.getQuotation);
 
   // POST
@@ -20,8 +20,8 @@ module.exports = (app, mountPoint) => {
 
   // PUT
   router.put('/approval/:id', quotationController.approval);
-  router.put('/deactivate/:id', quotationController.deactivate);
-  router.put('/:id/deactivate', quotationController.changeState);
+  router.put('/delete/:id', quotationController.delete);
+  router.put('/:id/delete', quotationController.changeState);
   router.put('/:id', quotationController.edit);
 
   // DELETE

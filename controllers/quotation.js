@@ -1,4 +1,10 @@
 const Quotation = require('../models/quotation');
+const User = require('../models/user');
+const {auth} = require('../config/email');
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport(
+  `smtps://${auth.user}:${auth.pass}@smtp.gmail.com`
+);
 
 /*
   Responsable Tecnico --  Crear, revisa
@@ -34,6 +40,7 @@ exports.create = (req, res) => {
   };
 
   const quotation = {
+    createdBy: req.user._id,
     businessName: req.body['businessName'],
     document: req.body['document'],
     address: req.body['address'],
@@ -53,7 +60,54 @@ exports.create = (req, res) => {
       );
       return res.redirect('/');
     }
-    res.redirect('/');
+    User.find({
+      $or: [
+        {rol: 'responsable técnico', state: '1'},
+        {rol: 'responsable técnico', state: '2'},
+        {rol: 'responsable técnico', state: '4'},
+        {rol: 'director del laboratorio', state: '1'},
+        {rol: 'director del laboratorio', state: '2'},
+        {rol: 'director del laboratorio', state: '4'},
+      ],
+    }, (err, users) => {
+      if (err) {
+        console.log(err);
+        req.flash(
+          'indexMessage',
+          'Hubo problemas para notificar por correo'
+        );
+        return res.redirect('/');
+      } else if (users.length > 0) {
+        let emails = '';
+        for (let i = 0; i < users.length; i++) {
+          if (i > 0) emails += ',';
+          emails += users[i].email;
+        }
+
+        const mailOptions = {
+          from: 'Administración',
+          to: emails,
+          subject: 'Aprobación de cotizaciones',
+          html: `<p>Estimado Usuario,</p><br>Se le informa que
+            hay cotizaciones pendientes para su aprobación, si deseas
+            ingresar ve a la siguiente dirección:
+            <br><a href="${HOST}/quotation/pending/approval">
+            Iniciar sesión</a><br><br><br>Att,<br><br>
+            Equipo Administrativo`,
+        };
+
+        transporter.sendMail(mailOptions, (err) => {
+          if (err) console.log(err);
+          res.redirect(`/`);
+        });
+      } else {
+        req.flash(
+          'indexMessage',
+          'Hubo problemas en el servidor'
+        );
+        res.redirect(`/`);
+      }
+    });
   });
 };
 
@@ -98,7 +152,37 @@ exports.approval = (req, res) => {
         );
         res.redirect('/');
       } else if (data) {
-        res.redirect('/quotation/pending/approval');
+        User.findById(data.createdBy, (err, user) => {
+          if (err) {
+            req.flash(
+              'indexMessage',
+              'Hubo problemas aprobando la cotización'
+            );
+            res.redirect('/');
+          } else if (user) {
+            const mailOptions = {
+              from: 'Administración',
+              to: user.email,
+              subject: 'Estado de aprobación de la cotización',
+              html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
+                <br>Se le informa que su cotización ha sido aprobada,
+                si deseas ingresar ve a la siguiente dirección:<br>
+                <a href="${HOST}/quotation/${data._id}">Iniciar sesión
+                </a><br><br><br>Att,<br><br>Equipo Administrativo`,
+            };
+
+            transporter.sendMail(mailOptions, (err) => {
+              if (err) console.log(err);
+              res.redirect('/quotation/pending/approval');
+            });
+          } else {
+            req.flash(
+              'pendingQuotations',
+              'No usuario no se encuentra registrado'
+            );
+            res.redirect('/quotation/pending/approval');
+          }
+        });
       } else {
         req.flash(
           'pendingQuotations',
@@ -117,7 +201,37 @@ exports.approval = (req, res) => {
         );
         res.redirect('/');
       } else if (data) {
-        res.redirect('/quotation/pending/approval');
+        User.findById(data.createdBy, (err, user) => {
+          if (err) {
+            req.flash(
+              'indexMessage',
+              'Hubo problemas aprobando la cotización'
+            );
+            res.redirect('/');
+          } else if (user) {
+            const mailOptions = {
+              from: 'Administración',
+              to: user.email,
+              subject: 'Estado de aprobación de la cotización',
+              html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
+                <br>Se le informa que su cotización ha sido rechazada,
+                la justificación es la siguiente:<br><br>
+                ${req.body.justification}<br><br><br>Att,<br><br>
+                Equipo Administrativo`,
+              };
+
+              transporter.sendMail(mailOptions, (err) => {
+                if (err) console.log(err);
+                res.redirect('/quotation/pending/approval');
+              });
+          } else {
+            req.flash(
+              'pendingQuotations',
+              'No usuario no se encuentra registrado'
+            );
+            res.redirect('/quotation/pending/approval');
+          }
+        });
       } else {
         req.flash(
           'pendingQuotations',
@@ -187,7 +301,6 @@ exports.edit = (req, res) => {
     total: req.body['total'],
   };
 
-  console.log(quotation);
   Quotation.findByIdAndUpdate(id, quotation, (err, data) => {
     if (err) {
       console.log('Error: ', err);
@@ -205,7 +318,7 @@ exports.edit = (req, res) => {
   });
 };
 
-// PUT /quotation/:id/deactivate -- Request for deactivate a specific quotation
+// PUT /quotation/:id/delete -- Request for delete a specific quotation
 exports.changeState = (req, res) => {
   const {id} = req.params;
   Quotation.findByIdAndUpdate(id, {state: '2'}, {new: true}, (err, data) => {
@@ -217,17 +330,63 @@ exports.changeState = (req, res) => {
       );
       return res.redirect('/');
     }
-    req.flash(
-      'quotationMessage',
-      'Pronto el administrador revisara tu solicitud ' +
-      `y se te notificara al correo electrónico`
-    );
-    res.redirect(`/quotation/${id}`);
+    User.find({
+      $or: [
+        {rol: 'responsable técnico', state: '1'},
+        {rol: 'responsable técnico', state: '2'},
+        {rol: 'responsable técnico', state: '4'},
+        {rol: 'director del laboratorio', state: '1'},
+        {rol: 'director del laboratorio', state: '2'},
+        {rol: 'director del laboratorio', state: '4'},
+      ],
+    }, (err, users) => {
+      if (err) {
+        console.log(err);
+        req.flash(
+          'indexMessage',
+          'Hubo problemas para notificar la revisión de la solicitud'
+        );
+        return res.redirect('/');
+      } else if (users.length > 0) {
+        let emails = '';
+        for (let i = 0; i < users.length; i++) {
+          if (i > 0) emails += ',';
+          emails += users[i].email;
+        }
+
+        const mailOptions = {
+          from: 'Administración',
+          to: emails,
+          subject: 'Eliminación de cotizaciones',
+          html: `<p>Estimado Usuario,</p><br>Se le informa que
+            hay solicitudes para la eliminación de cotizaciones, para su
+            aprobación, si deseas ingresar ve a la siguiente dirección:<br>
+            <a href="${HOST}/quotation/pending/delete">Iniciar sesión</a>
+            <br><br><br>Att,<br><br>Equipo Administrativo`,
+        };
+
+        transporter.sendMail(mailOptions, (err) => {
+          if (err) console.log(err);
+          req.flash(
+            'quotationMessage',
+            'Pronto el administrador revisara tu solicitud ' +
+            `y se te notificara al correo electrónico ${req.user.email}`
+          );
+          res.redirect(`/quotation/${id}`);
+        });
+      } else {
+        req.flash(
+          'indexMessage',
+          'No hay usuarios disponibles para la revisión de la solicitud'
+        );
+        res.redirect(`/`);
+      }
+    });
   });
 };
 
-// GET /quotation/pending/deactivate -- Quotations pending for deactivate
-exports.pendingDeactivate = (req, res) => {
+// GET /quotation/pending/delete -- Quotations pending for delete
+exports.pendingDelete = (req, res) => {
   Quotation.find({state: '2'}, (err, data) => {
     if (err) {
       console.log('Error: ', err);
@@ -253,12 +412,12 @@ exports.pendingDeactivate = (req, res) => {
   });
 };
 
-// PUT /quotation/deactivate/:id-- Quotations deactivate
-exports.deactivate = (req, res) => {
+// PUT /quotation/delete/:id-- Quotations delete
+exports.delete = (req, res) => {
   const {id} = req.params;
 
   if (req.body.veredict === 'accept') {
-    Quotation.findByIdAndUpdate(id, {state: '3'}, {new: true}, (err, data) => {
+    Quotation.findByIdAndRemove(id, (err, data) => {
       if (err) {
         console.log('Error: ', err);
         req.flash(
@@ -267,13 +426,44 @@ exports.deactivate = (req, res) => {
         );
         res.redirect('/');
       } else if (data) {
-        res.redirect('/quotation/pending/deactivate');
+        User.findById(data.createdBy, (err, user) => {
+          if (err) {
+            console.log('Error: ', err);
+            req.flash(
+              'indexMessage',
+              'Hubo problemas notificando la aprobación ' +
+              'de eliminación de cotización al usuario'
+            );
+            res.redirect('/');
+          } else if (user) {
+            const mailOptions = {
+              from: 'Administración',
+              to: user.email,
+              subject: 'Eliminación de cotización',
+              html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
+                <br>Se le informa que solicitud de eliminación de la cotización
+                ha sido aprobada exitosamente.
+                <br><br><br>Att,<br><br>Equipo Administrativo`,
+            };
+
+            transporter.sendMail(mailOptions, (err) => {
+              if (err) console.log(err);
+              res.redirect('/quotation/pending/delete');
+            });
+          } else {
+            req.flash(
+              'deactivateQuotations',
+              'El usuario no se encuentra registrado'
+            );
+            res.redirect('/quotation/pending/delete');
+          }
+        });
       } else {
         req.flash(
           'deactivateQuotations',
           'No existe la cotización'
         );
-        res.redirect('/quotation/pending/deactivate');
+        res.redirect('/quotation/pending/delete');
       }
     });
   } else {
@@ -286,13 +476,44 @@ exports.deactivate = (req, res) => {
         );
         res.redirect('/');
       } else if (data) {
-        res.redirect('/quotation/pending/deactivate');
+        User.findById(data.createdBy, (err, user) => {
+          if (err) {
+            req.flash(
+              'indexMessage',
+              'Hubo problemas notificando el rechazo ' +
+              'de eliminación de cotización al usuario'
+            );
+            res.redirect('/');
+          } else if (user) {
+            const mailOptions = {
+              from: 'Administración',
+              to: user.email,
+              subject: 'Eliminación de cotización',
+              html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
+                <br>Se le informa que su solicitud de eliminación de la
+                cotización ha sido rechazada.<br><br><br>Att,
+                <br><br>Equipo Administrativo`,
+            };
+
+            transporter.sendMail(mailOptions, (err) => {
+              if (err) console.log(err);
+              res.redirect('/quotation/pending/delete');
+            });
+          } else {
+            req.flash(
+              'deactivateQuotations',
+              'El usuario no se encuentra registrado'
+            );
+            res.redirect('/quotation/pending/delete');
+          }
+        });
+        res.redirect('/quotation/pending/delete');
       } else {
         req.flash(
           'pendingQuotations',
           'No existe la cotización'
         );
-        res.redirect('/quotation/pending/deactivate');
+        res.redirect('/quotation/pending/delete');
       }
     });
   }

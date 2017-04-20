@@ -131,9 +131,9 @@ const QuotationSchema = new Schema({
   },
   state: {
     type: String,
-    enum: ['0', '1', '2', '3'],
+    enum: ['0', '1', '2'],
     default: '0',
-    // 0: pending, 1: ok, 2: removal request, 3: quotation disabled
+    // 0: pending, 1: ok, 2: removal request
   },
 });
 

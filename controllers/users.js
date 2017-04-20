@@ -80,7 +80,7 @@ exports.createUser = (req, res) => {
           const mailOptions = {
             from: 'Administración',
             to: emails,
-            subject: 'Estado de aprobación de cuenta',
+            subject: 'Aprobación de cuentas',
             html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
               hay cuentas pendientes para su aprobación, si deseas ingresar ve a
                la siguiente dirección:<br><a href="${HOST}/users/pending/approve">
@@ -269,12 +269,49 @@ exports.changeState = (req, res) => {
       );
       return res.redirect('/');
     }
-    req.flash(
-      'userMessage',
-      'Pronto el administrador revisara tu solicitud ' +
-      `y se te notificara al correo electrónico de ${user.email}`
-    );
-    res.redirect(`/profile`);
+    User.find({state: '1'}, (err, users) => {
+      if (err) {
+        console.log(err);
+        req.flash(
+          'indexMessage',
+          'Hubo problemas para notificar al administrador'
+        );
+        return res.redirect('/');
+      } else if (users.length > 0) {
+        let emails = '';
+        for (let i = 0; i < users.length; i++) {
+          if (i > 0) emails += ',';
+          emails += users[i].email;
+        }
+
+        const mailOptions = {
+          from: 'Administración',
+          to: emails,
+          subject: 'Desactivación de cuentas',
+          html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
+            hay solicitudes para la desactivación de cuentas, para su
+            aprobación, si deseas ingresar ve a la siguiente dirección:<br>
+            <a href="${HOST}/users/pending/deactivate">Iniciar sesión</a>
+            <br><br><br>Att,<br><br>Equipo Administrativo`,
+        };
+
+        transporter.sendMail(mailOptions, (err) => {
+          if (err) console.log(err);
+          req.flash(
+            'userMessage',
+            'Pronto el administrador revisara tu solicitud ' +
+            `y se te notificara al correo electrónico de ${user.email}`
+          );
+          res.redirect(`/profile`);
+        });
+      } else {
+        req.flash(
+          'indexMessage',
+          'No hay administradores disponibles'
+        );
+        res.redirect(`/`);
+      }
+    });
   });
 };
 
@@ -298,7 +335,7 @@ exports.accountApproval = (req, res) => {
           console.log('Error: ', err);
           req.flash(
             'indexMessage',
-            'Hubo problemas aprobando la cuenta del usuario'
+            'Hubo problemas notificando la aprobación de cuenta del usuario'
           );
           res.redirect('/');
         } else if (user) {

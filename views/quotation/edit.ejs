@@ -137,7 +137,7 @@
       </div>
     </form>
     <% if (quotation.state === '1') { %>
-      <form action="/quotation/<%= quotation._id %>/deactive?_method=put" id="deactivateForm" method="post">
+      <form action="/quotation/<%= quotation._id %>/delete?_method=put" id="deactivateForm" method="post">
       </form>
     <% } %>
   </div>

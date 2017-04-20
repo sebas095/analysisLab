@@ -8,7 +8,7 @@
   <h3>Desactivación de Cotizaciones</h3>
   <% for (let quotation of quotations) { %>
     <div class="row" style="margin: 15px;">
-      <form class="form-horizontal" action="/quotation/deactivate/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
+      <form class="form-horizontal" action="/quotation/delete/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
         <div class="col-sm-6">
           <p>Solicitan la eliminación de la cotización del cliente <%= quotation.applicant.firstname %> <%= quotation.applicant.lastname %></p>
           <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">

@@ -33,6 +33,29 @@
                       </ul>
                     </li>
                   <% } %>
+                  <% const roles = [
+                    'director del laboratorio',
+                    'responsable técnico',
+                    'auxiliar administrativo'
+                  ] %>
+                  <% if (roles.includes(session.rol)) { %>
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Cotización
+                        <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a href="/quotation/search">Buscar</a></li>
+                        <% if (session.rol === 'responsable técnico' || session.rol === 'auxiliar administrativo') {%>
+                          <li><a href="/quotation/new">Crear</a></li>
+                        <% } %>
+                        <% if (session.rol === 'responsable técnico' || session.rol === 'director del laboratorio') {%>
+                          <li><a href="/quotation/pending/approval">Aprobación de Cotizaciones</a></li>
+                          <li><a href="/quotation/pending/delete">Eliminación de Cotizaciones</a></li>
+                        <% } %>
+                      </ul>
+                    </li>
+                  <% } %>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="/profile">

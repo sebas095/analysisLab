@@ -13,6 +13,12 @@
     <div class="row">
       <form class="form-horizontal" action="/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
         <div class="form-group">
+          <label class="control-label col-sm-offset-2 col-sm-2">N°:</label>
+          <div class="col-sm-5">
+            <span class="form-control"><%= quotation._id %></span>
+          </div>
+        </div>
+        <div class="form-group">
           <label class="control-label col-sm-offset-2 col-sm-2" for="businessName">Razón Social:</label>
           <div class="col-sm-5">
             <input type="text" class="form-control" name="businessName" id="businessName" value="<%= quotation.businessName %>" placeholder="Ingresa razón social" disabled required>

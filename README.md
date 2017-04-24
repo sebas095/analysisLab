@@ -42,3 +42,14 @@ npm start or yarn start
 | /session/login          |   GET    |   Login page               |               |
 | /session/login          |   POST    |  Create a new session     | <ul><li>email</li><li>password</li></ul>     |
 | /session/logout         |   DELETE  |  Destroy a session        |               |
+| /quotation/new          |   GET    |   Page to crate quotation  |               |
+| /quotation/create       |   POST    |  Create a new quotation   | <ul><li>businessName</li><li>Nit/C.C.</li><li>address</li><li>phone</li><li>email</li><li>total</li><strong>Applicant Info:</strong><li>firstname</li><li>lastname</li><li>document</li><li>position</li><li>phone</li><li>email</li><strong>Sample Info:</strong><li>type</li><li>parameter</li><li>method</li><li>price</li><li>amount</li><li>totalPrice</li></ul>     |
+| /quotation/search       |   GET    |   Search quotation page    |               |
+| /quotation/search       |   POST    |  Search a specific quotation     | <ul><li>N°</li>Or<li>Nit/C.C.</li></ul>     |
+| /quotation/pending/approval |   GET    |  Page to pending quotations for approval  |               |
+| /quotation/approval/:id     |   PUT    |  Approval or rejection of a quotation     |               |
+| /quotation/pending/delete   |   GET    |  Page to quotations with delete request   |               |
+| /quotation/:id/delete       |   PUT    |  Request for delete quotation  |               |
+| /quotation/delete/:id       |   DELETE    |  Delete a specific quotation  |               |
+| /quotation/:id          |   GET    |  Page for a specific quotation       |               |
+| /quotation/:id          |   PUT    |  Modifies a specific quotation   |               |

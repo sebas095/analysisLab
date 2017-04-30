@@ -1,5 +1,8 @@
 const Quotation = require('../models/quotation');
 const User = require('../models/user');
+const HtmlDocx = require('html-docx-js');
+const ejs = require('ejs');
+const fs = require('fs');
 const {auth} = require('../config/email');
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport(
@@ -205,7 +208,7 @@ exports.approval = (req, res) => {
           res.redirect('/');
         } else if (data) {
           User.findById(data.createdBy, (err, user) => {
-            if (err) {
+            if (err) {s
               req.flash(
                 'indexMessage',
                 'Hubo problemas aprobando la cotización'
@@ -630,4 +633,25 @@ exports.find = (req, res) => {
   } else {
     res.redirect('/');
   }
+};
+
+exports.exportToWord = (req, res) => {
+  const {id} = req.params;
+  ejs.renderFile('views/quotation/word.ejs', (err, html) => {
+    const options = {
+      orientation: 'landscape',
+      margins: {
+        top: '1cm',
+        right: '1cm',
+        bottom: '1cm',
+        left: '1cm',
+      },
+    };
+    const docx = HtmlDocx.asBlob(html, options);
+    fs.writeFile(`${__dirname}/../public/docs/cotizacion${id}.docx`, docx,
+      (err) => {
+        if (err) console.log(err);
+        res.redirect(`/docs/cotizacion${id}.docx`);
+    });
+  });
 };

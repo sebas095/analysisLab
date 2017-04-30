@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "build": "mkdir -p public/docs",
+    "start": "npm run build && nodemon ./bin/www",
     "prod": "NODE_ENV='prod' npm start",
     "test": "mocha ./test"
   },

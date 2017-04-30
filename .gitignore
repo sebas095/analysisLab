@@ -1,4 +1,5 @@
 data
+public/docs
 # Logs
 logs
 *.log
@@ -29,7 +30,7 @@ build/Release
 
 # Dependency directories
 node_modules
-jspm_packages                                                                                                                                                       
+jspm_packages
 
 # Optional npm cache directory
 .npm

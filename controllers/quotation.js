@@ -636,7 +636,6 @@ exports.find = (req, res) => {
 };
 
 exports.exportToWord = (req, res) => {
-  const {id} = req.params;
   ejs.renderFile('views/quotation/word.ejs', (err, html) => {
     const options = {
       orientation: 'landscape',
@@ -648,10 +647,10 @@ exports.exportToWord = (req, res) => {
       },
     };
     const docx = HtmlDocx.asBlob(html, options);
-    fs.writeFile(`${__dirname}/../public/docs/cotizacion${id}.docx`, docx,
+    fs.writeFile(`${__dirname}/../public/docs/cotizacion.docx`, docx,
       (err) => {
         if (err) console.log(err);
-        res.redirect(`/docs/cotizacion${id}.docx`);
+        res.redirect(`/docs/cotizacion.docx`);
     });
   });
 };

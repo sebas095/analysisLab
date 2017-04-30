@@ -208,7 +208,7 @@ exports.approval = (req, res) => {
           res.redirect('/');
         } else if (data) {
           User.findById(data.createdBy, (err, user) => {
-            if (err) {s
+            if (err) {
               req.flash(
                 'indexMessage',
                 'Hubo problemas aprobando la cotización'

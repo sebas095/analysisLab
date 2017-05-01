@@ -12,6 +12,9 @@ module.exports = (app, mountPoint) => {
   router.get('/cotizacion', (req, res) => {
     res.render('c_views/cotizacion-c')
   });
+  router.get('/search', (req, res) => {
+    res.render('c_views/search-c')
+  });
 
   app.use(mountPoint, router);
 };

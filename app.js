@@ -24,6 +24,7 @@ const users = require('./routes/users');
 const session = require('./routes/session');
 const account = require('./routes/account');
 const quotation = require('./routes/quotation');
+const c_views = require('./routes/c_views')
 
 const app = express();
 
@@ -82,6 +83,7 @@ index(app, '/');
 users(app, '/users');
 account(app, '/account');
 quotation(app, '/quotation');
+c_views(app, '/c_views');
 session(app, '/session', passport);
 
 // catch 404 and forward to error handler

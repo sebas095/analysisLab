@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12">
+    <div class="title">
+      <h1>REGISTRO</h1>
+    </div>
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-6">
+      <form class="form-horizontal panel panel-default" action="/session/login" method="post">
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></i></div>
+                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Nombre" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></i></div>
+                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Apellido" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user-circle" aria-hidden="true"></i></div>
+                <select class="form-control" name="rol" id="rol" required>
+                  <option value="responsable técnico">Responsable Técnico</option>
+                  <option value="director del laboratorio" selected>Director del Laboratorio</option>
+                  <option value="técnico del laboratorio">Técnico del Laboratorio</option>
+                  <option value="auxiliar administrativo">Auxiliar Administrativo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+            <div class="form-group">
+              <div class="checkbox col-sm-offset-3 col-sm-6">
+                <label>
+                  <input type="checkbox" name="status" value="admin">
+                  ¿Es Administrador del Sistema?
+                </label>
+              </div>
+            </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Correo electrónico" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></div>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <button class="btn col-xs-12 col-sm-offset-3 col-sm-6 btn-color-blue">Registrar</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer center">
+          ¿Ya tiene cuenta?
+          <a href="#">Iniciar Sesión</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

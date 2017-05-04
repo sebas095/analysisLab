@@ -16,5 +16,9 @@ module.exports = (app, mountPoint) => {
     res.render('c_views/search-c')
   });
 
+  router.get('/crearcotizacion', (req, res) => {
+    res.render('c_views/crearcotizacion-c')
+  });
+
   app.use(mountPoint, router);
 };

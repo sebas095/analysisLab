@@ -209,3 +209,17 @@ textarea {
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(159, 210, 80, .6);
           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(159, 210, 80, .6);
 }
+
+.fix-padding {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 5px;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}

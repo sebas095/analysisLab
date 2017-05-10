@@ -4,9 +4,15 @@ const {userController, sessionController} = require('../controllers');
 
 module.exports = (app, mountPoint) => {
   // GET home page.
-  router.get('/', (req, res) => res.render('index', {
-    message: req.flash('indexMessage'),
-  }));
+  router.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+      res.render('index', {
+        message: req.flash('indexMessage'),
+      });
+    } else {
+      res.redirect('/session/login');
+    }
+  });
 
   router.get('/profile', sessionController.loginRequired, (req, res) => {
     res.render('users/edit', {

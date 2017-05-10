@@ -1,57 +1,69 @@
-<div class="row">
+<% include ../header.ejs %>
+<div class="container-fluid">
   <div class="col-xs-12 col-sm-12">
-    <h3>Registro de usuario</h3>
-    <form class="form-horizontal" action="/users/register" method="post">
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="firstname">Nombre(s):</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Ingresa nombre(s)" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="lastname">Apellido(s):</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Ingresa apellido(s)" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="rol">Rol:</label>
-        <div class="col-sm-5">
-          <select class="form-control" name="rol" id="rol" required>
-            <option value="responsable técnico">Responsable Técnico</option>
-            <option value="director del laboratorio" selected>Director del Laboratorio</option>
-            <option value="técnico del laboratorio">Técnico del Laboratorio</option>
-            <option value="auxiliar administrativo">Auxiliar Administrativo</option>
-          </select>
-        </div>
-      </div>
-      <% if (!isAdmin) { %>
-        <div class="form-group">
-          <div class="checkbox col-sm-offset-4 col-sm-6">
-            <label>
-              <input type="checkbox" name="status" value="admin">
-              ¿Eres Administrador del Sistema?
-            </label>
+    <div class="title">
+      <h1>REGISTRO</h1>
+    </div>
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-6">
+      <form class="form-horizontal panel panel-default" action="/session/login" method="post">
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></i></div>
+                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Nombre" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></i></div>
+                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Apellido" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user-circle" aria-hidden="true"></i></div>
+                <select class="form-control" name="rol" id="rol" required>
+                  <option value="responsable técnico">Responsable Técnico</option>
+                  <option value="director del laboratorio" selected>Director del Laboratorio</option>
+                  <option value="técnico del laboratorio">Técnico del Laboratorio</option>
+                  <option value="auxiliar administrativo">Auxiliar Administrativo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Correo electrónico" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></div>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+              <button class="btn col-xs-12 col-sm-offset-3 col-sm-6 btn-color-blue">Registrar</button>
+            </div>
           </div>
         </div>
-      <% } %>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
-        <div class="col-sm-5">
-          <input type="email" class="form-control" name="email" id="email" placeholder="Ingresa un correo electrónico" required>
+        <div class="panel-footer center">
+          ¿Ya tiene cuenta?
+          <a href="/session/login">Iniciar Sesión</a>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="password">Contraseña:</label>
-        <div class="col-sm-5">
-          <input type="password" class="form-control" name="password" id="password" placeholder="Ingresa contraseña" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-4">
-          <button class="btn btn-success">Enviar</button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
+<% include ../footer.ejs %>

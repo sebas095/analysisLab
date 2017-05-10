@@ -1,10 +1,14 @@
 <% include header.ejs %>
 <% include nav.ejs %>
-  <% if (message.length > 0) { %>
-    <div class="alert alert-info alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <p><%= message %></p>
+  <div class="container-fluid">
+    <div class="col-sm-12">
+      <% if (message.length > 0) { %>
+        <div class="alert alert-info alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <p><%= message %></p>
+        </div>
+      <% } %>
+      <h2>Bienvenido</h2>
     </div>
-  <% } %>
-  <h2>Bienvenido</h2>
+  </div>
 <% include footer.ejs %>

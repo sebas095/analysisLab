@@ -1,128 +1,227 @@
-<div class="row">
-  <div class="col-xs-12 col-sm-12">
-    <h3>Registro de Cotización</h3>
-    <form class="form-horizontal" action="/quotation/create" method="post">
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="businessName">Razón Social:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="businessName" id="businessName" placeholder="Ingresa razón social" required>
+<% include ../header.ejs %>
+<% include ../nav.ejs %>
+    <div class="container-fluid">
+      <div class="col-xs-12">
+        <div class="title">
+          <h1>Crear Cotización</h1>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="document">Nit o C.C.:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="document" id="document" placeholder="Ingresa Nit o C.C." required>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th colspan="4" class="center">SOLICITUD REALIZADA A TRAVES DE:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Telefónico: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Presencial: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Email: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Correspondencia: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="address">Dirección:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="address" id="address" placeholder="Ingresa dirección" required>
+        <div class="table-responsive">
+          <table class="table table-bordered center">
+            <thead>
+              <tr>
+                <th colspan="3" class="center col-xs-3">Fecha</th>
+                <th class="center col-sm-2">Cotización No.</th>
+                <th rowspan="2" class="col-xs-5"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="center">Dia</th>
+                <th class="center">Mes</th>
+                <th class="center">Año</th>
+                <td rowspan="2">1</td>
+                <td rowspan="2"></td>
+              </tr>
+              <tr>
+                <td>04</td>
+                <td>05</td>
+                <td>2016</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th colspan="2" class="center col-xs-12">DATOS DE LA EMPRESA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Razon Social:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="businessName" id="businessName" placeholder="Razón Social" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-2 fix-padding left">
+                    Nit o C.C:
+                  </div>
+                  <div class="col-xs-12 col-sm-10">
+                    <input type="text" class="form-control" name="document" id="document" placeholder="Nit o C.C" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Solicitante:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="applicant.fullname" id="applicant.fullname"placeholder="Solicitante" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-2 fix-padding left">
+                    Cargo:
+                  </div>
+                  <div class="col-xs-12 col-sm-10">
+                    <input type="text" class="form-control" name="applicant.position" id="applicant.position" placeholder="Cargo" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Dirección:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="address" id="address" placeholder="Dirección" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Teléfono/Fax:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono/Fax" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-5 fix-padding left">
+                    Municipio/Departamento:
+                  </div>
+                  <div class="col-xs-12 col-sm-7">
+                    <input type="text" class="form-control" name="state" id="state" placeholder="Municipio/Departamento" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-4 fix-padding left">
+                    Correo electrónico:
+                  </div>
+                  <div class="col-xs-12 col-sm-8">
+                    <input type="text" class="form-control" name="email" id="email" placeholder="Correo electrónico" aria-describedby="basic-addon1">
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="phone">Teléfono:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="phone" id="phone" placeholder="Ingresa teléfono" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
-        <div class="col-sm-5">
-          <input type="email" class="form-control" name="email" id="email" placeholder="Ingresa correo electrónico" required>
-        </div>
-      </div>
+        <div class="table-responsive">
+          <table class="table table-bordered center">
+            <thead>
+              <tr>
+                <th class="col-xs-2 center">TIPO DE MUESTRA</th>
+                <th class="col-xs-2 center">PARÁMETRO</th>
+                <th class="col-xs-3 center">MÉTODO</th>
+                <th class="col-xs-2 center">Precio por Muestra</th>
+                <th class="col-xs-1 center">No. de Muestras</th>
+                <th class="col-xs-2 center">VALOR TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan=""><a href="#" data-toggle="modal" data-target="#myModal" ><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
+                  <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Añadir Muestra</h4>
+                        </div>
+                        <div class="modal-body">
+                          <form class="" action="" method="post">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="form-group">
+                                  <div class="col-sm-3">
+                                    <label for="email">Tipo de Muestra: </label>
+                                  </div>
+                                  <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="sample">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <h4>Parámetros</h4>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                  <div class="form-group">
+                                    <label for="email">Parámetro</label>
+                                    <input type="text" class="form-control" id="parameter">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="form-group">
+                                    <label for="email">Método</label>
+                                    <input type="text" class="form-control" id="method">
+                                  </div>
+                                </div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label for="email">Precio</label>
+                                    <input type="text" class="form-control" id="price">
+                                  </div>
+                                </div>
+                                <div class="col-sm-1">
+                                  <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
+                                </div>
+                              </div>
 
-      <hr>
-      <h3>Información Solicitante</h3>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.firstname">Nombre(s):</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.firstname" id="applicant.firstname" placeholder="Ingresa nombre(s)" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.lastname">Apellido(s):</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.lastname" id="applicant.lastname" placeholder="Ingresa apellido(s)" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.document">Cédula:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.document" id="applicant.document" placeholder="Ingresa cédula" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.position">Cargo:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.position" id="applicant.position" placeholder="Ingresa cargo" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.phone">Teléfono:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.phone" id="applicant.phone" placeholder="Ingresa teléfono" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.email">Correo Electrónico:</label>
-        <div class="col-sm-5">
-          <input type="email" class="form-control" name="applicant.email" id="applicant.email" placeholder="Ingresa correo electrónico" required>
-        </div>
-      </div>
+                            </div>
 
-      <hr>
-      <h3>Información Muestra</h3>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.type">Tipo de muestra:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="sample.type" id="sample.type" placeholder="Ingresa tipo de muestra" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.parameter">Parámetro:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="sample.parameter" id="sample.parameter" placeholder="Ingresa parámetro" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.method">Método:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="sample.method" id="sample.method" placeholder="Ingresa método" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.price">Precio muestra:</label>
-        <div class="col-sm-5">
-          <input type="number" min="0" class="form-control" name="sample.price" id="sample.price" placeholder="Ingresa precio muestra" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.amount">Número de muestras:</label>
-        <div class="col-sm-5">
-          <input type="number" min="0" class="form-control" name="sample.amount" id="sample.amount" placeholder="Ingresa número de muestras" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.totalPrice">Valor total de muestras:</label>
-        <div class="col-sm-5">
-          <input type="number" min="0" class="form-control" name="sample.totalPrice" id="sample.totalPrice" placeholder="Ingresa Valor total de muestras" required>
-        </div>
-      </div>
 
-      <hr>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="total">Valor Total:</label>
-        <div class="col-sm-5">
-          <input type="number" class="form-control" min="0" name="total" id="total" placeholder="Ingresa total" required>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-success reject" id="">Enviar</button>
+                          <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th colspan="6" class="left">Observaciones: </th>
+              </tr>
+              <tr>
+                <th colspan="5" class="center">TOTAL A PAGAR</th>
+                <td>$12.600</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-4">
-          <button class="btn btn-success">Guardar</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+    </div>
+<% include ../footer.ejs %>

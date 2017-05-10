@@ -223,3 +223,7 @@ textarea {
 .right {
   text-align: right;
 }
+
+.fix-position {
+  margin-top: 25px;
+}

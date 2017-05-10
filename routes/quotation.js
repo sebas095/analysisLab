@@ -12,6 +12,7 @@ module.exports = (app, mountPoint) => {
   router.get('/search', sessionController.loginRequired, quotationController.search);
   router.get('/pending/approval', sessionController.loginRequired, quotationController.pending);
   router.get('/pending/delete', sessionController.loginRequired, quotationController.pendingDelete);
+  router.get('/menu', sessionController.loginRequired, quotationController.menu);
   router.get('/:id/export', sessionController.loginRequired, quotationController.exportToWord);
   router.get('/:id', sessionController.loginRequired, quotationController.getQuotation);
 

@@ -654,3 +654,6 @@ exports.exportToWord = (req, res) => {
     });
   });
 };
+exports.menu=(req, res) =>{
+  res.render('quotation/menu');
+};

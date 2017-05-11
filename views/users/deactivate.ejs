@@ -1,25 +1,31 @@
-<div class="row">
-  <% if (message.length > 0) { %>
-    <div class="alert alert-danger alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <p><%= message %></p>
-    </div>
-  <% } %>
-  <h3>Desactivación de cuentas</h3>
-  <% for (let usr of users) { %>
-    <div class="row" style="margin: 15px;">
-      <form class="form-horizontal" action="/users/deactivateAccount?_method=put" method="post" id="form-<%= usr._id %>">
-        <div class="col-sm-6">
-          <p>El usuario <%= usr.firstname %> <%= usr.lastname %> solicita la desactivación de su cuenta</p>
-          <input type="hidden" name="email" id="email" value="<%= usr.email %>">
-          <input type="hidden" name="account" id="account-<%= usr._id %>">
+<% include ../header.ejs %>
+<% include ../nav.ejs %>
+  <div class="container-fluid">
+    <div class="col-sm-12">
+      <% if (message.length > 0) { %>
+        <div class="alert alert-danger alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <p><%= message %></p>
         </div>
-        <div class="col-sm-6">
-          <button class="btn btn-success accept" id="accept-<%= usr._id %>">Aprobar</button>
-          <button class="btn btn-danger reject" id="reject-<%= usr._id %>">Rechazar</button>
+      <% } %>
+      <h3>Desactivación de cuentas</h3>
+      <% for (let usr of users) { %>
+        <div class="row">
+          <form class="form-horizontal panel panel-default" action="/users/deactivateAccount?_method=put" method="post" id="form-<%= usr._id %>">
+            <div class="panel-body">
+              <div class="col-sm-9">
+                <p>El usuario <strong><%= usr.firstname %> <%= usr.lastname %></strong> con el cargo de <strong><%= usr.rol %></strong> solicita la desactivación de la cuenta</p>
+                <input type="hidden" name="email" id="email" value="<%= usr.email %>">
+                <input type="hidden" name="account" id="account-<%= usr._id %>">
+              </div>
+              <div class="col-sm-3">
+                <button class="btn btn-success accept" id="accept-<%= usr._id %>">Aprobar</button>
+                <button class="btn btn-danger reject" id="reject-<%= usr._id %>">Rechazar</button>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
+      <% } %>
+      <script src="/js/deactivate.js"></script>
     </div>
-  <% } %>
-  <script src="/js/deactivate.js"></script>
-</div>
+  </div>

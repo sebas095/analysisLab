@@ -1,72 +1,79 @@
-<div class="row">
-  <% if (message.length > 0) { %>
-    <div class="alert alert-danger alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <p><%= message %></p>
+<% include ../header.ejs %>
+<% include ../nav.ejs %>
+  <div class="container-fluid">
+    <div class="col-sm-12">
+      <% if (message.length > 0) { %>
+        <div class="alert alert-danger alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <p><%= message %></p>
+        </div>
+      <% } %>
+      <div class="col-xs-12 col-sm-12">
+        <h3>Aprobación de cuentas</h3>
+        <% for (let usr of users) { %>
+          <% let i = 0; %>
+          <% if (i % 2 === 0) { %>
+            <div class="row">
+          <% } %>
+          <div class="col-sm-6">
+            <form class="form-horizontal panel panel-default" action="/users/accountApproval?_method=put" method="post" id="form-<%= usr._id %>">
+              <div class="panel-body">
+                <div class="form-group">
+                  <div class="col-xs-12 col-sm-12 col-lg-12">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                      <input type="text" class="form-control" name="firstname" id="firstname" value="<%= usr.firstname %>" placeholder="Ingresa nombre(s)" required disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-12 col-sm-12 col-lg-12">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                      <input type="text" class="form-control" name="lastname" id="lastname" value="<%= usr.lastname %>" placeholder="Ingresa apellido(s)" required disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-12 col-sm-12 col-lg-12">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-user-circle" aria-hidden="true"></i></div>
+                      <select class="form-control" name="rol" id="rol" required>
+                        <option value="responsable técnico" <% if (usr.rol === 'responsable técnico') { %> selected <% } %> >
+                          Responsable Técnico
+                        </option>
+                        <option value="director del laboratorio" <% if (usr.rol === 'director del laboratorio') { %> selected <% } %> >
+                          Director del Laboratorio
+                        </option>
+                        <option value="técnico del laboratorio" <% if (usr.rol === 'técnico del laboratorio') { %> selected <% } %> >
+                          Técnico del Laboratorio
+                        </option>
+                        <option value="auxiliar administrativo" <% if (usr.rol === 'auxiliar administrativo') { %> selected <% } %> >
+                          Auxiliar Administrativo
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-12 col-sm-12 col-lg-12">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                      <input type="email" class="form-control" name="mail" id="mail" value="<%= usr.email %>" placeholder="Ingresa un correo electrónico" required disabled>
+                      <input type="hidden" name="email" id="email" value="<%= usr.email %>">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-offset-3 col-xs-6 col-sm-6 col-lg-6">
+                    <button class="btn btn-success accept" id="accept-<%= usr._id %>">Aprobar</button>
+                    <button class="btn btn-danger reject" id="reject-<%= usr._id %>">Rechazar</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+      <% } %>
     </div>
-  <% } %>
-  <h3>Aprobación de cuentas</h3>
-  <% for (let i = 0, usr = users[i]; i < users.length; i++) { %>
-    <% if (i > 0) { %>
-      <hr>
-    <% } %>
-    <div class="row">
-      <form class="form-horizontal" action="/users/accountApproval?_method=put" method="post" id="form-<%= usr._id %>">
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2"  for="firstname">Nombre(s):</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="firstname" id="firstname" value="<%= usr.firstname %>" placeholder="Ingresa nombre(s)" disabled>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2"  for="lastname">Apellido(s):</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="lastname" id="lastname" value="<%= usr.lastname %>" placeholder="Ingresa apellido(s)" disabled>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="rol">Rol:</label>
-          <div class="col-sm-5">
-            <select class="form-control" name="rol" id="rol" required>
-              <option value="responsable técnico" <% if (usr.rol === 'responsable técnico') { %> selected <% } %> >
-                Responsable Técnico
-              </option>
-              <option value="director del laboratorio" <% if (usr.rol === 'director del laboratorio') { %> selected <% } %> >
-                Director del Laboratorio
-                </option>
-              <option value="técnico del laboratorio" <% if (usr.rol === 'técnico del laboratorio') { %> selected <% } %> >
-                Técnico del Laboratorio
-              </option>
-              <option value="auxiliar administrativo" <% if (usr.rol === 'auxiliar administrativo') { %> selected <% } %> >
-                Auxiliar Administrativo
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <input type="hidden" name="account" id="account-<%= usr._id %>">
-          <div class="checkbox col-sm-offset-4 col-sm-6">
-            <label>
-              <input type="checkbox" name="status" id="status" value="admin" <% if (usr.state === '5') { %> checked <% } %> >
-              ¿Será Administrador del Sistema?
-            </label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="mail">Correo Electrónico:</label>
-          <div class="col-sm-5">
-            <input type="email" class="form-control" name="mail" id="mail" value="<%= usr.email %>" placeholder="Ingresa un correo electrónico" disabled>
-            <input type="hidden" name="email" id="email" value="<%= usr.email %>">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-4 col-sm-8">
-            <button class="btn btn-success accept" id="accept-<%= usr._id %>">Aprobar</button>
-            <button class="btn btn-danger reject" id="reject-<%= usr._id %>">Rechazar</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  <% } %>
+  </div>
   <script src="/js/account.js"></script>
-</div>

@@ -141,7 +141,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr id="sampleInfo">
                 <td rowspan=""><a href="#" data-toggle="modal" data-target="#myModal" ><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
                   <div class="modal fade" id="myModal" role="dialog">
                     <div class="modal-dialog">
@@ -152,7 +152,7 @@
                           <h4 class="modal-title">Añadir Muestra</h4>
                         </div>
                         <div class="modal-body">
-                          <form class="" action="" method="post">
+                          <form class="" id="sampleForm" action="" method="post">
                             <div class="row">
                               <div class="col-sm-12">
                                 <div class="form-group">
@@ -160,7 +160,7 @@
                                     <label for="email">Tipo de Muestra: </label>
                                   </div>
                                   <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="sample">
+                                    <input type="text" class="form-control sampleInput" required="" id="sample">
                                   </div>
                                 </div>
                               </div>
@@ -173,44 +173,36 @@
                                 <div class="col-sm-4">
                                   <div class="form-group">
                                     <label for="email">Parámetro</label>
-                                    <input type="text" class="form-control" id="parameter">
+                                    <input type="text" class="form-control sampleInput" required="" id="parameter">
                                   </div>
                                 </div>
                                 <div class="col-sm-4">
                                   <div class="form-group">
                                     <label for="email">Método</label>
-                                    <input type="text" class="form-control" id="method">
+                                    <input type="text" class="form-control sampleInput" required="" id="method">
                                   </div>
                                 </div>
                                 <div class="col-sm-3">
                                   <div class="form-group">
                                     <label for="email">Precio</label>
-                                    <input type="text" class="form-control" id="price">
+                                    <input type="text" class="form-control sampleInput" required="" id="price">
                                   </div>
                                 </div>
                                 <div class="col-sm-1">
                                   <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
                                 </div>
                               </div>
-
                             </div>
-
-
-                          </form>
                         </div>
                         <div class="modal-footer">
-                          <button class="btn btn-success reject" id="">Enviar</button>
+                          <button type="submit" class="btn btn-success" id="sendSample">Enviar</button>
                           <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
                         </div>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
               </tr>
               <tr>
                 <th colspan="6" class="left">Observaciones: </th>
@@ -224,4 +216,5 @@
         </div>
       </div>
     </div>
+    
 <% include ../footer.ejs %>

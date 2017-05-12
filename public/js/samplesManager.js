@@ -5,8 +5,19 @@ jQuery(document).ready(function($){
     var input = document.getElementsByClassName('sampleInput');
     var sampleData ="";
     for (var i = 0; i < input.length; i++) {
-      sampleData +="<td>" + input[i].value + "</td>";
-      console.log(input[i].value);
+      if(i == 1){
+        sampleData +=`<td>
+                        <a href="#" data-toggle="modal" data-target="#parameterModal">
+                          <i class="fa fa-plus icon-position" aria-hidden="true"></i>
+                        </a>
+                        <a href="#">
+                          <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+                        </a> ${input[i].value} 
+                      </td>`;
+      }
+      else{
+        sampleData +="<td>" + input[i].value + "</td>";
+      }
     }
     $('.modal').modal('hide');
     var sampleInfo = document.getElementById('sampleInfo');

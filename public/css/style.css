@@ -6,7 +6,8 @@ a {
   color: #779a44;
 }
 
-a:hover {
+a:hover,
+a:focus {
   color: #485632;
   text-decoration: none;
 }
@@ -45,6 +46,23 @@ textarea {
   border-color: #357794;
   color: #fff;
 }
+.icon-blue {
+  color: #37b0c8;
+}
+
+.icon-blue:hover,
+.icon-blue:focus {
+  color: #357794;
+}
+
+.icon-red {
+  color: #ee0016;
+}
+
+.icon-red:hover,
+.icon-red:focus {
+  color: #a20000;
+}
 
 .btn-color-green {
   background-color: #9fd250;
@@ -62,6 +80,13 @@ textarea {
   color: #fff;
 }
 
+.icon-position {
+  font-size: 1.5em;
+  padding-left: 5px;
+  padding-right: 5px;
+  float: left;
+
+}
 
 /*Sidebar*/
 #wrapper {
@@ -203,7 +228,7 @@ textarea {
   padding-top: 2%;
 }
 
-.panel-default:hover{
+.quotation:hover{
   border-color: #9fd250;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(159, 210, 80, .6);
@@ -226,4 +251,5 @@ textarea {
 
 .fix-position {
   margin-top: 25px;
+  padding-left: 5px;
 }

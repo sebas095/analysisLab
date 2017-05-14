@@ -46,6 +46,23 @@ textarea {
   border-color: #357794;
   color: #fff;
 }
+
+.btn-color-darkblue {
+  background-color: #2c5898;
+  border-color: #2c5898;
+  color: #fff;
+}
+
+.btn-color-darkblue:hover,
+.btn-color-darkblue:focus,
+.btn-color-darkblue:active,
+.btn-color-darkblue.focus,
+.btn-color-darkblue.active  {
+  background-color: #053375;
+  border-color: #053375;
+  color: #fff;
+}
+
 .icon-blue {
   color: #37b0c8;
 }

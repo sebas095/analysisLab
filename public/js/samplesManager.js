@@ -37,6 +37,7 @@ jQuery(document).ready(($) => {
     $('#sampleInfo').removeAttr('id');
     $('#sampleInf').attr('id', 'sampleInfo');
     $('.modal').css('display', 'none');
+    document.getElementById('sampleForm').reset();
 
     return false;
   });

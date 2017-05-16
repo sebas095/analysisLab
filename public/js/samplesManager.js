@@ -1,5 +1,5 @@
 jQuery(document).ready(($) => {
-  $('#sendSample').submit((ev) => {
+  $('#sampleForm').submit((ev) => {
     ev.preventDefault();
     const input = document.getElementsByClassName('sampleInput');
     let sampleData = '';

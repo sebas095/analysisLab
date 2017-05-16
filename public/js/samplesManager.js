@@ -1,19 +1,25 @@
-jQuery(document).ready(function($){
-  var form = document.getElementById("sampleForm");
-  $('#sampleForm').submit(function(ev){
+jQuery(document).ready(($) => {
+  $('.sampleForm').submit((ev) => {
     ev.preventDefault();
-    var input = document.getElementsByClassName('sampleInput');
-    var sampleData ="";
-    for (var i = 0; i < input.length; i++) {
-      sampleData +="<td>" + input[i].value + "</td>";
-      console.log(input[i].value);
+    // console.log('FORM');
+    const input = document.getElementsByClassName('sampleInput');
+    let sampleData = '';
+
+    for (let i = 0; i < input.length; i++) {
+      sampleData += `<td>${input[i].value}</td>`;
     }
+
     $('.modal').modal('hide');
-    var sampleInfo = document.getElementById('sampleInfo');
-    var sampleNew = "<tr>" + sampleInfo.innerHTML + "</tr>";
-    sampleInfo.innerHTML =sampleData;
-    $(sampleNew).insertAfter("#sampleInfo");
-    $('.modal').css("display", "none");
+    let sampleInfo = document.getElementById('sampleInfo');
+    const sampleNew = `<tr id="sampleInf">${sampleInfo.innerHTML}</tr>`;
+    sampleInfo.innerHTML = sampleData;
+
+    $(sampleNew).insertAfter('#sampleInfo');
+    $('#sampleInfo').removeAttr('id');
+    $('#sampleInf').attr('id', 'sampleInfo');
+    $('.modal').css('display', 'none');
+    // $('#sampleForm').attr('id', 'sampleForm2');
+
     return false;
   });
 });

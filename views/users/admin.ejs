@@ -97,5 +97,13 @@
       </div>
     </div>
   </div>
-  <script src="/js/management.js"></script>
   <% include ../footer.ejs %>
+    <script src="/js/management.js"></script>
+    <script type="text/javascript">
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+      });
+    </script>
+  </body>
+</html>

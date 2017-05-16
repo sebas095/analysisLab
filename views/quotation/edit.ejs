@@ -1,151 +1,392 @@
-<div class="row">
-  <% if (message.length > 0) { %>
-    <div class="alert alert-info alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <p><%= message %></p>
+<% include ../header.ejs %>
+<% include ../nav.ejs %>
+    <div class="container-fluid">
+      <div class="col-xs-12">
+        <% if (message.length > 0) { %>
+          <div class="alert alert-info alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <p><%= message %></p>
+          </div>
+        <% } %>
+        <div class="title">
+          <h1>Cotización</h1>
+        </div>
+        <form class="form-horizontal" action="/quotation/<%= quotation._id %>?_method=put" method="post" id="quotation">
+          <div class="row center space-bottom">
+            <button id="edit" type="button" class="btn btn-color-green"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Editar</button>
+            <a id="export" href="/quotation/<%= quotation._id %>/export" class="btn btn-color-darkblue" download><i class="fa fa-file-word-o" aria-hidden="true"></i>  Exportar a Word</a>
+            <% if (quotation.state === '1') { %>
+              <button id="deactivate" type="button" class="btn btn-danger"><i class="fa fa-minus-square-o" aria-hidden="true"></i>  Eliminar</button>
+            <% } %>
+          </div>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th colspan="4" class="center">SOLICITUD REALIZADA A TRAVES DE:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Telefónico: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Presencial: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Email: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Correspondencia: <input type="radio" name="request" aria-label="..." style="margin-left: 20px;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered center">
+            <thead>
+              <tr>
+                <th colspan="3" class="center col-xs-3">Fecha</th>
+                <th class="center col-sm-2">Cotización No.</th>
+                <th rowspan="2" class="col-xs-5"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="center">Dia</th>
+                <th class="center">Mes</th>
+                <th class="center">Año</th>
+                <td rowspan="2"><%= quotation._id %></td>
+                <td rowspan="2"></td>
+              </tr>
+              <tr>
+                <td>04</td>
+                <td>05</td>
+                <td>2016</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th colspan="2" class="center col-xs-12">DATOS DE LA EMPRESA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Razon Social:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="businessName" id="businessName" value="<%= quotation.businessName %>" placeholder="Razón Social" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-2 fix-padding left">
+                    Nit o C.C:
+                  </div>
+                  <div class="col-xs-12 col-sm-10">
+                    <input type="text" class="form-control" name="document" id="document" value="<%= quotation.document %>" placeholder="Nit o C.C" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Solicitante:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="applicant.fullname" id="applicant.fullname" value="<%= quotation.applicant.fullname %>" placeholder="Solicitante" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-2 fix-padding left">
+                    Cargo:
+                  </div>
+                  <div class="col-xs-12 col-sm-10">
+                    <input type="text" class="form-control" name="applicant.position" id="applicant.position" value="<%= quotation.applicant.position %>" placeholder="Cargo" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Dirección:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="address" id="address" value="<%= quotation.address %>" placeholder="Dirección" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-3 fix-padding left">
+                    Teléfono/Fax:
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <input type="text" class="form-control" name="phone" id="phone" value="<%= quotation.phone %>" placeholder="Teléfono/Fax" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-5 fix-padding left">
+                    Municipio/Departamento:
+                  </div>
+                  <div class="col-xs-12 col-sm-7">
+                    <input type="text" class="form-control" name="state" id="state" value="<%= quotation.state %>"placeholder="Municipio/Departamento" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+                <td class="center col-xs-6">
+                  <div class="col-xs-12 col-sm-4 fix-padding left">
+                    Correo electrónico:
+                  </div>
+                  <div class="col-xs-12 col-sm-8">
+                    <input type="text" class="form-control" name="email" id="email" value="<%= quotation.email %>" placeholder="Correo electrónico" aria-describedby="basic-addon1" disabled required>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered center">
+            <thead>
+              <tr>
+                <th class="col-xs-2 center">TIPO DE MUESTRA</th>
+                <th class="col-xs-2 center">PARÁMETRO</th>
+                <th class="col-xs-3 center">MÉTODO</th>
+                <th class="col-xs-2 center">Precio por Muestra</th>
+                <th class="col-xs-1 center">No. de Muestras</th>
+                <th class="col-xs-2 center">VALOR TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="sampleInfo">
+                <td rowspan="">
+                  <div class="col-sm-6">
+                    <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
+                  </div>
+                  <div class="col-sm-6">
+                    <a href="#" class="icon-blue" data-toggle="modal" data-target="#searchModal"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a>
+                  </div>
+                  <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Añadir Muestra</h4>
+                        </div>
+                        <div class="modal-body">
+                          <form class="" id="sampleForm" action="" method="post">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="form-group">
+                                  <div class="col-sm-3">
+                                    <label for="email">Tipo de Muestra: </label>
+                                  </div>
+                                  <div class="col-sm-9">
+                                    <input type="text" class="form-control sampleInput" required="" id="sample">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <h4>Parámetros</h4>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label for="email">Parámetro</label>
+                                    <input type="text" class="form-control sampleInput" required="" id="parameter">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="form-group">
+                                    <label for="email">Método</label>
+                                    <input type="text" class="form-control sampleInput" required="" id="method">
+                                  </div>
+                                </div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label for="email">Precio</label>
+                                    <input type="text" class="form-control sampleInput" required="" id="price">
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
+                                  <a href="#"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success" id="sendSample">Agregar</button>
+                          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="searchModal" role="dialog">
+                    <div class="modal-dialog">
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Buscar Muestra</h4>
+                        </div>
+                        <div class="modal-body">
+                          <form class="" id="sampleSearchForm" action="" method="post">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="input-group">
+                                  <input type="text" class="form-control" name="id" placeholder="Ingresa el tipo de muestra" name="searchSample">
+                                  <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="form-group">
+                                  <div class="col-sm-4">
+                                    <div class="col-sm-1">
+                                      <input type="radio" name="selectSample" aria-label="...">
+                                    </div>
+                                    <div class="col-sm-9">
+                                      <label for="email">Tipo de Muestra: </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control sampleSearchInput" required="" id="sampleSearch">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <h4>Parámetros</h4>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label for="email">Parámetro</label>
+                                    <input type="text" class="form-control sampleSearchInput" required="" id="parameterSearch">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="form-group">
+                                    <label for="email">Método</label>
+                                    <input type="text" class="form-control sampleSearchInput" required="" id="methodSearch">
+                                  </div>
+                                </div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label for="email">Precio</label>
+                                    <input type="text" class="form-control sampleSearchInput" required="" id="priceSearch">
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
+                                  <a href="#"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success" id="sendSample">Agregar</button>
+                          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="parameterModal" role="dialog">
+                    <div class="modal-dialog">
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Añadir Parametro</h4>
+                        </div>
+                        <div class="modal-body">
+                          <form class="" id="parameterForm" action="" method="post">
+
+                            <div class="row">
+                              <h4>Parámetros</h4>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label for="email">Parámetro</label>
+                                    <input type="text" class="form-control parameterSearchInput" required="" id="parameterSearch">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="form-group">
+                                    <label for="email">Método</label>
+                                    <input type="text" class="form-control parameterSearchInput" required="" id="methodSearch">
+                                  </div>
+                                </div>
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label for="email">Precio</label>
+                                    <input type="text" class="form-control parameterSearchInput" required="" id="priceSearch">
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
+                                  <a href="#"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success" id="sendSample">Agregar</button>
+                          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th colspan="6">
+                  <div class="col-sm-12">
+                    <div class="col-sm-2">
+                      Observaciones:
+                    </div>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" rows="2" name="observations" id="observations" placeholder="Observaciones" aria-describedby="basic-addon1"></textarea>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="5" class="center">TOTAL A PAGAR</th>
+                <td><input type="text" class="form-control" name="total" id="total" value="<%= quotation.total %>" placeholder="Precio Total" aria-describedby="basic-addon1" disabled required></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </form>
+        <% if (quotation.state === '1') { %>
+          <form action="/quotation/<%= quotation._id %>/delete?_method=put" id="deactivateForm" method="post">
+          </form>
+        <% } %>
+        <div class="row space-bottom center">
+          <button type="submit" class="btn btn-success btn-lg" id="save">Guardar</button>
+        </div>
+      </div>
     </div>
-  <% } %>
-  <h3>Cotización</h3>
-  <div class="col-xs-12 col-sm-12">
-    <form class="form-horizontal" action="/quotation/<%= quotation._id %>?_method=put" method="post" id="quotation">
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2">N°:</label>
-        <div class="col-sm-5">
-          <span class="form-control"><%= quotation._id %></span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="businessName">Razón Social:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="businessName" id="businessName" value="<%= quotation.businessName %>" placeholder="Ingresa razón social" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="document">Nit o C.C.:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="document" id="document" value="<%= quotation.document %>" placeholder="Ingresa Nit o C.C." disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="address">Dirección:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="address" id="address" value="<%= quotation.address %>" placeholder="Ingresa dirección" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="phone">Teléfono:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="phone" id="phone" value="<%= quotation.phone %>" placeholder="Ingresa teléfono" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
-        <div class="col-sm-5">
-          <input type="email" class="form-control" name="email" id="email" value="<%= quotation.email %>" placeholder="Ingresa correo electrónico" disabled required>
-        </div>
-      </div>
-
-      <hr>
-      <h3>Información Solicitante</h3>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.firstname">Nombre(s):</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.firstname" id="applicant.firstname" value="<%= quotation.applicant.firstname %>" placeholder="Ingresa nombre(s)" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.lastname">Apellido(s):</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.lastname" id="applicant.lastname" value="<%= quotation.applicant.lastname %>" placeholder="Ingresa apellido(s)" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.document">Cédula:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.document" id="applicant.document" value="<%= quotation.applicant.document %>" placeholder="Ingresa cédula" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.position">Cargo:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.position" id="applicant.position" value="<%= quotation.applicant.position %>" placeholder="Ingresa cargo" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.phone">Teléfono:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="applicant.phone" id="applicant.phone" value="<%= quotation.applicant.phone %>" placeholder="Ingresa teléfono" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.email">Correo Electrónico:</label>
-        <div class="col-sm-5">
-          <input type="email" class="form-control" name="applicant.email" id="applicant.email" value="<%= quotation.applicant.email %>" placeholder="Ingresa correo electrónico" disabled required>
-        </div>
-      </div>
-
-      <hr>
-      <h3>Información Muestra</h3>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.type">Tipo de muestra:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="sample.type" id="sample.type" value="<%= quotation.sample.type %>" placeholder="Ingresa tipo de muestra" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.parameter">Parámetro:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="sample.parameter" id="sample.parameter" value="<%= quotation.sample.parameter %>" placeholder="Ingresa parámetro" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.method">Método:</label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" name="sample.method" id="sample.method" value="<%= quotation.sample.method %>" placeholder="Ingresa método" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.price">Precio muestra:</label>
-        <div class="col-sm-5">
-          <input type="number" min="0" class="form-control" name="sample.price" id="sample.price" value="<%= quotation.sample.price %>" placeholder="Ingresa precio muestra" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.amount">Número de muestras:</label>
-        <div class="col-sm-5">
-          <input type="number" min="0" class="form-control" name="sample.amount" id="sample.amount" value="<%= quotation.sample.amount %>" placeholder="Ingresa número de muestras" disabled required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="sample.totalPrice">Valor total de muestras:</label>
-        <div class="col-sm-5">
-          <input type="number" min="0" class="form-control" name="sample.totalPrice" id="sample.totalPrice" value="<%= quotation.sample.totalPrice %>" placeholder="Ingresa Valor total de muestras" disabled required>
-        </div>
-      </div>
-
-      <hr>
-      <div class="form-group">
-        <label class="control-label col-sm-offset-2 col-sm-2" for="total">Valor Total:</label>
-        <div class="col-sm-5">
-          <input type="number" class="form-control" min="0" name="total" id="total" value="<%= quotation.total %>" placeholder="Ingresa total" disabled required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-8">
-          <button id="save" type="submit" class="btn btn-success">Guardar</button>
-          <button id="edit" type="button" class="btn btn-info">Editar</button>
-          <a id="export" href="/quotation/<%= quotation._id %>/export" class="btn btn-danger" download>Exportar a Word</a>
-          <% if (quotation.state === '1') { %>
-            <button id="deactivate" type="button" class="btn btn-warning">Eliminar Cotización</button>
-          <% } %>
-        </div>
-      </div>
-    </form>
-    <% if (quotation.state === '1') { %>
-      <form action="/quotation/<%= quotation._id %>/delete?_method=put" id="deactivateForm" method="post">
-      </form>
-    <% } %>
-  </div>
-  <script src="/js/editQuotation.js"></script>
-</div>
+<% include ../footer.ejs %>
+    <script src="/js/samplesManager.js"></script>
+    <script src="/js/editQuotation.js"></script>
+    <script type="text/javascript">
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+      });
+    </script>
+  </body>
+</html>

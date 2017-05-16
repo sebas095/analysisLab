@@ -76,4 +76,12 @@
       <% } %>
     </div>
   </div>
-  <script src="/js/account.js"></script>
+    <script src="/js/account.js"></script>
+    <script type="text/javascript">
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+      });
+    </script>
+  </body>
+</html>

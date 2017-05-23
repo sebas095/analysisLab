@@ -1,6 +1,6 @@
 module.exports = {
   auth: {
-    user: 'analysislabsutp@gmail.com',
-    pass: 'analysislab',
-  },
+    user: "analysislabsutp@gmail.com",
+    pass: "analysislab"
+  }
 };

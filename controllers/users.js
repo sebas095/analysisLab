@@ -1,6 +1,6 @@
-const User = require('../models/user');
-const {auth} = require('../config/email');
-const nodemailer = require('nodemailer');
+const User = require("../models/user");
+const { auth } = require("../config/email");
+const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport(
   `smtps://${auth.user}:${auth.pass}@smtp.gmail.com`
 );
@@ -10,20 +10,20 @@ exports.newUser = (req, res) => {
   if (!req.isAuthenticated()) {
     User.find({}, (err, users) => {
       if (err) {
-        console.log('Error: ', err);
+        console.log("Error: ", err);
         req.flash(
-          'indexMessage',
-          'Hubo problemas con el servidor, intenta de nuevo'
+          "indexMessage",
+          "Hubo problemas con el servidor, intenta de nuevo"
         );
-        return res.redirect('/');
+        return res.redirect("/");
       } else if (users.length === 0) {
-        res.render('users/new', {isAdmin: true});
+        res.render("users/new", { isAdmin: true });
       } else {
-        res.render('users/new', {isAdmin: false});
+        res.render("users/new", { isAdmin: false });
       }
     });
   } else {
-    res.redirect('/profile');
+    res.redirect("/profile");
   }
 };
 
@@ -31,25 +31,25 @@ exports.newUser = (req, res) => {
 exports.createUser = (req, res) => {
   User.find({}, (err, users) => {
     if (err) {
-      console.log('Error: ', err);
+      console.log("Error: ", err);
       req.flash(
-        'indexMessage',
-        'Hubo problemas en el registro, intenta de nuevo'
+        "indexMessage",
+        "Hubo problemas en el registro, intenta de nuevo"
       );
-      return res.redirect('/');
+      return res.redirect("/");
     } else if (users.length === 0) {
-      req.body.state = '1';
+      req.body.state = "1";
     } else {
-      req.body.state = '0';
+      req.body.state = "0";
       req.flash(
-        'indexMessage',
-        'Pronto el administrador revisara tu solicitud de cuenta ' +
-        'y se te notificara por correo electrónico'
+        "indexMessage",
+        "Pronto el administrador revisara tu solicitud de cuenta " +
+          "y se te notificara por correo electrónico"
       );
     }
 
-    if (req.body.status === 'admin') {
-      req.body.state = '5';
+    if (req.body.status === "admin") {
+      req.body.state = "5";
       delete req.body.status;
     }
 
@@ -57,47 +57,44 @@ exports.createUser = (req, res) => {
       if (err) {
         console.log(err);
         req.flash(
-          'indexMessage',
-          'Hubo problemas en el registro, intenta de nuevo'
+          "indexMessage",
+          "Hubo problemas en el registro, intenta de nuevo"
         );
-        return res.redirect('/');
+        return res.redirect("/");
       }
-      User.find({state: '1'}, (err, users) => {
+      User.find({ state: "1" }, (err, users) => {
         if (err) {
           console.log(err);
           req.flash(
-            'indexMessage',
-            'Hubo problemas en el registro, intenta de nuevo'
+            "indexMessage",
+            "Hubo problemas en el registro, intenta de nuevo"
           );
-          return res.redirect('/');
+          return res.redirect("/");
         } else if (users.length > 0) {
-          let emails = '';
+          let emails = "";
           for (let i = 0; i < users.length; i++) {
-            if (i > 0) emails += ',';
+            if (i > 0) emails += ",";
             emails += users[i].email;
           }
 
           const mailOptions = {
-            from: 'Administración',
+            from: "Administración",
             to: emails,
-            subject: 'Aprobación de cuentas',
+            subject: "Aprobación de cuentas",
             html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
               hay cuentas pendientes para su aprobación, si deseas ingresar ve a
-               la siguiente dirección:<br><a href="${HOST}/users/pending/approve">
-              Iniciar sesión</a><br><br><br>Att,<br><br>
-              Equipo Administrativo`,
+               la siguiente dirección:<br>
+               <a href="${HOST}/users/pending/approve">Iniciar sesión</a>
+               <br><br><br>Att,<br><br>Equipo Administrativo`
           };
 
-          transporter.sendMail(mailOptions, (err) => {
+          transporter.sendMail(mailOptions, err => {
             if (err) console.log(err);
-            res.redirect(`/`);
+            res.redirect("/");
           });
         } else {
-          req.flash(
-            'indexMessage',
-            'Hubo problemas en el servidor'
-          );
-          res.redirect(`/`);
+          req.flash("indexMessage", "Hubo problemas en el servidor");
+          res.redirect("/");
         }
       });
     });
@@ -107,209 +104,212 @@ exports.createUser = (req, res) => {
 // PUT /users/:id -- Modifies user data
 exports.updateUser = (req, res) => {
   const id = req.params.id || req.user._id;
-  if (req.body.status && req.body.status === 'admin') {
-    req.body.state = '1';
+  if (req.body.status && req.body.status === "admin") {
+    req.body.state = "1";
   } else {
-    req.body.state = '2';
+    req.body.state = "2";
   }
 
-  User.findByIdAndUpdate(id, req.body, {new: true}, (err, user) => {
+  User.findByIdAndUpdate(id, req.body, { new: true }, (err, user) => {
     if (err) {
-      console.log('Error: ', err);
+      console.log("Error: ", err);
       req.flash(
-        'indexMessage',
-        'Hubo problemas actualizando los datos, intenta de nuevo'
+        "indexMessage",
+        "Hubo problemas actualizando los datos, intenta de nuevo"
       );
-      return res.redirect('/');
-    } else if (req.originalUrl.includes('/users/')) {
-      req.flash('adminMessage', 'Los datos han sido actualizados exitosamente');
-      res.redirect('/users/admin');
+      return res.redirect("/");
+    } else if (req.originalUrl.includes("/users/")) {
+      req.flash("adminMessage", "Los datos han sido actualizados exitosamente");
+      res.redirect("/users/admin");
     } else {
-      req.flash('userMessage', 'Sus datos han sido actualizados exitosamente');
-      res.redirect(`/profile`);
+      req.flash("userMessage", "Sus datos han sido actualizados exitosamente");
+      res.redirect("/profile");
     }
   });
 };
 
 // DELETE /users/:id -- Deactivate user account
 exports.deleteUser = (req, res) => {
-  if (req.user.state.includes('1')) {
-    const {id} = req.params;
-    User.findByIdAndUpdate(id, {
-      state: req.body.status,
-    }, {new: true}, (err, user) => {
-      if (err) {
-        console.log(err);
-        req.flash(
-          'indexMessage',
-          'Hubo problemas desactivando la cuenta, intenta de nuevo'
-        );
-        return res.redirect('/');
+  if (req.user.state.includes("1")) {
+    const { id } = req.params;
+    User.findByIdAndUpdate(
+      id,
+      {
+        state: req.body.status
+      },
+      { new: true },
+      (err, user) => {
+        if (err) {
+          console.log(err);
+          req.flash(
+            "indexMessage",
+            "Hubo problemas desactivando la cuenta, intenta de nuevo"
+          );
+          return res.redirect("/");
+        }
+        req.flash("adminMessage", "El estado de la cuenta ha sido actualizada");
+        res.redirect("/users/admin");
       }
-      req.flash('adminMessage', 'El estado de la cuenta ha sido actualizada');
-      res.redirect('/users/admin');
-    });
+    );
   } else {
-    res.redirect('/');
+    res.redirect("/");
   }
 };
 
 // GET /users/admin -- Return all the users
 exports.getUsers = (req, res) => {
-  if (req.user.state.includes('1')) {
-    User.find({
-     $or: [
-       {state: '1'},
-       {state: '2'},
-       {state: '3'},
-     ],
-      _id: {$ne: req.user._id},
-    }, (err, users) => {
-      if (err) {
-        console.log('Error: ', err);
-        req.flash(
-          'indexMessage',
-          'Hubo problemas obteniendo los datos de los usuarios, ' +
-          'intenta de nuevo'
-        );
-        res.redirect('/');
-      } else if (users.length > 0) {
-        res.render('users/admin', {
-          users: users,
-          user: req.user,
-          message: req.flash('adminMessage'),
-        });
-      } else {
-        req.flash('indexMessage', 'No hay usuarios disponibles');
-        res.redirect('/');
+  if (req.user.state.includes("1")) {
+    User.find(
+      {
+        $or: [{ state: "1" }, { state: "2" }, { state: "3" }],
+        _id: { $ne: req.user._id }
+      },
+      (err, users) => {
+        if (err) {
+          console.log("Error: ", err);
+          req.flash(
+            "indexMessage",
+            "Hubo problemas obteniendo los datos de los usuarios, " +
+              "intenta de nuevo"
+          );
+          res.redirect("/");
+        } else if (users.length > 0) {
+          res.render("users/admin", {
+            users: users,
+            user: req.user,
+            message: req.flash("adminMessage")
+          });
+        } else {
+          req.flash("indexMessage", "No hay usuarios disponibles");
+          res.redirect("/");
+        }
       }
-    });
+    );
   } else {
-    req.flash('indexMessage', 'No tienes permisos para acceder');
-    res.redirect('/');
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
   }
 };
 
 // GET /users/pending/deactive -- Users with pending account for deactivate
 exports.deactivatePendingAccount = (req, res) => {
-  if (req.user.state.includes('1')) {
-    User.find({state: '4'}, (err, users) => {
+  if (req.user.state.includes("1")) {
+    User.find({ state: "4" }, (err, users) => {
       if (err) {
-        console.log('Error: ', err);
+        console.log("Error: ", err);
         req.flash(
-          'indexMessage',
-          'Hubo problemas obteniendo los datos de los usuarios, ' +
-          'intenta de nuevo'
+          "indexMessage",
+          "Hubo problemas obteniendo los datos de los usuarios, " +
+            "intenta de nuevo"
         );
-        res.redirect('/');
+        res.redirect("/");
       } else if (users.length > 0) {
-        res.render('users/deactivate', {
+        res.render("users/deactivate", {
           users: users,
           user: req.user,
-          message: req.flash('pendingDeactivateUsers'),
+          message: req.flash("pendingDeactivateUsers")
         });
       } else {
         req.flash(
-          'indexMessage',
-          'No hay usuarios disponibles para la desactivación de cuentas'
+          "indexMessage",
+          "No hay usuarios disponibles para la desactivación de cuentas"
         );
-        res.redirect('/');
+        res.redirect("/");
       }
     });
   } else {
-    req.flash('indexMessage', 'No tienes permisos para acceder');
-    res.redirect('/');
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
   }
 };
 
 // GET /users/pending/approve -- Users with pending account for approve
 exports.pendingUsers = (req, res) => {
-  if (req.user.state.includes('1')) {
-    User.find({$or: [
-      {state: '0'},
-      {state: '5'},
-    ]}, (err, users) => {
-      if (err) {
-        console.log('Error: ', err);
-        req.flash(
-          'indexMessage',
-          'Hubo problemas obteniendo los datos de los usuarios, ' +
-          'intenta de nuevo'
-        );
-        res.redirect('/');
-      } else if (users.length > 0) {
-        res.render('users/pending', {
-          users: users,
-          user: req.user,
-          message: req.flash('pendingUsers'),
-        });
-      } else {
-        req.flash(
-          'indexMessage',
-          'No hay usuarios disponibles para la aprobación de cuentas'
-        );
-        res.redirect('/');
+  if (req.user.state.includes("1")) {
+    User.find(
+      {
+        $or: [{ state: "0" }, { state: "5" }]
+      },
+      (err, users) => {
+        if (err) {
+          console.log("Error: ", err);
+          req.flash(
+            "indexMessage",
+            "Hubo problemas obteniendo los datos de los usuarios, " +
+              "intenta de nuevo"
+          );
+          res.redirect("/");
+        } else if (users.length > 0) {
+          res.render("users/pending", {
+            users: users,
+            user: req.user,
+            message: req.flash("pendingUsers")
+          });
+        } else {
+          req.flash(
+            "indexMessage",
+            "No hay usuarios disponibles para la aprobación de cuentas"
+          );
+          res.redirect("/");
+        }
       }
-    });
+    );
   } else {
-    req.flash('indexMessage', 'No tienes permisos para acceder');
-    res.redirect('/');
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
   }
 };
 
 // PUT /users/:id/deactiveAccount -- Request for deactivate account
 exports.changeState = (req, res) => {
-  const {id} = req.params;
-  User.findByIdAndUpdate(id, {state: '4'}, {new: true}, (err, user) => {
+  const { id } = req.params;
+  User.findByIdAndUpdate(id, { state: "4" }, { new: true }, (err, user) => {
     if (err) {
       console.log(err);
       req.flash(
-        'indexMessage',
-        'Hubo problemas en la solicitud de desactivación de la cuenta'
+        "indexMessage",
+        "Hubo problemas en la solicitud de desactivación de la cuenta"
       );
-      return res.redirect('/');
+      return res.redirect("/");
     }
-    User.find({state: '1'}, (err, users) => {
+    User.find({ state: "1" }, (err, users) => {
       if (err) {
         console.log(err);
         req.flash(
-          'indexMessage',
-          'Hubo problemas para notificar al administrador'
+          "indexMessage",
+          "Hubo problemas para notificar al administrador"
         );
-        return res.redirect('/');
+        return res.redirect("/");
       } else if (users.length > 0) {
-        let emails = '';
+        let emails = "";
         for (let i = 0; i < users.length; i++) {
-          if (i > 0) emails += ',';
+          if (i > 0) emails += ",";
           emails += users[i].email;
         }
 
         const mailOptions = {
-          from: 'Administración',
+          from: "Administración",
           to: emails,
-          subject: 'Desactivación de cuentas',
+          subject: "Desactivación de cuentas",
           html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
             hay solicitudes para la desactivación de cuentas, para su
             aprobación, si deseas ingresar ve a la siguiente dirección:<br>
             <a href="${HOST}/users/pending/deactivate">Iniciar sesión</a>
-            <br><br><br>Att,<br><br>Equipo Administrativo`,
+            <br><br><br>Att,<br><br>Equipo Administrativo`
         };
 
-        transporter.sendMail(mailOptions, (err) => {
+        transporter.sendMail(mailOptions, err => {
           if (err) console.log(err);
           req.flash(
-            'userMessage',
-            'Pronto el administrador revisara tu solicitud ' +
-            `y se te notificara al correo electrónico de ${user.email}`
+            "userMessage",
+            "Pronto el administrador revisara tu solicitud " +
+              `y se te notificara al correo electrónico de ${user.email}`
           );
-          res.redirect(`/profile`);
+          res.redirect("/profile");
         });
       } else {
-        req.flash(
-          'indexMessage',
-          'No hay administradores disponibles'
-        );
-        res.redirect(`/`);
+        req.flash("indexMessage", "No hay administradores disponibles");
+        res.redirect("/");
       }
     });
   });
@@ -317,162 +317,177 @@ exports.changeState = (req, res) => {
 
 // PUT /users/accountApproval -- Users account approval
 exports.accountApproval = (req, res) => {
-  if (req.user.state.includes('1')) {
-    const {email} = req.body;
+  if (req.user.state.includes("1")) {
+    const { email } = req.body;
     let status;
 
-    if (req.body.account === 'accept') {
-      if (req.body.status === 'admin') {
-        status = '1';
+    if (req.body.account === "accept") {
+      if (req.body.status === "admin") {
+        status = "1";
       } else {
-        status = '2';
+        status = "2";
       }
 
-      User.findOneAndUpdate({
-        email: email,
-      }, {state: status, rol: req.body.rol}, {new: true}, (err, user) => {
-        if (err) {
-          console.log('Error: ', err);
-          req.flash(
-            'indexMessage',
-            'Hubo problemas notificando la aprobación de cuenta del usuario'
-          );
-          res.redirect('/');
-        } else if (user) {
-          const mailOptions = {
-            from: 'Administración',
-            to: user.email,
-            subject: 'Estado de aprobación de cuenta',
-            html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-              <br>Se le informa que su cuenta ha sido aprobada, si deseas ingresar
-              ve a la siguiente dirección:<br><a href="${HOST}/session/login">
-              Iniciar sesión</a><br><br><br>Att,<br><br>
-              Equipo Administrativo`,
-          };
+      User.findOneAndUpdate(
+        {
+          email: email
+        },
+        { state: status, rol: req.body.rol },
+        { new: true },
+        (err, user) => {
+          if (err) {
+            console.log("Error: ", err);
+            req.flash(
+              "indexMessage",
+              "Hubo problemas notificando la aprobación de cuenta del usuario"
+            );
+            res.redirect("/");
+          } else if (user) {
+            const mailOptions = {
+              from: "Administración",
+              to: user.email,
+              subject: "Estado de aprobación de cuenta",
+              html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
+              <br>Se le informa que su cuenta ha sido aprobada,
+                si deseas ingresar ve a la siguiente dirección:<br>
+                <a href="${HOST}/session/login">Iniciar sesión</a><br><br><br>
+                Att,<br><br>Equipo Administrativo`
+            };
 
-          transporter.sendMail(mailOptions, (err) => {
-            if (err) console.log(err);
-            res.redirect('/users/pending/approve');
-          });
-        } else {
-          req.flash(
-            'pendingUsers',
-            `No existe el usuario con el correo ${email}`
-          );
-          res.redirect('/users/pending/approve');
+            transporter.sendMail(mailOptions, err => {
+              if (err) console.log(err);
+              res.redirect("/users/pending/approve");
+            });
+          } else {
+            req.flash(
+              "pendingUsers",
+              `No existe el usuario con el correo ${email}`
+            );
+            res.redirect("/users/pending/approve");
+          }
         }
-      });
+      );
     } else {
-      User.findOneAndRemove({email: email}, (err, user) => {
+      User.findOneAndRemove({ email: email }, (err, user) => {
         if (err) {
-          console.log('Error: ', err);
+          console.log("Error: ", err);
           req.flash(
-            'indexMessage',
-            'Hubo problemas rechazando la cuenta del usuario'
+            "indexMessage",
+            "Hubo problemas rechazando la cuenta del usuario"
           );
-          res.redirect('/');
+          res.redirect("/");
         } else if (user) {
           const mailOptions = {
-            from: 'Administración',
+            from: "Administración",
             to: user.email,
-            subject: 'Estado de aprobación de cuenta',
+            subject: "Estado de aprobación de cuenta",
             html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
               <br>Se le informa que su cuenta ha sido rechazada.<br><br><br>
-              Att,<br><br>Equipo Administrativo`,
+              Att,<br><br>Equipo Administrativo`
           };
 
-          transporter.sendMail(mailOptions, (err) => {
+          transporter.sendMail(mailOptions, err => {
             if (err) console.log(err);
-            res.redirect('/users/pending/approve');
+            res.redirect("/users/pending/approve");
           });
         } else {
           req.flash(
-            'pendingUsers',
+            "pendingUsers",
             `No existe el usuario con el correo ${email}`
           );
-          res.redirect('users/accountApproval');
+          res.redirect("users/accountApproval");
         }
       });
     }
   } else {
-    req.flash('indexMessage', 'No tienes permisos para acceder');
-    res.redirect('/');
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
   }
 };
 
 // PUT /users/deactivateAccount -- Users deactivate account
 exports.deactivateAccount = (req, res) => {
-  if (req.user.state.includes('1')) {
-    const {email} = req.body;
-    if (req.body.account === 'accept') {
-      User.findOneAndUpdate({
-        email: email,
-      }, {state: '3'}, {new: true}, (err, user) => {
-        if (err) {
-          console.log('Error: ', err);
-          req.flash(
-            'indexMessage',
-            'Hubo problemas desactivando la cuenta del usuario'
-          );
-          res.redirect('/');
-        } else if (user) {
-          const mailOptions = {
-            from: 'Administración',
-            to: user.email,
-            subject: 'Desactivación de cuenta',
-            html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-              <br>Se le informa que su cuenta ha sido desactivada exitosamente.
-              <br><br><br>Att,<br><br>Equipo Administrativo`,
-          };
-
-          transporter.sendMail(mailOptions, (err) => {
-            if (err) console.log(err);
-            res.redirect('/users/pending/deactivate');
-          });
-        } else {
-          req.flash(
-            'pendingDeactivateUsers',
-            `No existe el usuario con el correo ${email}`
-          );
-          res.redirect('/users/pending/deactivate');
-        }
-      });
-    } else {
-        User.findOneAndUpdate({
-          email: email,
-        }, {state: '2'}, {new: true}, (err, user) => {
+  if (req.user.state.includes("1")) {
+    const { email } = req.body;
+    if (req.body.account === "accept") {
+      User.findOneAndUpdate(
+        {
+          email: email
+        },
+        { state: "3" },
+        { new: true },
+        (err, user) => {
           if (err) {
-            console.log('Error: ', err);
+            console.log("Error: ", err);
             req.flash(
-              'indexMessage',
-              'Hubo problemas con la cuenta del usuario'
+              "indexMessage",
+              "Hubo problemas desactivando la cuenta del usuario"
             );
-            res.redirect('/');
+            res.redirect("/");
           } else if (user) {
             const mailOptions = {
-              from: 'Administración',
+              from: "Administración",
               to: user.email,
-              subject: 'Desactivación de cuenta',
+              subject: "Desactivación de cuenta",
               html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-                <br>Se le informa que su cuenta no ha sido desactivada.
-                <br><br><br>Att,<br><br>Equipo Administrativo`,
+              <br>Se le informa que su cuenta ha sido desactivada exitosamente.
+              <br><br><br>Att,<br><br>Equipo Administrativo`
             };
 
-            transporter.sendMail(mailOptions, (err) => {
+            transporter.sendMail(mailOptions, err => {
               if (err) console.log(err);
-              res.redirect('/users/pending/deactivate');
+              res.redirect("/users/pending/deactivate");
             });
           } else {
             req.flash(
-              'pendingDeactivateUsers',
+              "pendingDeactivateUsers",
               `No existe el usuario con el correo ${email}`
             );
-            res.redirect('/users/pending/deactivate');
+            res.redirect("/users/pending/deactivate");
           }
-      });
+        }
+      );
+    } else {
+      User.findOneAndUpdate(
+        {
+          email: email
+        },
+        { state: "2" },
+        { new: true },
+        (err, user) => {
+          if (err) {
+            console.log("Error: ", err);
+            req.flash(
+              "indexMessage",
+              "Hubo problemas con la cuenta del usuario"
+            );
+            res.redirect("/");
+          } else if (user) {
+            const mailOptions = {
+              from: "Administración",
+              to: user.email,
+              subject: "Desactivación de cuenta",
+              html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
+                <br>Se le informa que su cuenta no ha sido desactivada.
+                <br><br><br>Att,<br><br>Equipo Administrativo`
+            };
+
+            transporter.sendMail(mailOptions, err => {
+              if (err) console.log(err);
+              res.redirect("/users/pending/deactivate");
+            });
+          } else {
+            req.flash(
+              "pendingDeactivateUsers",
+              `No existe el usuario con el correo ${email}`
+            );
+            res.redirect("/users/pending/deactivate");
+          }
+        }
+      );
     }
   } else {
-    req.flash('indexMessage', 'No tienes permisos para acceder');
-    res.redirect('/');
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
   }
 };

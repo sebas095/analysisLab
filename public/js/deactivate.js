@@ -1,18 +1,18 @@
-const accept = document.querySelectorAll('.accept');
-const reject = document.querySelectorAll('.reject');
+const accept = document.querySelectorAll(".accept");
+const reject = document.querySelectorAll(".reject");
 
 for (let i = 0; i < accept.length; i++) {
-  accept[i].addEventListener('click', function(ev) {
+  accept[i].addEventListener("click", function(ev) {
     ev.preventDefault();
     const id = this.id.slice(7);
-    document.querySelector(`#account-${id}`).value = 'accept';
+    document.querySelector(`#account-${id}`).value = "accept";
     document.querySelector(`#form-${id}`).submit();
   });
 
-  reject[i].addEventListener('click', function(ev) {
+  reject[i].addEventListener("click", function(ev) {
     ev.preventDefault();
     const id = this.id.slice(7);
-    document.querySelector(`#account-${id}`).value = 'reject';
+    document.querySelector(`#account-${id}`).value = "reject";
     document.querySelector(`#form-${id}`).submit();
   });
 }

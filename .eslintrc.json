@@ -1,4 +1,11 @@
 {
+  "rules": {
+    "quotes": ["error", "double"],
+    "comma-dangle": ["error", "never"],
+    "object-curly-spacing": ["error", "always"],
+    "new-cap": ["error", { "capIsNewExceptionPattern": "^express" }],
+    "arrow-parens": ["error", "as-needed"]
+  },
   "extends": "google",
   "installedESLint": true,
   "parserOptions": {

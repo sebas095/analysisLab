@@ -1,11 +1,11 @@
-jQuery(document).ready(($) => {
-  $('#sampleForm').submit((ev) => {
+jQuery(document).ready($ => {
+  $("#sampleForm").submit(ev => {
     ev.preventDefault();
-    const input = document.getElementsByClassName('sampleInput');
-    let sampleData = '';
+    const input = document.getElementsByClassName("sampleInput");
+    let sampleData = "";
 
     for (let i = 0; i < input.length; i++) {
-      if(i === 1) {
+      if (i === 1) {
         sampleData += `
           <td>
             <a href="#" data-toggle="modal" data-target="#parameterModal">
@@ -28,16 +28,16 @@ jQuery(document).ready(($) => {
       }
     }
 
-    $('.modal').modal('hide');
-    let sampleInfo = document.getElementById('sampleInfo');
+    $(".modal").modal("hide");
+    let sampleInfo = document.getElementById("sampleInfo");
     const sampleNew = `<tr id="sampleInf">${sampleInfo.innerHTML}</tr>`;
     sampleInfo.innerHTML = sampleData;
 
-    $(sampleNew).insertAfter('#sampleInfo');
-    $('#sampleInfo').removeAttr('id');
-    $('#sampleInf').attr('id', 'sampleInfo');
-    $('.modal').css('display', 'none');
-    document.getElementById('sampleForm').reset();
+    $(sampleNew).insertAfter("#sampleInfo");
+    $("#sampleInfo").removeAttr("id");
+    $("#sampleInf").attr("id", "sampleInfo");
+    $(".modal").css("display", "none");
+    document.getElementById("sampleForm").reset();
 
     return false;
   });

@@ -7,17 +7,17 @@
           <a href="/quotation/new" class="btn btn-menu btn-color-blue"><i class="fa fa-plus" aria-hidden="true"></i>  Crear</a>
         </div>
       <% } %>
-      <div class="col-xs-11 col-sm-6 center">
+      <div class="col-xs-11 col-sm-6 center space-bottom">
         <a href="/quotation/search" class="btn btn-menu btn-color-green"><i class="fa fa-list-ul" aria-hidden="true"></i>  Listar</a>
       </div>
     </div>
     <% if (session.rol === 'responsable técnico' || session.rol === 'director del laboratorio') {%>
       <div class="row">
         <div class="col-xs-11 col-sm-6 center space-bottom">
-          <a href="/quotation/pending/approval" class="btn btn-menu btn-color-blue"><i class="fa fa-plus" aria-hidden="true"></i> Aprobar</a>
+          <a href="/quotation/pending/approval" class="btn btn-menu btn-warning"><i class="fa fa-check" aria-hidden="true"></i>  Aprobar</a>
         </div>
-        <div class="col-xs-11 col-sm-6 center">
-          <a href="/quotation/pending/delete" class="btn btn-menu btn-color-green"><i class="fa fa-list-ul" aria-hidden="true"></i>  Eliminar</a>
+        <div class="col-xs-11 col-sm-6 center space-bottom">
+          <a href="/quotation/pending/delete" class="btn btn-menu btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>  Eliminar</a>
         </div>
       </div>
     <% } %>

@@ -11,7 +11,7 @@
         <div class="title">
           <h1>Cotización</h1>
         </div>
-        <form class="form-horizontal" action="/quotation/<%= quotation._id %>?_method=put" method="post" id="quotation">
+        <!--<form class="form-horizontal" action="/quotation/<%= quotation._id %>?_method=put" method="post" id="quotation">-->
           <div class="row center space-bottom">
             <button id="edit" type="button" class="btn btn-color-green"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Editar</button>
             <a id="export" href="/quotation/<%= quotation._id %>/export" class="btn btn-color-darkblue" download><i class="fa fa-file-word-o" aria-hidden="true"></i>  Exportar a Word</a>
@@ -373,7 +373,7 @@
             </form>
           </div>
         </div>
-        </form>
+        <!--</form>-->
         <% if (quotation.state === '1') { %>
           <form action="/quotation/<%= quotation._id %>/delete?_method=put" id="deactivateForm" method="post">
           </form>

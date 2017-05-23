@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const timestamp = require('mongoose-timestamp');
-const autoIncrement = require('mongoose-auto-increment');
-const {Schema} = mongoose;
+const mongoose = require("mongoose");
+const timestamp = require("mongoose-timestamp");
+const autoIncrement = require("mongoose-auto-increment");
+const { Schema } = mongoose;
 autoIncrement.initialize(mongoose.connection);
 
 /*
@@ -14,33 +14,41 @@ autoIncrement.initialize(mongoose.connection);
   - Correo
 */
 const ApplicantSchema = new Schema({
-  firstname: {
+  uid: {
     type: String,
     require: true,
+    unique: true,
+    index: true
+  },
+  firstname: {
+    type: String,
+    require: true
   },
   lastname: {
     type: String,
-    require: true,
+    require: true
   },
   document: {
     type: String,
-    require: true,
+    require: true
   },
   position: {
     type: String,
-    require: true,
+    require: true
   },
   phone: {
     type: String,
-    require: true,
+    require: true
   },
   email: {
     type: String,
     require: true,
     validate(email) {
-      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
-    },
-  },
+      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        email
+      );
+    }
+  }
 });
 
 /*
@@ -55,28 +63,28 @@ const ApplicantSchema = new Schema({
 const SampleSchema = new Schema({
   type: {
     type: String,
-    require: true,
+    require: true
   },
   parameter: {
     type: String,
-    require: true,
+    require: true
   },
   method: {
     type: String,
-    require: true,
+    require: true
   },
   price: {
     type: Number,
-    require: true,
+    require: true
   },
   amount: {
     type: Number,
-    require: true,
+    require: true
   },
   totalPrice: {
     type: Number,
-    require: true,
-  },
+    require: true
+  }
 });
 
 /*
@@ -90,53 +98,61 @@ const SampleSchema = new Schema({
   * Muestra
 */
 const QuotationSchema = new Schema({
-  createdBy: {
+  uid: {
     type: String,
     require: true,
+    unique: true,
+    index: true
+  },
+  createdBy: {
+    type: String,
+    require: true
   },
   businessName: {
     type: String,
-    require: true,
+    require: true
   },
   document: {
     type: String,
-    require: true,
+    require: true
   },
   address: {
     type: String,
-    require: true,
+    require: true
   },
   phone: {
     type: String,
-    require: true,
+    require: true
   },
   email: {
     type: String,
     require: true,
     validate(email) {
-      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
-    },
+      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        email
+      );
+    }
   },
   applicant: {
     type: ApplicantSchema,
-    require: true,
+    require: true
   },
   sample: {
     type: SampleSchema,
-    require: true,
+    require: true
   },
   total: {
     type: Number,
-    require: true,
+    require: true
   },
   state: {
     type: String,
-    enum: ['0', '1', '2'],
-    default: '0',
+    enum: ["0", "1", "2"],
+    default: "0"
     // 0: pending, 1: ok, 2: removal request
-  },
+  }
 });
 
 QuotationSchema.plugin(timestamp);
-QuotationSchema.plugin(autoIncrement.plugin, 'Quotation');
-module.exports = mongoose.model('Quotation', QuotationSchema);
+QuotationSchema.plugin(autoIncrement.plugin, "Quotation");
+module.exports = mongoose.model("Quotation", QuotationSchema);

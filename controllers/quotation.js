@@ -3,6 +3,7 @@ const User = require("../models/user");
 const HtmlDocx = require("html-docx-js");
 const ejs = require("ejs");
 const fs = require("fs");
+const uuid = require("uuid");
 const { auth } = require("../config/email");
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport(
@@ -59,6 +60,7 @@ exports.new = (req, res) => {
 exports.create = (req, res) => {
   if (isAuthorizedCreate(req.user.rol)) {
     const applicant = {
+      uid: uuid.v4(),
       firstname: req.body["applicant.firstname"],
       lastname: req.body["applicant.lastname"],
       document: req.body["applicant.document"],
@@ -77,6 +79,7 @@ exports.create = (req, res) => {
     };
 
     const quotation = {
+      uid: uuid.v4(),
       createdBy: req.user._id,
       businessName: req.body["businessName"],
       document: req.body["document"],

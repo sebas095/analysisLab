@@ -369,7 +369,7 @@
                         <div class="col-sm-12">
                           <div class="form-group">
                             <div class="col-sm-3">
-                              <label for="email">Tipo de Muestra: </label>
+                              <label for="sample">Tipo de Muestra: </label>
                             </div>
                             <div class="col-sm-9">
                               <input type="text" class="form-control sampleInput" required="" id="sample">
@@ -382,29 +382,31 @@
                           <h4>Parámetros</h4>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <label for="email">Parámetro</label>
-                              <input type="text" class="form-control sampleInput" required="" id="parameter">
+                      <div id="parameters">
+                        <div class="row" id="parameter0">
+                          <div class="col-sm-12">
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Parámetro</label>
+                                <input type="text" class="form-control sampleInput" required="" id="parameter0">
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label for="email">Método</label>
-                              <input type="text" class="form-control sampleInput" required="" id="method">
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <label>Método</label>
+                                <input type="text" class="form-control sampleInput" required="" id="method0">
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <label for="email">Precio</label>
-                              <input type="text" class="form-control sampleInput" required="" id="price">
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Precio</label>
+                                <input type="text" class="form-control sampleInput" required="" id="price0">
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-sm-2">
-                            <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
+                            <div class="col-sm-2">
+                              <a href="#" class="addParameter" id="add0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
+                              <a href="#" class="removeParameter" id="remove0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -417,7 +419,6 @@
                 </div>
               </div>
             </form>
-
           </div>
 
         </div>

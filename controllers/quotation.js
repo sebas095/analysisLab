@@ -154,6 +154,11 @@ exports.create = (req, res) => {
   }
 };
 
+// POST /quotation/samples/create -- Create a sample
+exports.createSample = (req, res) => {
+  // TODO
+};
+
 // GET /quotation/pending/approval -- Quotations pending for approve
 exports.pending = (req, res) => {
   if (isAuthorizedReview(req.user.rol)) {

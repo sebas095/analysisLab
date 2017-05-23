@@ -12,11 +12,11 @@
           <li><a href="/profile"><%= session.firstname %><i class="sub_icon fa fa-user" aria-hidden="true"></i></a></li>
           <% if (session.state === '1') { %>
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <a class="dropdown-toggle" data-toggle="dropdown" id="menu1" href="#">
                 Administración
                 <span class="caret"></span>
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu" aria-labelledby="menu1">
                 <li><a href="/users/admin">Gestión de Usuarios</a></li>
                 <li><a href="/users/pending/approve">Aprobación de Cuentas</a></li>
                 <li><a href="/users/pending/deactivate">Desactivación de Cuentas</a></li>

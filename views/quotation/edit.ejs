@@ -163,66 +163,6 @@
                   <div class="col-sm-6">
                     <a href="#" class="icon-blue" data-toggle="modal" data-target="#searchModal"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a>
                   </div>
-                  <div class="modal fade" id="myModal" role="dialog">
-                    <div class="modal-dialog">
-                      <!-- Modal content-->
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Añadir Muestra</h4>
-                        </div>
-                        <div class="modal-body">
-                          <form class="" id="sampleForm" action="" method="post">
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <div class="form-group">
-                                  <div class="col-sm-3">
-                                    <label for="email">Tipo de Muestra: </label>
-                                  </div>
-                                  <div class="col-sm-9">
-                                    <input type="text" class="form-control sampleInput" required="" id="sample">
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <h4>Parámetros</h4>
-                            </div>
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <div class="col-sm-3">
-                                  <div class="form-group">
-                                    <label for="email">Parámetro</label>
-                                    <input type="text" class="form-control sampleInput" required="" id="parameter">
-                                  </div>
-                                </div>
-                                <div class="col-sm-4">
-                                  <div class="form-group">
-                                    <label for="email">Método</label>
-                                    <input type="text" class="form-control sampleInput" required="" id="method">
-                                  </div>
-                                </div>
-                                <div class="col-sm-3">
-                                  <div class="form-group">
-                                    <label for="email">Precio</label>
-                                    <input type="text" class="form-control sampleInput" required="" id="price">
-                                  </div>
-                                </div>
-                                <div class="col-sm-2">
-                                  <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
-                                  <a href="#"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="submit" class="btn btn-success" id="sendSample">Agregar</button>
-                          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-                        </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
                   <div class="modal fade" id="searchModal" role="dialog">
                     <div class="modal-dialog">
                       <!-- Modal content-->
@@ -368,6 +308,70 @@
               </tr>
             </tbody>
           </table>
+          <div class="row">
+            <form class="" id="sampleForm" action="" method="post">
+              <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header center">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Añadir Muestra</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <div class="col-sm-3">
+                              <label for="email">Tipo de Muestra: </label>
+                            </div>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control sampleInput" required="" id="sample">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="center">
+                          <h4>Parámetros</h4>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label for="email">Parámetro</label>
+                              <input type="text" class="form-control sampleInput" required="" id="parameter">
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="email">Método</label>
+                              <input type="text" class="form-control sampleInput" required="" id="method">
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label for="email">Precio</label>
+                              <input type="text" class="form-control sampleInput" required="" id="price">
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <a href="#"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-success" id="sendSample">Agregar</button>
+                      <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
         </form>
         <% if (quotation.state === '1') { %>

@@ -9,31 +9,37 @@ const {
 module.exports = (app, mountPoint) => {
   // GET
   router.get("/new", sessionController.loginRequired, quotationController.new);
+
   router.get(
     "/search",
     sessionController.loginRequired,
     quotationController.search
   );
+
   router.get(
     "/pending/approval",
     sessionController.loginRequired,
     quotationController.pending
   );
+
   router.get(
     "/pending/delete",
     sessionController.loginRequired,
     quotationController.pendingDelete
   );
+
   router.get(
     "/menu",
     sessionController.loginRequired,
     quotationController.menu
   );
+
   router.get(
     "/:id/export",
     sessionController.loginRequired,
     quotationController.exportToWord
   );
+
   router.get(
     "/:id",
     sessionController.loginRequired,
@@ -46,11 +52,14 @@ module.exports = (app, mountPoint) => {
     sessionController.loginRequired,
     quotationController.create
   );
+
   router.post(
     "/search",
     sessionController.loginRequired,
     quotationController.find
   );
+
+  router.post("/samples/create", quotationController.createSample);
 
   // PUT
   router.put(
@@ -58,11 +67,13 @@ module.exports = (app, mountPoint) => {
     sessionController.loginRequired,
     quotationController.approval
   );
+
   router.put(
     "/:id/delete",
     sessionController.loginRequired,
     quotationController.changeState
   );
+
   router.put("/:id", sessionController.loginRequired, quotationController.edit);
 
   // DELETE

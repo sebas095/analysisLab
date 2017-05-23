@@ -9,9 +9,11 @@ module.exports = (app, mountPoint) => {
   router.get("/register", (req, res) => {
     res.render("c_views/register-c");
   });
+
   router.get("/cotizacion", (req, res) => {
     res.render("c_views/cotizacion-c");
   });
+
   router.get("/search", (req, res) => {
     res.render("c_views/search-c");
   });

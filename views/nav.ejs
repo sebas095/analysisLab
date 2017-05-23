@@ -10,9 +10,6 @@
       <ul class="sidebar-nav" id="sidebar">
         <% if (typeof(session) == 'object' && session) { %>
           <li><a href="/profile"><%= session.firstname %><i class="sub_icon fa fa-user" aria-hidden="true"></i></a></li>
-          <li><a href="#" id="logout">Salir<i class="sub_icon fa fa-sign-out" aria-hidden="true"></i></a>
-            <form action="/session/logout?_method=delete" method="post" id="exit"></form>
-          </li>
           <% if (session.state === '1') { %>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -32,31 +29,18 @@
             'auxiliar administrativo'
           ] %>
           <% if (roles.includes(session.rol)) { %>
-            <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Cotización
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="/quotation/search">Buscar</a></li>
-                <% if (session.rol === 'responsable técnico' || session.rol === 'auxiliar administrativo') {%>
-                  <li><a href="/quotation/new">Crear</a></li>
-                <% } %>
-                <% if (session.rol === 'responsable técnico' || session.rol === 'director del laboratorio') {%>
-                  <li><a href="/quotation/pending/approval">Aprobación de Cotizaciones</a></li>
-                  <li><a href="/quotation/pending/delete">Eliminación de Cotizaciones</a></li>
-                <% } %>
-              </ul>
-            </li>
+            <li><a href="/quotation/menu">Cotización<i class="sub_icon fa fa-file-text-o" aria-hidden="true"></i></a></li>
           <% } %>
+          <li><a href="#">Recepción de Muestra<i class="sub_icon fa fa-archive" aria-hidden="true"></i></a></li>
+          <li><a href="#">Registro de Resultados<i class="sub_icon fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+          <li><a href="#">Generación de Informes<i class="sub_icon fa fa-bar-chart" aria-hidden="true"></i></a></li>
+          <li><a href="#" id="logout">Salir<i class="sub_icon fa fa-sign-out" aria-hidden="true"></i></a>
+            <form action="/session/logout?_method=delete" method="post" id="exit"></form>
+          </li>
         <% } else { %>
           <li><a href="/users/register">Regitrarse<i class="sub_icon fa fa-user" aria-hidden="true"></i></a></li>
           <li><a href="/session/login">Iniciar Sesión<i class="sub_icon fa fa-sign-in" aria-hidden="true"></i></a></li>
         <% } %>
-        <li><a href="/quotation/menu">Cotización<i class="sub_icon fa fa-file-text-o" aria-hidden="true"></i></a></li>
-        <li><a href="#">Recepción de Muestra<i class="sub_icon fa fa-archive" aria-hidden="true"></i></a></li>
-        <li><a href="#">Registro de Resultados<i class="sub_icon fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
-        <li><a href="#">Generación de Informes<i class="sub_icon fa fa-bar-chart" aria-hidden="true"></i></a></li>
       </ul>
     </div>
 

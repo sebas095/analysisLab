@@ -25,7 +25,7 @@ module.exports = (app, mountPoint) => {
   router.put(
     "/profile",
     sessionController.loginRequired,
-    userController.updateUser
+    userController.updateProfile
   );
 
   app.use(mountPoint, router);

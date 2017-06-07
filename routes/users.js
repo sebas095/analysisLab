@@ -5,16 +5,19 @@ const { userController, sessionController } = require("../controllers");
 module.exports = (app, mountPoint) => {
   // GET
   router.get("/register", userController.newUser);
+
   router.get(
     "/admin",
     sessionController.loginRequired,
     userController.getUsers
   );
+
   router.get(
     "/pending/approve",
     sessionController.loginRequired,
     userController.pendingUsers
   );
+
   router.get(
     "/pending/deactivate",
     sessionController.loginRequired,
@@ -36,18 +39,21 @@ module.exports = (app, mountPoint) => {
     sessionController.loginRequired,
     userController.accountApproval
   );
+
   router.put(
     "/deactivateAccount",
     sessionController.loginRequired,
     userController.deactivateAccount
   );
+
   router.put(
     "/:id/deactiveAccount",
     sessionController.loginRequired,
     userController.changeState
   );
+
   router.put(
-    "/:id",
+    "/:id/:rol",
     sessionController.loginRequired,
     userController.updateUser
   );

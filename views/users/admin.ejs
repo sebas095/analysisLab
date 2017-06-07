@@ -18,7 +18,13 @@
             <div class="row">
           <% } %>
           <div class="col-sm-6">
-            <form class="adminForm form-horizontal panel panel-default" action="/users/<%= usr._id %>?_method=put" method="post" id="form-<%= usr._id %>">
+            <% let rol; %>
+            <% if (usr.state !== '3') { %>
+              <% rol = "admin-user"; %>
+            <% } else { %>
+              <% rol = "disabled"; %>
+            <% } %>
+            <form class="adminForm form-horizontal panel panel-default" action="/users/<%= usr._id %>/<%= rol %>?_method=put" method="post" id="form-<%= usr._id %>">
               <div class="panel-body">
                 <div class="form-group">
                   <div class="col-xs-12 col-sm-12 col-lg-12">
@@ -65,14 +71,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="col-xs-12 col-sm-12 col-lg-12">
-                    <label>
-                      <input type="checkbox" name="status" id="status" value="admin" <% if (usr.state === '1') { %> checked <% } %> >
-                      ¿Es Administrador del Sistema?
-                    </label>
+                <% if (usr.state !== '3') { %>
+                  <div class="form-group">
+                    <div class="col-xs-12 col-sm-12 col-lg-12">
+                      <label>
+                        <input type="checkbox" name="status-<%= usr._id %>" id="status2-<%= usr._id %>" <% if (usr.state === '1') { %> checked="checked" <% } %>  disabled="" >
+                        ¿Es Administrador del Sistema?
+                      </label>
+                    </div>
                   </div>
-                </div>
+                <% } %>
                 <div class="form-group">
                   <div class="col-xs-offset-1 col-xs-10 col-sm-10 col-lg-10">
                     <button class="btn btn-success save" id="save-<%= usr._id %>">Guardar</button>

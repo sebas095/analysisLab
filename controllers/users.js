@@ -41,35 +41,25 @@ exports.createUser = (req, res) => {
       req.body.state = "1";
     } else {
       req.body.state = "0";
-      req.flash(
-        "indexMessage",
-        "Pronto el administrador revisara tu solicitud de cuenta " +
-          "y se te notificara por correo electrónico"
-      );
-    }
-
-    if (req.body.status === "admin") {
-      req.body.state = "5";
-      delete req.body.status;
     }
 
     User.create(req.body, (err, user) => {
       if (err) {
         console.log(err);
         req.flash(
-          "indexMessage",
+          "loginMessage",
           "Hubo problemas en el registro, intenta de nuevo"
         );
-        return res.redirect("/");
+        return res.redirect("/session/login");
       }
       User.find({ state: "1" }, (err, users) => {
         if (err) {
           console.log(err);
           req.flash(
-            "indexMessage",
+            "loginMessage",
             "Hubo problemas en el registro, intenta de nuevo"
           );
-          return res.redirect("/");
+          return res.redirect("/session/login");
         } else if (users.length > 0) {
           let emails = "";
           for (let i = 0; i < users.length; i++) {
@@ -90,11 +80,24 @@ exports.createUser = (req, res) => {
 
           transporter.sendMail(mailOptions, err => {
             if (err) console.log(err);
-            res.redirect("/");
+            if (req.body.state === "0") {
+              req.flash(
+                "loginMessage",
+                "Pronto el administrador revisara tu solicitud de cuenta " +
+                  "y se te notificara por correo electrónico"
+              );
+            } else {
+              req.flash(
+                "loginMessage",
+                "La cuenta ha diso creada exitosamente " +
+                  "y tienes permisos de administrador"
+              );
+            }
+            res.redirect("/session/login");
           });
         } else {
-          req.flash("indexMessage", "Hubo problemas en el servidor");
-          res.redirect("/");
+          req.flash("loginMessage", "Hubo problemas en el servidor");
+          res.redirect("/session/login");
         }
       });
     });

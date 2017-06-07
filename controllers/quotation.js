@@ -31,16 +31,6 @@ function isAuthorized(rol) {
 }
 
 /**
-* Check if the role of the user is authorized to create a quotation
-* @param  {string} rol - User rol
-* @return {boolean}
-*/
-function isAuthorizedCreate(rol) {
-  const roles = ["responsable técnico", "auxiliar administrativo"];
-  return roles.includes(rol);
-}
-
-/**
 * Check if the role of the user is authorized to review a quotation
 * @param  {string} rol - User rol
 * @return {boolean}
@@ -52,13 +42,13 @@ function isAuthorizedReview(rol) {
 
 // GET /quotation/new -- Quotation form
 exports.new = (req, res) => {
-  if (isAuthorizedCreate(req.user.rol)) res.render("quotation/new");
+  if (isAuthorized(req.user.rol)) res.render("quotation/new");
   else res.redirect("/");
 };
 
 // POST /quotation/create -- Create a new quotation
 exports.create = (req, res) => {
-  if (isAuthorizedCreate(req.user.rol)) {
+  if (isAuthorized(req.user.rol)) {
     const applicant = {
       uid: uuid.v4(),
       firstname: req.body["applicant.firstname"],
@@ -150,6 +140,7 @@ exports.create = (req, res) => {
       );
     });
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -186,6 +177,7 @@ exports.pending = (req, res) => {
       }
     });
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -290,6 +282,7 @@ exports.approval = (req, res) => {
       });
     }
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -318,6 +311,7 @@ exports.getQuotation = (req, res) => {
       }
     });
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -326,7 +320,7 @@ exports.getQuotation = (req, res) => {
 exports.edit = (req, res) => {
   const { id } = req.params;
 
-  if (isAuthorizedCreate(req.user.rol)) {
+  if (isAuthorized(req.user.rol)) {
     const applicant = {
       firstname: req.body["applicant.firstname"],
       lastname: req.body["applicant.lastname"],
@@ -372,6 +366,7 @@ exports.edit = (req, res) => {
       res.redirect(`/quotation/${id}`);
     });
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -379,7 +374,7 @@ exports.edit = (req, res) => {
 // PUT /quotation/:id/delete -- Request for delete a specific quotation
 exports.changeState = (req, res) => {
   const { id } = req.params;
-  if (isAuthorizedCreate(req.user.rol)) {
+  if (isAuthorized(req.user.rol)) {
     Quotation.findByIdAndUpdate(
       id,
       { state: "2" },
@@ -451,6 +446,7 @@ exports.changeState = (req, res) => {
       }
     );
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -482,6 +478,7 @@ exports.pendingDelete = (req, res) => {
       }
     });
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -579,6 +576,7 @@ exports.delete = (req, res) => {
       });
     }
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -587,8 +585,10 @@ exports.delete = (req, res) => {
 exports.search = (req, res) => {
   if (isAuthorized(req.user.rol))
     res.render("quotation/search", { message: req.flash("searchMessage") });
-  else
+  else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
+  }
 };
 
 // POST /quotation/search -- Search a specific quotation
@@ -618,6 +618,7 @@ exports.find = (req, res) => {
       }
     );
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };
@@ -641,5 +642,10 @@ exports.exportToWord = (req, res) => {
   });
 };
 exports.menu = (req, res) => {
-  res.render("quotation/menu");
+  if (isAuthorized(req.user.rol)) {
+    res.render("quotation/menu");
+  } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
+  }
 };

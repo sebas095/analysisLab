@@ -21,9 +21,9 @@
           <% if (roles.includes(session.rol)) { %>
             <li><a href="/quotation/menu">Cotización<i class="sub_icon fa fa-file-text-o" aria-hidden="true"></i></a></li>
           <% } %>
-          <li><a href="#">Recepción de Muestra<i class="sub_icon fa fa-archive" aria-hidden="true"></i></a></li>
-          <li><a href="#">Registro de Resultados<i class="sub_icon fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
-          <li><a href="#">Generación de Informes<i class="sub_icon fa fa-bar-chart" aria-hidden="true"></i></a></li>
+          <li><a href="/">Recepción de Muestra<i class="sub_icon fa fa-archive" aria-hidden="true"></i></a></li>
+          <li><a href="/">Registro de Resultados<i class="sub_icon fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+          <li><a href="/">Generación de Informes<i class="sub_icon fa fa-bar-chart" aria-hidden="true"></i></a></li>
           <li><a href="#" id="logout">Salir<i class="sub_icon fa fa-sign-out" aria-hidden="true"></i></a>
             <form action="/session/logout?_method=delete" method="post" id="exit"></form>
           </li>

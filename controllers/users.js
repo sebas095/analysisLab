@@ -520,5 +520,10 @@ exports.deactivateAccount = (req, res) => {
 };
 
 exports.menu = (req, res) => {
-  res.render('users/menu');
+  if (req.user.state.includes("1")) {
+    res.render("users/menu");
+  } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
+  }
 };

@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport(
 /*
   Responsable Tecnico --  Crear, revisa
   Auxiliar Administrativo -- Crea
-  Director del Laboratorio -- Revisa
+  Director del Laboratorio -- crear, Revisa ==> falta añadir el director
 */
 
 /**

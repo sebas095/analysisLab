@@ -17,9 +17,9 @@ exports.newUser = (req, res) => {
         );
         return res.redirect("/");
       } else if (users.length === 0) {
-        res.render("users/new", { isAdmin: true });
+        res.render("users/new");
       } else {
-        res.render("users/new", { isAdmin: false });
+        res.render("users/new");
       }
     });
   } else {

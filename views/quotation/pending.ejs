@@ -1,176 +1,182 @@
-<div class="row">
-  <% if (message.length > 0) { %>
-    <div class="alert alert-danger alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <p><%= message %></p>
-    </div>
-  <% } %>
-  <h3>Aprobación de Cotizaciones</h3>
-  <% for (let i = 0, quotation = quotations[i]; i < quotations.length; i++) { %>
-    <% if (i > 0) { %>
-      <hr>
+<% include ../header.ejs %>
+<% include ../nav.ejs %>
+<div class="container-fluid">
+  <div class="col-xs-12">
+    <% if (message.length > 0) { %>
+      <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p><%= message %></p>
+      </div>
     <% } %>
-    <div class="row">
-      <form class="form-horizontal" action="/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2">N°:</label>
-          <div class="col-sm-5">
-            <span class="form-control"><%= quotation._id %></span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="businessName">Razón Social:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="businessName" id="businessName" value="<%= quotation.businessName %>" placeholder="Ingresa razón social" disabled required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="document">Nit o C.C.:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="document" id="document" value="<%= quotation.document %>" placeholder="Ingresa Nit o C.C." disabled required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="address">Dirección:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="address" id="address" value="<%= quotation.address %>" placeholder="Ingresa dirección" disabled required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="phone">Teléfono:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="phone" id="phone" value="<%= quotation.phone %>" placeholder="Ingresa teléfono" disabled required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
-          <div class="col-sm-5">
-            <input type="email" class="form-control" name="email" id="email" value="<%= quotation.email %>" placeholder="Ingresa correo electrónico" disabled required>
-          </div>
-        </div>
-
+    <div class="title">
+      <h1>APROBACIÓN DE COTIZACIONES</h1>
+    </div>
+    <% for (let i = 0, quotation = quotations[i]; i < quotations.length; i++) { %>
+      <% if (i > 0) { %>
         <hr>
-        <h3>Información Solicitante</h3>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.firstname">Nombre(s):</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="applicant.firstname" id="applicant.firstname" value="<%= quotation.applicant.firstname %>" placeholder="Ingresa nombre(s)" disabled required>
+      <% } %>
+      <div class="row">
+        <form class="form-horizontal" action="/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">N°:</label>
+            <div class="col-sm-5">
+              <span class="form-control"><%= quotation._id %></span>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.lastname">Apellido(s):</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="applicant.lastname" id="applicant.lastname" value="<%= quotation.applicant.lastname %>" placeholder="Ingresa apellido(s)" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="businessName">Razón Social:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="businessName" id="businessName" value="<%= quotation.businessName %>" placeholder="Ingresa razón social" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.document">Cédula:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="applicant.document" id="applicant.document" value="<%= quotation.applicant.document %>" placeholder="Ingresa cédula" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="document">Nit o C.C.:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="document" id="document" value="<%= quotation.document %>" placeholder="Ingresa Nit o C.C." disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.position">Cargo:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="applicant.position" id="applicant.position" value="<%= quotation.applicant.position %>" placeholder="Ingresa cargo" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="address">Dirección:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="address" id="address" value="<%= quotation.address %>" placeholder="Ingresa dirección" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.phone">Teléfono:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="applicant.phone" id="applicant.phone" value="<%= quotation.applicant.phone %>" placeholder="Ingresa teléfono" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="phone">Teléfono:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="phone" id="phone" value="<%= quotation.phone %>" placeholder="Ingresa teléfono" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.email">Correo Electrónico:</label>
-          <div class="col-sm-5">
-            <input type="email" class="form-control" name="applicant.email" id="applicant.email" value="<%= quotation.applicant.email %>" placeholder="Ingresa correo electrónico" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="email">Correo Electrónico:</label>
+            <div class="col-sm-5">
+              <input type="email" class="form-control" name="email" id="email" value="<%= quotation.email %>" placeholder="Ingresa correo electrónico" disabled required>
+            </div>
           </div>
-        </div>
 
-        <hr>
-        <h3>Información Muestra</h3>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="sample.type">Tipo de muestra:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="sample.type" id="sample.type" value="<%= quotation.sample.type %>" placeholder="Ingresa tipo de muestra" disabled required>
+          <hr>
+          <h3>Información Solicitante</h3>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.firstname">Nombre(s):</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="applicant.firstname" id="applicant.firstname" value="<%= quotation.applicant.firstname %>" placeholder="Ingresa nombre(s)" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="sample.parameter">Parámetro:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="sample.parameter" id="sample.parameter" value="<%= quotation.sample.parameter %>" placeholder="Ingresa parámetro" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.lastname">Apellido(s):</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="applicant.lastname" id="applicant.lastname" value="<%= quotation.applicant.lastname %>" placeholder="Ingresa apellido(s)" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="sample.method">Método:</label>
-          <div class="col-sm-5">
-            <input type="text" class="form-control" name="sample.method" id="sample.method" value="<%= quotation.sample.method %>" placeholder="Ingresa método" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.document">Cédula:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="applicant.document" id="applicant.document" value="<%= quotation.applicant.document %>" placeholder="Ingresa cédula" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="sample.price">Precio muestra:</label>
-          <div class="col-sm-5">
-            <input type="number" min="0" class="form-control" name="sample.price" id="sample.price" value="<%= quotation.sample.price %>" placeholder="Ingresa precio muestra" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.position">Cargo:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="applicant.position" id="applicant.position" value="<%= quotation.applicant.position %>" placeholder="Ingresa cargo" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="sample.amount">Número de muestras:</label>
-          <div class="col-sm-5">
-            <input type="number" min="0" class="form-control" name="sample.amount" id="sample.amount" value="<%= quotation.sample.amount %>" placeholder="Ingresa número de muestras" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.phone">Teléfono:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="applicant.phone" id="applicant.phone" value="<%= quotation.applicant.phone %>" placeholder="Ingresa teléfono" disabled required>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="sample.totalPrice">Valor total de muestras:</label>
-          <div class="col-sm-5">
-            <input type="number" min="0" class="form-control" name="sample.totalPrice" id="sample.totalPrice" value="<%= quotation.sample.totalPrice %>" placeholder="Ingresa Valor total de muestras" disabled required>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="applicant.email">Correo Electrónico:</label>
+            <div class="col-sm-5">
+              <input type="email" class="form-control" name="applicant.email" id="applicant.email" value="<%= quotation.applicant.email %>" placeholder="Ingresa correo electrónico" disabled required>
+            </div>
           </div>
-        </div>
 
-        <hr>
-        <div class="form-group">
-          <label class="control-label col-sm-offset-2 col-sm-2" for="total">Valor Total:</label>
-          <div class="col-sm-5">
-            <input type="number" class="form-control" min="0" name="total" id="total" value="<%= quotation.total %>" placeholder="Ingresa total" disabled required>
-            <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
+          <hr>
+          <h3>Información Muestra</h3>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="sample.type">Tipo de muestra:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="sample.type" id="sample.type" value="<%= quotation.sample.type %>" placeholder="Ingresa tipo de muestra" disabled required>
+            </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-sm-offset-4 col-sm-8">
-            <button class="btn btn-success accept" id="accept-<%= quotation._id %>">Aprobar</button>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Rechazar</button>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="sample.parameter">Parámetro:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="sample.parameter" id="sample.parameter" value="<%= quotation.sample.parameter %>" placeholder="Ingresa parámetro" disabled required>
+            </div>
           </div>
-        </div>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="sample.method">Método:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="sample.method" id="sample.method" value="<%= quotation.sample.method %>" placeholder="Ingresa método" disabled required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="sample.price">Precio muestra:</label>
+            <div class="col-sm-5">
+              <input type="number" min="0" class="form-control" name="sample.price" id="sample.price" value="<%= quotation.sample.price %>" placeholder="Ingresa precio muestra" disabled required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="sample.amount">Número de muestras:</label>
+            <div class="col-sm-5">
+              <input type="number" min="0" class="form-control" name="sample.amount" id="sample.amount" value="<%= quotation.sample.amount %>" placeholder="Ingresa número de muestras" disabled required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="sample.totalPrice">Valor total de muestras:</label>
+            <div class="col-sm-5">
+              <input type="number" min="0" class="form-control" name="sample.totalPrice" id="sample.totalPrice" value="<%= quotation.sample.totalPrice %>" placeholder="Ingresa Valor total de muestras" disabled required>
+            </div>
+          </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-          <div class="modal-dialog">
+          <hr>
+          <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2" for="total">Valor Total:</label>
+            <div class="col-sm-5">
+              <input type="number" class="form-control" min="0" name="total" id="total" value="<%= quotation.total %>" placeholder="Ingresa total" disabled required>
+              <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
+            </div>
+          </div>
 
-            <!-- Modal content-->
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Justificación</h4>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <div class="col-sm-offset-1 col-sm-10">
-                    <textarea name="justification" class="form-control" placeholder="Escribe la justificación del rechazo"></textarea>
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <button class="btn btn-success accept" id="accept-<%= quotation._id %>">Aprobar</button>
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Rechazar</button>
+            </div>
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Justificación</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                      <textarea name="justification" class="form-control" placeholder="Escribe la justificación del rechazo"></textarea>
+                    </div>
                   </div>
                 </div>
+                <div class="modal-footer">
+                  <button class="btn btn-success reject" id="reject-<%= quotation._id %>">Enviar</button>
+                  <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
               </div>
-              <div class="modal-footer">
-                <button class="btn btn-success reject" id="reject-<%= quotation._id %>">Enviar</button>
-                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-              </div>
-            </div>
 
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
-  <% } %>
+        </form>
+      </div>
+    <% } %>
+  </div>
 </div>
     <script src="/js/quotation.js"></script>
     <script type="text/javascript">

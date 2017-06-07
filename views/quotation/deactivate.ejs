@@ -1,25 +1,33 @@
-<div class="row">
-  <% if (message.length > 0) { %>
-    <div class="alert alert-danger alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <p><%= message %></p>
+<% include ../header.ejs %>
+<% include ../nav.ejs %>
+<div class="container-fluid">
+  <div class="col-xs-12">
+    <% if (message.length > 0) { %>
+      <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p><%= message %></p>
+      </div>
+    <% } %>
+    <div class="title">
+      <h1>ELIMINACIÓN DE COTIZACIONES</h1>
     </div>
-  <% } %>
-  <h3>Desactivación de Cotizaciones</h3>
-  <% for (let quotation of quotations) { %>
-    <div class="row" style="margin: 15px;">
-      <form class="form-horizontal" action="/quotation/delete/<%= quotation._id %>?_method=delete" method="post" id="form-<%= quotation._id %>">
-        <div class="col-sm-6">
-          <p>Solicitan la eliminación de la cotización del cliente <%= quotation.applicant.firstname %> <%= quotation.applicant.lastname %></p>
-          <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
-        </div>
-        <div class="col-sm-6">
-          <button class="btn btn-success accept" id="accept-<%= quotation._id %>">Aprobar</button>
-          <button class="btn btn-danger reject" id="reject-<%= quotation._id %>">Rechazar</button>
-        </div>
-      </form>
-    </div>
-  <% } %>
+    <% for (let quotation of quotations) { %>
+      <div class="row" style="margin: 15px;">
+        <form class="form-horizontal panel panel-default" action="/quotation/delete/<%= quotation._id %>?_method=delete" method="post" id="form-<%= quotation._id %>">
+          <div class="panel-body">
+            <div class="col-sm-8">
+              <p>Solicitan la eliminación de la cotización del cliente <%= quotation.applicant.firstname %> <%= quotation.applicant.lastname %></p>
+              <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
+            </div>
+            <div class="col-sm-4">
+              <button class="btn btn-success accept" id="accept-<%= quotation._id %>">Aprobar</button>
+              <button class="btn btn-danger reject" id="reject-<%= quotation._id %>">Rechazar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    <% } %>
+  </div>
 </div>
     <script src="/js/deactivateQuotation.js"></script>
     <script type="text/javascript">

@@ -8,7 +8,9 @@
           <p><%= message %></p>
         </div>
       <% } %>
-      <h3>Desactivación de cuentas</h3>
+      <div class="title">
+        <h1>DESACTIVACIÓN DE CUENTAS</h1>
+      </div>
       <% for (let usr of users) { %>
         <div class="row">
           <form class="form-horizontal panel panel-default" action="/users/deactivateAccount?_method=put" method="post" id="form-<%= usr._id %>">

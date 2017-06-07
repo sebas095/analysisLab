@@ -491,3 +491,7 @@ exports.deactivateAccount = (req, res) => {
     res.redirect("/");
   }
 };
+
+exports.menu = (req, res) => {
+  res.render('users/menu');
+};

@@ -1,0 +1,26 @@
+<% include ../header.ejs %>
+<% include ../nav.ejs %>
+  <div class="container-fluid">
+    <div class="row">
+      <% if (session.rol === 'responsable técnico' || session.rol === 'director del laboratorio') {%>
+        <div class="col-xs-11 col-sm-4 center space-bottom">
+          <a href="/users/admin" class="btn btn-admin-minor btn-color-blue">Gestión de <br> Usuarios</a>
+        </div>
+        <div class="col-xs-11 col-sm-4 center space-bottom">
+          <a href="/users/pending/approve" class="btn btn-admin-minor btn-color-green">Aprobación de <br> Cuentas</a>
+        </div>
+        <div class="col-xs-11 col-sm-4 center space-bottom">
+          <a href="/users/pending/deactivate" class="btn btn-admin btn-danger">Desactivación de <br> Cuentas</a>
+        </div>
+    <% } %>
+    </div>
+  </div>
+<% include ../footer.ejs %>
+    <script type="text/javascript">
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+      });
+    </script>
+  </body>
+</html>

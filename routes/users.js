@@ -21,6 +21,12 @@ module.exports = (app, mountPoint) => {
     userController.deactivatePendingAccount
   );
 
+  router.get(
+    "/menu",
+    sessionController.loginRequired,
+    userController.menu
+  );
+
   // POST
   router.post("/register", userController.createUser);
 

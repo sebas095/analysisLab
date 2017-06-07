@@ -53,12 +53,6 @@ module.exports = (app, mountPoint) => {
     quotationController.create
   );
 
-  router.post(
-    "/search",
-    sessionController.loginRequired,
-    quotationController.find
-  );
-
   router.post("/samples/create", quotationController.createSample);
 
   // PUT

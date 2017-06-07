@@ -584,40 +584,62 @@ exports.delete = (req, res) => {
 // GET /quotation/search -- Form to search a specific quotation
 exports.search = (req, res) => {
   if (isAuthorized(req.user.rol))
-    res.render("quotation/search", { message: req.flash("searchMessage") });
-  else {
-    req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
-  }
-};
-
-// POST /quotation/search -- Search a specific quotation
-exports.find = (req, res) => {
-  if (isAuthorized(req.user.rol)) {
-    Quotation.findOne(
-      {
-        $or: [{ _id: Number(req.body.id) }, { document: req.body.id }]
-      },
-      (err, data) => {
+    if (req.query.id) {
+      Quotation.find(
+        {
+          $or: [{ _id: Number(req.query.id) }, { document: req.query.id }]
+        },
+        null,
+        { sort: { createdAt: -1 } },
+        (err, data) => {
+          if (err) {
+            console.log("Error: ", err);
+            res.render("quotation/search", {
+              message: "Hubo problemas buscando la cotización, " +
+                "intenta de nuevo",
+              quotations: [],
+              results: []
+            });
+          } else if (data.length > 0) {
+            res.render("quotation/search", {
+              message: "",
+              quotations: data,
+              results: []
+            });
+          } else {
+            res.render("quotation/search", {
+              message: "No hay resultados encontrados",
+              quotations: [],
+              results: []
+            });
+          }
+        }
+      );
+    } else {
+      Quotation.find({}, null, { sort: { createdAt: -1 } }, (err, data) => {
         if (err) {
           console.log("Error: ", err);
-          req.flash(
-            "searchMessage",
-            "Hubo problemas buscando la cotización, " + "intenta de nuevo"
-          );
-          res.redirect("/quotation/search");
-        } else if (data) {
-          res.redirect(`/quotation/${data._id}`);
+          res.render("quotation/search", {
+            message: "Hubo en el servidor, intenta de nuevo",
+            quotations: [],
+            results: []
+          });
+        } else if (data.length > 0) {
+          res.render("quotation/search", {
+            message: "",
+            quotations: [],
+            results: data.slice(0, 10)
+          });
         } else {
-          req.flash(
-            "searchMessage",
-            "No existe la cotización, verifica e " + "intenta de nuevo"
-          );
-          res.redirect("/quotation/search");
+          res.render("quotation/search", {
+            message: "No hay cotizaciones disponibles",
+            quotations: [],
+            results: []
+          });
         }
-      }
-    );
-  } else {
+      });
+    }
+  else {
     req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }

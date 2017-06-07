@@ -89,7 +89,7 @@ exports.createUser = (req, res) => {
             } else {
               req.flash(
                 "loginMessage",
-                "La cuenta ha diso creada exitosamente " +
+                "La cuenta ha sido creada exitosamente " +
                   "y tienes permisos de administrador"
               );
             }

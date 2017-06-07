@@ -39,10 +39,7 @@
                 <td rowspan="2" class="quotation-number">1</td>
                 <td rowspan="2"></td>
               </tr>
-              <tr>
-                <td>04</td>
-                <td>05</td>
-                <td>2016</td>
+              <tr id="date">
               </tr>
             </tbody>
           </table>
@@ -435,6 +432,12 @@
         e.preventDefault();
         $("#wrapper").toggleClass("active");
       });
+      const date = new Date();
+      $("#date").html(`
+        <td>${date.getDate()}</td>
+        <td>${date.getMonth() + 1}</td>
+        <td>${date.getFullYear()}</td>`
+      );
     </script>
   </body>
 </html>

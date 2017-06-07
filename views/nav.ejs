@@ -10,7 +10,9 @@
       <ul class="sidebar-nav" id="sidebar">
         <% if (typeof(session) == 'object' && session) { %>
           <li><a href="/profile"><%= session.firstname %><i class="sub_icon fa fa-user" aria-hidden="true"></i></a></li>
-          <li><a href="/users/menu">Administración<i class="sub_icon fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+          <% if (session.state === '1') { %>
+            <li><a href="/users/menu">Administración<i class="sub_icon fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+          <% } %>
           <% const roles = [
             'director del laboratorio',
             'responsable técnico',

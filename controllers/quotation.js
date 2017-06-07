@@ -42,8 +42,23 @@ function isAuthorizedReview(rol) {
 
 // GET /quotation/new -- Quotation form
 exports.new = (req, res) => {
-  if (isAuthorized(req.user.rol)) res.render("quotation/new");
-  else res.redirect("/");
+  if (isAuthorized(req.user.rol)) {
+    Quotation.find({}, (err, data) => {
+      if (err) {
+        console.log("Error: ", err);
+        req.flash(
+          "indexMessage",
+          "Hubo problemas en el servidor, intenta de nuevo"
+        );
+        res.redirect("/");
+      } else if (data.length > 0) {
+        res.render("quotation/new", { id: data[data.length - 1]._id + 1 });
+      } else {
+        res.render("quotation/new", { id: 1 });
+      }
+    });
+  } else
+    res.redirect("/");
 };
 
 // POST /quotation/create -- Create a new quotation

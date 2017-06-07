@@ -154,5 +154,8 @@ const QuotationSchema = new Schema({
 });
 
 QuotationSchema.plugin(timestamp);
-QuotationSchema.plugin(autoIncrement.plugin, "Quotation");
+QuotationSchema.plugin(autoIncrement.plugin, {
+  startAt: 1,
+  model: "Quotation"
+});
 module.exports = mongoose.model("Quotation", QuotationSchema);

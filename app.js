@@ -8,9 +8,9 @@ const cookieParser = require("cookie-parser");
 const favicon = require("serve-favicon");
 const logger = require("morgan");
 const methodOverride = require("method-override");
-const partials = require("express-partials");
 const path = require("path");
 const expSession = require("express-session");
+const MongoStore = require("connect-mongo")(expSession);
 const User = require("./models/user");
 
 require("colors");
@@ -24,7 +24,6 @@ const users = require("./routes/users");
 const session = require("./routes/session");
 const account = require("./routes/account");
 const quotation = require("./routes/quotation");
-const c_views = require("./routes/c_views");
 
 const app = express();
 
@@ -45,8 +44,13 @@ app.use(methodOverride("_method"));
 app.use(
   expSession({
     secret: config.secret,
-    resave: false,
-    saveUninitialized: false
+    resave: true,
+    saveUninitialized: true,
+    // using store session on MongoDB using express-session + connect
+    store: new MongoStore({
+      url: config.db.url,
+      collection: "sessions"
+    })
   })
 );
 app.use(passport.initialize());
@@ -85,7 +89,6 @@ index(app, "/");
 users(app, "/users");
 account(app, "/account");
 quotation(app, "/quotation");
-c_views(app, "/c_views");
 session(app, "/session", passport);
 
 // catch 404 and forward to error handler

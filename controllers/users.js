@@ -103,12 +103,41 @@ exports.createUser = (req, res) => {
 
 // PUT /users/:id -- Modifies user data
 exports.updateUser = (req, res) => {
-  const id = req.params.id || req.user._id;
-  if (req.body.status && req.body.status === "admin") {
-    req.body.state = "1";
+  if (req.user.state.includes("1")) {
+    const { id, rol } = req.params;
+
+    if (rol === "admin-user") {
+      if (req.body[`status-${id}`]) {
+        req.body.state = "1";
+      } else {
+        req.body.state = "2";
+      }
+    }
+
+    User.findByIdAndUpdate(id, req.body, { new: true }, (err, user) => {
+      if (err) {
+        console.log("Error: ", err);
+        req.flash(
+          "indexMessage",
+          "Hubo problemas actualizando los datos, intenta de nuevo"
+        );
+        return res.redirect("/");
+      } else {
+        req.flash(
+          "adminMessage",
+          "Los datos han sido actualizados exitosamente"
+        );
+        res.redirect("/users/admin");
+      }
+    });
   } else {
-    req.body.state = "2";
+    res.redirect("/");
   }
+};
+
+// PUT /profile -- Modifies user data
+exports.updateProfile = (req, res) => {
+  const id = req.user._id;
 
   User.findByIdAndUpdate(id, req.body, { new: true }, (err, user) => {
     if (err) {
@@ -118,9 +147,6 @@ exports.updateUser = (req, res) => {
         "Hubo problemas actualizando los datos, intenta de nuevo"
       );
       return res.redirect("/");
-    } else if (req.originalUrl.includes("/users/")) {
-      req.flash("adminMessage", "Los datos han sido actualizados exitosamente");
-      res.redirect("/users/admin");
     } else {
       req.flash("userMessage", "Sus datos han sido actualizados exitosamente");
       res.redirect("/profile");
@@ -152,6 +178,7 @@ exports.deleteUser = (req, res) => {
       }
     );
   } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
 };

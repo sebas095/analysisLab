@@ -602,7 +602,10 @@ exports.search = (req, res) => {
     if (req.query.id) {
       Quotation.find(
         {
-          $or: [{ _id: Number(req.query.id) }, { document: req.query.id }]
+          $or: [
+            { _id: Number(req.query.id), state: "1" },
+            { document: req.query.id, state: "1" }
+          ]
         },
         null,
         { sort: { createdAt: -1 } },
@@ -631,28 +634,33 @@ exports.search = (req, res) => {
         }
       );
     } else {
-      Quotation.find({}, null, { sort: { createdAt: -1 } }, (err, data) => {
-        if (err) {
-          console.log("Error: ", err);
-          res.render("quotation/search", {
-            message: "Hubo en el servidor, intenta de nuevo",
-            quotations: [],
-            results: []
-          });
-        } else if (data.length > 0) {
-          res.render("quotation/search", {
-            message: "",
-            quotations: [],
-            results: data.slice(0, 10)
-          });
-        } else {
-          res.render("quotation/search", {
-            message: "No hay cotizaciones disponibles",
-            quotations: [],
-            results: []
-          });
+      Quotation.find(
+        { state: "1" },
+        null,
+        { sort: { createdAt: -1 } },
+        (err, data) => {
+          if (err) {
+            console.log("Error: ", err);
+            res.render("quotation/search", {
+              message: "Hubo en el servidor, intenta de nuevo",
+              quotations: [],
+              results: []
+            });
+          } else if (data.length > 0) {
+            res.render("quotation/search", {
+              message: "",
+              quotations: [],
+              results: data.slice(0, 10)
+            });
+          } else {
+            res.render("quotation/search", {
+              message: "No hay cotizaciones disponibles",
+              quotations: [],
+              results: []
+            });
+          }
         }
-      });
+      );
     }
   else {
     req.flash("indexMessage", "No tienes permisos para acceder");
@@ -678,6 +686,7 @@ exports.exportToWord = (req, res) => {
     });
   });
 };
+
 exports.menu = (req, res) => {
   if (isAuthorized(req.user.rol)) {
     res.render("quotation/menu");

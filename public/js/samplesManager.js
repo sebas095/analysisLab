@@ -23,9 +23,9 @@ jQuery(document).ready($ => {
       if (i % 3 === 0 && i > 0) {
         sampleData += `
           <td>
-            <input type="number" style="text-align:center" min="1" name="numberSamples">
+            <input type="number" style="text-align:center" min="0" value="0" class="numberSamples" name="numberSamples">
           </td>
-          <td></td>`;
+          <td>${input[i].value}</td>`;
       }
     }
 
@@ -40,6 +40,21 @@ jQuery(document).ready($ => {
     $(".modal").css("display", "none");
     document.getElementById("sampleForm").reset();
     count = 0;
+
+    $(".numberSamples").on("keyup mouseup", function() {
+      if (this.value) {
+        const price = Number($(this).parent().prev().text());
+        $(this).parent().next().text(this.value * price);
+        let total = 0;
+        const $numberSamples = $(".numberSamples");
+        for (let i = 0; i < $numberSamples.length; i++) {
+          total += Number($($numberSamples[i]).parent().next().text());
+        }
+        $("#totalPrice").text(total);
+      } else {
+        $(this).parent().next().text("0");
+      }
+    });
 
     return false;
   });

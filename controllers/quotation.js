@@ -669,27 +669,37 @@ exports.search = (req, res) => {
 };
 
 exports.exportToWord = (req, res) => {
-  ejs.renderFile("views/quotation/word.ejs", (err, html) => {
-    const options = {
-      orientation: "landscape",
-      margins: {
-        top: "3cm",
-        right: "2.09cm",
-        bottom: "2.5cm",
-        left: "1.75cm"
-      }
-    };
-    const docx = HtmlDocx.asBlob(html, options);
-    fs.writeFile(`${__dirname}/../public/docs/cotizacion.docx`, docx, err => {
-      if (err) console.log(err);
-      res.redirect("/docs/cotizacion.docx");
-    });
-  });
+  res.render("quotation/word");
+  // ejs.renderFile("views/quotation/word.ejs", (err, html) => {
+  //   const options = {
+  //     orientation: "portrait",
+  //     margins: {
+  //       top: "3cm",
+  //       right: "2.09cm",
+  //       bottom: "2.5cm",
+  //       left: "1.75cm"
+  //     }
+  //   };
+  //   const docx = HtmlDocx.asBlob(html, options);
+  //   fs.writeFile(`${__dirname}/../public/docs/cotizacion.docx`, docx, err => {
+  //     if (err) console.log(err);
+  //     res.redirect("/docs/cotizacion.docx");
+  //   });
+  // });
 };
 
 exports.menu = (req, res) => {
   if (isAuthorized(req.user.rol)) {
     res.render("quotation/menu");
+  } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
+  }
+};
+
+exports.approval = (req, res) => {
+  if (isAuthorized(req.user.rol)) {
+    res.render("quotation/approval");
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");

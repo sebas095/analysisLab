@@ -33,6 +33,11 @@ module.exports = (app, mountPoint) => {
     sessionController.loginRequired,
     quotationController.menu
   );
+  router.get(
+    "/approval",
+    sessionController.loginRequired,
+    quotationController.approval
+  );
 
   router.get(
     "/:id/export",

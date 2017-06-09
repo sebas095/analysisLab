@@ -669,6 +669,7 @@ exports.search = (req, res) => {
 };
 
 exports.exportToWord = (req, res) => {
+  // res.render("quotation/word");
   ejs.renderFile("views/quotation/word.ejs", (err, html) => {
     const options = {
       orientation: "landscape",
@@ -690,6 +691,15 @@ exports.exportToWord = (req, res) => {
 exports.menu = (req, res) => {
   if (isAuthorized(req.user.rol)) {
     res.render("quotation/menu");
+  } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/");
+  }
+};
+
+exports.approval = (req, res) => {
+  if (isAuthorized(req.user.rol)) {
+    res.render("quotation/approval");
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");

@@ -674,10 +674,10 @@ exports.exportToWord = (req, res) => {
     const options = {
       orientation: "landscape",
       margins: {
-        top: "1cm",
-        right: "1cm",
-        bottom: "1cm",
-        left: "1cm"
+        top: "3cm",
+        right: "2.09cm",
+        bottom: "2.5cm",
+        left: "1.75cm"
       }
     };
     const docx = HtmlDocx.asBlob(html, options);

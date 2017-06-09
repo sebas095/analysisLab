@@ -37,7 +37,8 @@ jQuery(document).ready($ => {
     $(sampleNew).insertAfter("#sampleInfo");
     $("#sampleInfo").removeAttr("id");
     $("#sampleInf").attr("id", "sampleInfo");
-    $(".modal").css("display", "none");
+    let type = $("#sampleInfo").prev().children().first().text();
+    type = $(".modal").css("display", "none");
     document.getElementById("sampleForm").reset();
     count = 0;
 

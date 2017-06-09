@@ -1,5 +1,6 @@
 jQuery(document).ready($ => {
   let count = 0;
+  let rowSpan = 1;
   $("#sampleForm").submit(ev => {
     ev.preventDefault();
     const input = document.getElementsByClassName("sampleInput");
@@ -18,7 +19,7 @@ jQuery(document).ready($ => {
             ${input[i].value}
           </td>`;
       } else {
-        sampleData += `<td>${input[i].value}</td>`;
+        sampleData += `<td>${input[i].value}</td>\n`;
       }
       if (i % 3 === 0 && i > 0) {
         sampleData += `
@@ -38,9 +39,16 @@ jQuery(document).ready($ => {
     $("#sampleInfo").removeAttr("id");
     $("#sampleInf").attr("id", "sampleInfo");
     let type = $("#sampleInfo").prev().children().first().text();
-    type = $(".modal").css("display", "none");
+    type = `<a href="#">
+              <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+            </a>
+            ${type}`;
+    $("#sampleInfo").prev().children().first().html(type);
+    $("#sampleInfo").prev().children().first().attr("rowspan", rowSpan);
+    $(".modal").css("display", "none");
     document.getElementById("sampleForm").reset();
     count = 0;
+    rowSpan = 1;
 
     $(".numberSamples").on("keyup mouseup", function() {
       if (this.value) {
@@ -66,7 +74,7 @@ jQuery(document).ready($ => {
     //   <a href="#" class="removeParameter" id="remove0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
     // </div>
     ev.preventDefault();
-    count++;
+    count++, rowSpan++;
     $("#parameters").append(
       `<div class="row" id="parameter${count}">
         <div class="col-sm-12">

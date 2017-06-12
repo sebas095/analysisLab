@@ -7,7 +7,10 @@ jQuery(document).ready($ => {
     let sampleData = "";
 
     for (let i = 0; i < input.length; i++) {
-      if (i === 1) {
+      if (i === 1 || (i % 4 === 0 && i > 0)) {
+        if (i % 4 === 0 && i > 0) {
+          sampleData += "<span></span>";
+        }
         sampleData += `
           <td>
             <a href="#" data-toggle="modal" data-target="#parameterModal">
@@ -19,8 +22,9 @@ jQuery(document).ready($ => {
             ${input[i].value}
           </td>`;
       } else {
-        sampleData += `<td>${input[i].value}</td>\n`;
+        sampleData += `<td>${input[i].value}</td>`;
       }
+
       if (i % 3 === 0 && i > 0) {
         sampleData += `
           <td>
@@ -31,20 +35,27 @@ jQuery(document).ready($ => {
     }
 
     $(".modal").modal("hide");
-    let sampleInfo = document.getElementById("sampleInfo");
-    const sampleNew = `<tr id="sampleInf">${sampleInfo.innerHTML}</tr>`;
-    sampleInfo.innerHTML = sampleData;
-
+    let sampleInfo = $("#sampleInfo");
+    const sampleNew = `<tr id="sampleInf">${sampleInfo.html()}</tr>`;
     $(sampleNew).insertAfter("#sampleInfo");
-    $("#sampleInfo").removeAttr("id");
+    $("#sampleInfo").attr("id", "sampleInfo2");
+
+    sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
+    sampleData = `<tr id="sampleInfo3">${sampleData}</tr>`;
+
+    $(sampleData).insertAfter("#sampleInfo2");
+    $("#sampleInfo2").remove();
     $("#sampleInf").attr("id", "sampleInfo");
-    let type = $("#sampleInfo").prev().children().first().text();
+
+    let type = $("#sampleInfo3").children().first().text();
     type = `<a href="#">
               <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
             </a>
             ${type}`;
-    $("#sampleInfo").prev().children().first().html(type);
-    $("#sampleInfo").prev().children().first().attr("rowspan", rowSpan);
+
+    $("#sampleInfo3").children().first().html(type);
+    $("#sampleInfo3").children().first().attr("rowspan", rowSpan);
+    $("#sampleInfo3").removeAttr("id");
     $(".modal").css("display", "none");
     document.getElementById("sampleForm").reset();
     count = 0;

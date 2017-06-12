@@ -11,16 +11,26 @@ jQuery(document).ready($ => {
         if (i % 4 === 0 && i > 0) {
           sampleData += "<span></span>";
         }
-        sampleData += `
-          <td>
-            <a href="#" data-toggle="modal" data-target="#parameterModal">
-              <i class="fa fa-plus icon-position" aria-hidden="true"></i>
-            </a>
-            <a href="#">
-              <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-            </a>
-            ${input[i].value}
-          </td>`;
+        if (i === input.length - 3) {
+          sampleData += `
+            <td>
+              <a href="#" data-toggle="modal" data-target="#parameterModal">
+                <i class="fa fa-plus icon-position" aria-hidden="true"></i>
+              </a>
+              <a href="#">
+                <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+              </a>
+              ${input[i].value}
+            </td>`;
+        } else {
+          sampleData += `
+            <td>
+              <a href="#">
+                <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+              </a>
+              ${input[i].value}
+            </td>`;
+        }
       } else {
         sampleData += `<td>${input[i].value}</td>`;
       }

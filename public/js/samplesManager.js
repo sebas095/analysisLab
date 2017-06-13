@@ -14,10 +14,10 @@ jQuery(document).ready($ => {
         if (i === input.length - 3) {
           sampleData += `
             <td>
-              <a href="#" data-toggle="modal" data-target="#parameterModal">
+              <a href="#" class="newParameter" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
-              <a href="#">
+              <a href="#" class="deleteParameter">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
               </a>
               ${input[i].value}
@@ -58,7 +58,7 @@ jQuery(document).ready($ => {
     $("#sampleInf").attr("id", "sampleInfo");
 
     let type = $("#sampleInfo3").children().first().text();
-    type = `<a href="#">
+    type = `<a href="#" class="removeSample">
               <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
             </a>
             ${type}`;
@@ -70,6 +70,24 @@ jQuery(document).ready($ => {
     document.getElementById("sampleForm").reset();
     count = 0;
     rowSpan = 1;
+
+    $(".removeSample").click(function(ev) {
+      ev.preventDefault();
+      const rowSpan = $(this).parent().attr("rowspan");
+      let row = $(this).parent().parent();
+      for (let i = 0; i < rowSpan; i++) {
+        let next = $(row).next();
+        $(row).remove();
+        row = next;
+      }
+
+      let total = 0;
+      const $numberSamples = $(".numberSamples");
+      for (let i = 0; i < $numberSamples.length; i++) {
+        total += Number($($numberSamples[i]).parent().next().text());
+      }
+      $("#totalPrice").text(total);
+    });
 
     $(".numberSamples").on("keyup mouseup", function() {
       if (this.value) {

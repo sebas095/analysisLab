@@ -16,7 +16,7 @@ const SampleSchema = new Schema({
       {
         parameter: "",
         method: "",
-        price: 0.0
+        price: 0
       }
     ]
   }

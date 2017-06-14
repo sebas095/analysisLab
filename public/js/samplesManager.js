@@ -239,6 +239,11 @@ jQuery(document).ready($ => {
     updateInputs();
     return false;
   });
+
+  $("#sendSample").click(ev => {
+    ev.preventDefault();
+    // TODO poner valores en los input hidden
+  });
 });
 
 function getTagAndRowSpan(row) {

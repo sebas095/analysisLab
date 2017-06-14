@@ -5,42 +5,6 @@ const { Schema } = mongoose;
 autoIncrement.initialize(mongoose.connection);
 
 /*
-  Muestra
-  - Tipo
-  - Parámetro
-  - Método
-  - Precio muestra
-  - Número de muestras
-  - Valor total de muestras
-*/
-const SampleSchema = new Schema({
-  type: {
-    type: String,
-    require: true
-  },
-  parameter: {
-    type: String,
-    require: true
-  },
-  method: {
-    type: String,
-    require: true
-  },
-  price: {
-    type: Number,
-    require: true
-  },
-  amount: {
-    type: Number,
-    require: true
-  },
-  totalPrice: {
-    type: Number,
-    require: true
-  }
-});
-
-/*
   Cotización
   - Razón Social
   - Nit o C.C.

@@ -218,7 +218,7 @@
                                 <div class="center">
                                   <label>Precio</label>
                                 </div>
-                                <input type="text" class="form-control sampleInput" required="">
+                                <input type="number" min="0" class="form-control sampleInput" required="">
                               </div>
                             </div>
                             <div class="col-sm-2">
@@ -252,41 +252,43 @@
                       </div>
                     </div>
                     <div class="modal-body">
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <div class="center">
-                                <label>Parámetro</label>
+                      <div id="othersParameters">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <div class="center">
+                                  <label>Parámetro</label>
+                                </div>
+                                <input type="text" class="form-control parameterInput" required="">
                               </div>
-                              <input type="text" class="form-control parameterInput" required="">
                             </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <div class="center">
-                                <label>Método</label>
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <div class="center">
+                                  <label>Método</label>
+                                </div>
+                                <input type="text" class="form-control parameterInput" required="">
                               </div>
-                              <input type="text" class="form-control parameterInput" required="">
                             </div>
-                          </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <div class="center">
-                                <label>Precio</label>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <div class="center">
+                                  <label>Precio</label>
+                                </div>
+                                <input type="number" min="0" class="form-control parameterInput" required="">
                               </div>
-                              <input type="text" class="form-control parameterInput" required="">
                             </div>
-                          </div>
-                          <div class="col-sm-2">
-                            <span class="addParameter" onclick="addOtherParameter('#adds0')" id="adds0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
-                            <span class="removeParameter" onclick="removeOtherParameter('#removes0')" id="removes0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
+                            <div class="col-sm-2">
+                              <span class="addParameter" onclick="addOtherParameter('#adds0')" id="adds0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
+                              <span class="removeParameter" onclick="removeOtherParameter('#removes0')" id="removes0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-success">Agregar</button>
+                      <button type="submit" class="btn btn-success" id="sendParameter">Agregar</button>
                       <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
                     </div>
                   </div>
@@ -347,7 +349,7 @@
                               <div class="center">
                                 <label>Precio</label>
                               </div>
-                              <input type="text" class="form-control sampleSearchInput" required="" id="priceSearch">
+                              <input type="number" min="0" class="form-control sampleSearchInput" required="" id="priceSearch">
                             </div>
                           </div>
                           <div class="col-sm-2">

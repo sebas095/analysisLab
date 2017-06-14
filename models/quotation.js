@@ -5,53 +5,6 @@ const { Schema } = mongoose;
 autoIncrement.initialize(mongoose.connection);
 
 /*
-  Solicitante
-  - Nombres
-  - Apellidos
-  - Cédula
-  - Cargo
-  - Teléfono
-  - Correo
-*/
-const ApplicantSchema = new Schema({
-  uid: {
-    type: String,
-    require: true,
-    unique: true,
-    index: true
-  },
-  firstname: {
-    type: String,
-    require: true
-  },
-  lastname: {
-    type: String,
-    require: true
-  },
-  document: {
-    type: String,
-    require: true
-  },
-  position: {
-    type: String,
-    require: true
-  },
-  phone: {
-    type: String,
-    require: true
-  },
-  email: {
-    type: String,
-    require: true,
-    validate(email) {
-      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-        email
-      );
-    }
-  }
-});
-
-/*
   Muestra
   - Tipo
   - Parámetro
@@ -108,38 +61,69 @@ const QuotationSchema = new Schema({
     type: String,
     require: true
   },
+  method: {
+    type: String,
+    require: true,
+    default: ""
+  },
+  date: {
+    type: Object,
+    require: true,
+    default: {
+      day: new Date().getDate(),
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear()
+    }
+  },
   businessName: {
     type: String,
-    require: true
+    require: true,
+    default: ""
   },
   document: {
     type: String,
-    require: true
+    require: true,
+    default: ""
+  },
+  applicant: {
+    type: String,
+    require: true,
+    default: ""
+  },
+  position: {
+    type: String,
+    require: true,
+    default: ""
   },
   address: {
     type: String,
-    require: true
+    require: true,
+    default: ""
   },
   phone: {
     type: String,
-    require: true
+    require: true,
+    default: ""
+  },
+  city: {
+    type: String,
+    require: true,
+    default: ""
   },
   email: {
     type: String,
     require: true,
-    validate(email) {
-      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-        email
-      );
-    }
+    default: ""
   },
-  applicant: {
-    type: ApplicantSchema,
-    require: true
+  samples: {
+    type: Array,
+    require: true,
+    default: []
   },
-  sample: {
-    type: SampleSchema,
-    require: true
+  observations: {
+    type: String,
+    require: true,
+    default: ""
   },
   total: {
     type: Number,
@@ -152,6 +136,21 @@ const QuotationSchema = new Schema({
     // 0: pending, 1: ok, 2: removal request
   }
 });
+
+/*
+samples = [{
+  type: "AGUA CRUDA",
+  parameters: [
+    {
+      parameter:,
+      method: ,
+      price: ,
+      amount: ,
+      total:
+    }
+  ]
+}]
+ */
 
 QuotationSchema.plugin(timestamp);
 QuotationSchema.plugin(autoIncrement.plugin, {

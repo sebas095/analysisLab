@@ -71,6 +71,13 @@ jQuery(document).ready($ => {
     count = 0;
     rowSpan = 1;
 
+    if ($(".sampleInput").length > 4) {
+      const sampleInput = $(".sampleInput");
+      for (let i = 4; i < sampleInput.length; i += 3) {
+        $(sampleInput[i]).parent().parent().parent().parent().remove();
+      }
+    }
+
     $(".removeSample").click(function(ev) {
       ev.preventDefault();
       const rowSpan = $(this).parent().attr("rowspan");

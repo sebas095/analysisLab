@@ -287,3 +287,17 @@ textarea {
 .fa-eye {
   font-size: 1.3em;
 }
+
+.icons-parameters {
+  margin-top: -20px;
+}
+
+.addParameter, .removeParameter {
+  color: #779a44;
+}
+
+.addParameter:hover, .removeParameter:hover,
+.addParameter:focus, .removeParameter:focus {
+  color: #485632;
+  text-decoration: none;
+}

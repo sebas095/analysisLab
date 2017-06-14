@@ -1,6 +1,6 @@
+let count = 0;
+let rowSpan = 1;
 jQuery(document).ready($ => {
-  let count = 0;
-  let rowSpan = 1;
   $("#sampleForm").submit(ev => {
     ev.preventDefault();
     const input = document.getElementsByClassName("sampleInput");
@@ -14,7 +14,7 @@ jQuery(document).ready($ => {
         if (i === input.length - 3) {
           sampleData += `
             <td>
-              <a href="#" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+              <a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
               <a href="#" class="deleteParameter">
@@ -105,7 +105,7 @@ jQuery(document).ready($ => {
           const length = row.prev().children().length;
           const prev = $(row.prev().children()[length - 5]);
           prev.prepend(
-            `<a href="#" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+            `<a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
               <i class="fa fa-plus icon-position" aria-hidden="true"></i>
             </a>`
           );
@@ -165,45 +165,59 @@ jQuery(document).ready($ => {
     return false;
   });
 
-  $(".addParameter").click(ev => {
-    // <div class="col-sm-2">
-    //   <a href="#" class="addParameter" id="add0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
-    //   <a href="#" class="removeParameter" id="remove0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
-    // </div>
+  $("#parameterForm").submit(ev => {
     ev.preventDefault();
-    count++, rowSpan++;
-    $("#parameters").append(
-      `<div class="row" id="parameter${count}">
-        <div class="col-sm-12">
-          <div class="col-sm-3">
-            <div class="form-group">
-              <input type="text" class="form-control sampleInput" required="" id="parameter${count}">
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="form-group">
-              <input type="text" class="form-control sampleInput" required="" id="method${count}">
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="form-group">
-              <input type="text" class="form-control sampleInput" required="" id="price${count}">
-            </div>
-          </div>
-          <div class="col-sm-2">
-            <a href="#" class="addParameter" id="add${count}"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></a>
-            <a href="#" class="removeParameter" id="remove${count}"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></a>
-          </div>
-        </div>
-      </div>
-    `
-    );
-  });
+    // console.log("HOLA");
+    // const input = document.getElementsByClassName("parameterInput");
+    // let sampleData = "";
+    // const parent = $("#otherParameter").parent().parent();
+    // const row = getTagAndRowSpan(parent);
+    // $("#otherParameter").remove();
+    //
+    // for (let i = 0; i < input.length; i++) {
+    //   if ((i + 1) % 3 === 0) {
+    //     sampleData += "<span></span>";
+    //     if (i === input.length - 3) {
+    //       sampleData += `
+    //         <td>
+    //           <a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+    //             <i class="fa fa-plus icon-position" aria-hidden="true"></i>
+    //           </a>
+    //           <a href="#" class="deleteParameter">
+    //             <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+    //           </a>
+    //           ${input[i].value}
+    //         </td>`;
+    //     } else {
+    //       sampleData += `
+    //         <td>
+    //           <a href="#" class="deleteParameter">
+    //             <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+    //           </a>
+    //           ${input[i].value}
+    //         </td>`;
+    //     }
+    //   } else {
+    //     sampleData += `<td>${input[i].value}</td>`;
+    //   }
+    //
+    //   if (i % 3 === 0 && i > 0) {
+    //     sampleData += `
+    //       <td>
+    //         <input type="number" style="text-align:center" min="0" value="0" class="numberSamples" name="numberSamples">
+    //       </td>
+    //       <td>0</td>`;
+    //   }
+    // }
+    //
+    // sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
+    // $(sampleData).insertAfter(parent);
+    // row.tag.children().first().attr("rowspan", data.rowSpan + 1);
+    // $(".modal").modal("hide");
+    // $(".modal").css("display", "none");
+    // document.getElementById("parameterForm").reset();
 
-  $(".removeParameter").click(function(ev) {
-    ev.preventDefault();
-    const id = $(this).attr("id").split("remove")[1];
-    $(`#parameter${id}`).remove();
+    return false;
   });
 });
 
@@ -217,6 +231,72 @@ function getTagAndRowSpan(row) {
       };
     } else {
       curr = curr.prev();
+    }
+  }
+}
+
+function addParameter(id) {
+  rowSpan++, count++;
+  $(id).remove();
+  $("#parameters").append(
+    `<div class="row">
+      <div class="col-sm-12">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <input type="text" class="form-control sampleInput" required="">
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <input type="text" class="form-control sampleInput" required="">
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <input type="text" class="form-control sampleInput" required="">
+          </div>
+        </div>
+        <div class="col-sm-2 icons-parameters">
+          <span class="addParameter" onclick="addParameter('#add${count}')" id="add${count}"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
+          <span class="removeParameter" onclick="removeParameter('#remove${count}')" id="remove${count}"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </div>`
+  );
+}
+
+function removeParameter(id) {
+  if ($(".sampleInput").length > 4) {
+    rowSpan--;
+    const parent = $(id).parent().parent().parent();
+    const next = parent.next();
+    const center = parent.children().children().children().children().first();
+
+    if (center.attr("class") === "center") {
+      parent.remove();
+      const div = next.children().children().last();
+      div.removeClass("icons-parameters");
+      const sampleInput = $(".sampleInput");
+      const labels = ["Parámetro", "Método", "Precio"];
+      for (let i = 1; i < 4; i++) {
+        $(
+          `<div class="center">
+            <label>${labels[i - 1]}</label>
+          </div>`
+        ).insertBefore($(sampleInput[i]));
+      }
+    } else {
+      if ($(id).prev().attr("class") === "addParameter") {
+        const prev = parent.prev().children().children().last();
+        prev.prepend(
+          `<span class="addParameter" onclick="addParameter('#add${count}')" id="add${count}">
+            <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+          </span>`
+        );
+        parent.remove();
+      } else {
+        parent.remove();
+      }
     }
   }
 }

@@ -291,133 +291,120 @@ function updateInputs() {
   });
 }
 
-function addParameter(id) {
-  rowSpan++, count++;
+function addParameter(id, opt) {
+  let input = "", div = "";
+  let add = "", remove = "";
+  let curr = 0;
   $(id).remove();
-  $("#parameters").append(
+  if (opt === 1) {
+    input = "sampleInput";
+    div = "#parameters";
+    rowSpan++, count++;
+    curr = count;
+    add = "add";
+    remove = "remove";
+  } else {
+    input = "parameterInput";
+    div = "#othersParameters";
+    rowSpan2++, count2++;
+    curr = count2;
+    add = "adds";
+    remove = "removes";
+  }
+  $(div).append(
     `<div class="row">
       <div class="col-sm-12">
         <div class="col-sm-3">
           <div class="form-group">
-            <input type="text" class="form-control sampleInput" required="">
+            <input type="text" class="form-control ${input}" required="">
           </div>
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <input type="text" class="form-control sampleInput" required="">
+            <input type="text" class="form-control ${input}" required="">
           </div>
         </div>
         <div class="col-sm-3">
           <div class="form-group">
-            <input type="number" min="0" class="form-control sampleInput" required="">
+            <input type="number" min="0" class="form-control ${input}" required="">
           </div>
         </div>
         <div class="col-sm-2 icons-parameters">
-          <span class="addParameter" onclick="addParameter('#add${count}')" id="add${count}"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
-          <span class="removeParameter" onclick="removeParameter('#remove${count}')" id="remove${count}"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
+          <span class="addParameter" onclick="addParameter('#${add}${curr}', ${opt})" id="${add}${curr}"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
+          <span class="removeParameter" onclick="removeParameter('#${remove}${curr}', ${opt})" id="${remove}${curr}"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
         </div>
       </div>
     </div>`
   );
 }
 
-function removeParameter(id) {
-  if ($(".sampleInput").length > 4) {
-    rowSpan--;
-    const parent = $(id).parent().parent().parent();
-    const next = parent.next();
-    const center = parent.children().children().children().children().first();
+function removeParameter(id, opt) {
+  if (opt === 1) {
+    if ($(".sampleInput").length > 4) {
+      rowSpan--;
+      const parent = $(id).parent().parent().parent();
+      const next = parent.next();
+      const center = parent.children().children().children().children().first();
 
-    if (center.attr("class") === "center") {
-      parent.remove();
-      const div = next.children().children().last();
-      div.removeClass("icons-parameters");
-      const sampleInput = $(".sampleInput");
-      const labels = ["Parámetro", "Método", "Precio"];
-      for (let i = 1; i < 4; i++) {
-        $(
-          `<div class="center">
+      if (center.attr("class") === "center") {
+        parent.remove();
+        const div = next.children().children().last();
+        div.removeClass("icons-parameters");
+        const sampleInput = $(".sampleInput");
+        const labels = ["Parámetro", "Método", "Precio"];
+        for (let i = 1; i < 4; i++) {
+          $(
+            `<div class="center">
             <label>${labels[i - 1]}</label>
           </div>`
-        ).insertBefore($(sampleInput[i]));
-      }
-    } else {
-      if ($(id).prev().attr("class") === "addParameter") {
-        const prev = parent.prev().children().children().last();
-        prev.prepend(
-          `<span class="addParameter" onclick="addParameter('#add${count}')" id="add${count}">
-            <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
-          </span>`
-        );
-        parent.remove();
+          ).insertBefore($(sampleInput[i]));
+        }
       } else {
-        parent.remove();
+        if ($(id).prev().attr("class") === "addParameter") {
+          const prev = parent.prev().children().children().last();
+          prev.prepend(
+            `<span class="addParameter" onclick="addParameter('#add${count}', ${opt})" id="add${count}">
+          <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+        </span>`
+          );
+          parent.remove();
+        } else {
+          parent.remove();
+        }
       }
     }
-  }
-}
+  } else if (opt === 2) {
+    if ($(".parameterInput").length > 3) {
+      rowSpan2--;
+      const parent = $(id).parent().parent().parent();
+      const next = parent.next();
+      const center = parent.children().children().children().children().first();
 
-function addOtherParameter(id) {
-  rowSpan2++, count2++;
-  $(id).remove();
-  $("#othersParameters").append(
-    `<div class="row">
-      <div class="col-sm-12">
-        <div class="col-sm-3">
-          <div class="form-group">
-            <input type="text" class="form-control parameterInput" required="">
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="form-group">
-            <input type="text" class="form-control parameterInput" required="">
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <input type="number" min="0" class="form-control parameterInput" required="">
-          </div>
-        </div>
-        <div class="col-sm-2 icons-parameters">
-          <span class="addParameter" onclick="addOtherParameter('#adds${count2}')" id="adds${count2}"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
-          <span class="removeParameter" onclick="removeOtherParameter('#removes${count2}')" id="removes${count2}"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
-        </div>
-      </div>
-    </div>`
-  );
-}
-
-function removeOtherParameter(id) {
-  if ($(".parameterInput").length > 3) {
-    rowSpan2--;
-    const parent = $(id).parent().parent().parent();
-    const next = parent.next();
-    const center = parent.children().children().children().children().first();
-
-    if (center.attr("class") === "center") {
-      parent.remove();
-      const div = next.children().children().last();
-      div.removeClass("icons-parameters");
-      const parameterInput = $(".parameterInput");
-      const labels = ["Parámetro", "Método", "Precio"];
-      for (let i = 0; i < 3; i++) {
-        $(
-          `<div class="center">
-            <label>${labels[i]}</label>
-          </div>`
-        ).insertBefore($(parameterInput[i]));
-      }
-    } else {
-      if ($(id).prev().attr("class") === "addParameter") {
-        const prev = parent.prev().children().children().last();
-        prev.prepend(
-          `<span class="addParameter" onclick="addOtherParameter('#adds${count2}')" id="adds${count2}">
-            <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
-          </span>`
-        );
+      if (center.attr("class") === "center") {
         parent.remove();
+        const div = next.children().children().last();
+        div.removeClass("icons-parameters");
+        const parameterInput = $(".parameterInput");
+        const labels = ["Parámetro", "Método", "Precio"];
+        for (let i = 0; i < 3; i++) {
+          $(
+            `<div class="center">
+              <label>${labels[i]}</label>
+            </div>`
+          ).insertBefore($(parameterInput[i]));
+        }
       } else {
-        parent.remove();
+        if ($(id).prev().attr("class") === "addParameter") {
+          const prev = parent.prev().children().children().last();
+          prev.prepend(
+            `<span class="addParameter" onclick="addParameter('#adds${count2}', ${opt})" id="adds${count2}">
+              <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+            </span>`
+          );
+          parent.remove();
+        } else {
+          parent.remove();
+        }
       }
     }
   }

@@ -222,8 +222,8 @@
                               </div>
                             </div>
                             <div class="col-sm-2">
-                              <span class="addParameter" onclick="addParameter('#add0')" id="add0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
-                              <span class="removeParameter" onclick="removeParameter('#remove0')" id="remove0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
+                              <span class="addParameter" onclick="addParameter('#add0', 1)" id="add0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
+                              <span class="removeParameter" onclick="removeParameter('#remove0', 1)" id="remove0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
                             </div>
                           </div>
                         </div>
@@ -280,8 +280,8 @@
                               </div>
                             </div>
                             <div class="col-sm-2">
-                              <span class="addParameter" onclick="addOtherParameter('#adds0')" id="adds0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
-                              <span class="removeParameter" onclick="removeOtherParameter('#removes0')" id="removes0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
+                              <span class="addParameter" onclick="addParameter('#adds0', 2)" id="adds0"><i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i></span>
+                              <span class="removeParameter" onclick="removeParameter('#removes0', 2)" id="removes0"><i class="fa fa-minus-circle fa-2x fix-position icon-red" aria-hidden="true"></i></span>
                             </div>
                           </div>
                         </div>
@@ -313,7 +313,7 @@
                       <div class="row">
                         <div class="col-sm-12">
                           <div class="input-group">
-                            <input type="text" class="form-control" name="id" placeholder="Ingresa el tipo de muestra" name="searchSample">
+                            <input type="text" class="form-control sampleSearchInput" placeholder="Ingresa el tipo de muestra" name="searchSample">
                             <div class="input-group-btn">
                               <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                             </div>

@@ -240,6 +240,149 @@ jQuery(document).ready($ => {
     return false;
   });
 
+  $("#sampleSearchForm").submit(function(ev) {
+    ev.preventDefault();
+    let countIds = 0;
+    const searchInput = $(".sampleSearchInput");
+    let sampleName = "AGUA CRUDA";
+    let sampleData = "";
+    if (searchInput.length === 1) {
+      // TODO ajax for search samples
+    } else {
+      const select = $(".select").filter((index, input) => {
+        return $(input).is(":checked");
+      });
+
+      for (let i = 0; i < select.length; i++) {
+        const id = "." + $(select[i]).attr("id");
+        const parameter = $(id)[0].value;
+        const method = $(id)[1].value;
+        const price = $(id)[2].value;
+        if (i == 0) {
+          sampleData += `
+            <td>
+              <a href="#" class="removeSearch">
+                <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+              </a>
+              ${sampleName}
+            </td>`;
+        } else {
+          sampleData += "<span></span>";
+        }
+        if (i === select.length - 1) {
+          sampleData += `
+              <td>
+                <a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+                  <i class="fa fa-plus icon-position" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="deleteSearchParameter">
+                  <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+                </a>
+                ${parameter}
+              </td>
+              <td>${method}</td>
+              <td>${price}</td>`;
+        } else {
+          sampleData += `
+              <td>
+                <a href="#" class="deleteSearchParameter">
+                  <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+                </a>
+                ${parameter}
+              </td>
+              <td>${method}</td>
+              <td>${price}</td>`;
+        }
+
+        sampleData += `
+            <td>
+              <input type="number" style="text-align:center" min="0" value="0" class="numberSamples" name="numberSamples">
+            </td>
+            <td>0</td>`;
+      }
+      $(".modal").modal("hide");
+      let sampleInfo = $("#sampleInfo");
+      const sampleNew = `<tr id="sampleInf">${sampleInfo.html()}</tr>`;
+      $(sampleNew).insertAfter("#sampleInfo");
+      $("#sampleInfo").attr("id", "sampleInfo2");
+
+      sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
+      sampleData = `<tr id="sampleInfo3">${sampleData}</tr>`;
+
+      $(sampleData).insertAfter("#sampleInfo2");
+      $("#sampleInfo2").remove();
+      $("#sampleInf").attr("id", "sampleInfo");
+
+      $("#sampleInfo3").children().first().attr("rowspan", select.length);
+      $("#sampleInfo3").removeAttr("id");
+      $(".modal").css("display", "none");
+      document.getElementById("sampleSearchForm").reset();
+      count = 0;
+
+      if ($(".sampleSearchInput").length > 1) {
+        $(".deleteSearch").remove();
+      }
+
+      $(".removeSearch").click(function(ev) {
+        ev.preventDefault();
+        const rowSpan = $(this).parent().attr("rowspan");
+        let row = $(this).parent().parent();
+        for (let i = 0; i < rowSpan; i++) {
+          let next = $(row).next();
+          $(row).remove();
+          row = next;
+        }
+
+        let total = 0;
+        const $numberSamples = $(".numberSamples");
+        for (let i = 0; i < $numberSamples.length; i++) {
+          total += Number($($numberSamples[i]).parent().next().text());
+        }
+        $("#totalPrice").text(total);
+      });
+
+      $(".deleteSearchParameter").click(function(ev) {
+        ev.preventDefault();
+        const row = $(this).parent().parent();
+        const data = getTagAndRowSpan(row);
+        if ($(this).prev().attr("class") === "newParameter") {
+          if (data.rowSpan > 1) {
+            const length = row.prev().children().length;
+            const prev = $(row.prev().children()[length - 5]);
+            prev.prepend(
+              `<a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+                <i class="fa fa-plus icon-position" aria-hidden="true"></i>
+              </a>`
+            );
+            row.remove();
+            data.tag.children().first().attr("rowspan", data.rowSpan - 1);
+          } else {
+            data.tag.remove();
+          }
+        } else {
+          if ($(this).parent().prev().attr("rowspan")) {
+            const td = $(this).parent().prev();
+            td.attr("rowspan", data.rowSpan - 1);
+            row.next().prepend(td);
+            row.remove();
+          } else {
+            row.remove();
+            data.tag.children().first().attr("rowspan", data.rowSpan - 1);
+          }
+        }
+        let total = 0;
+        const $numberSamples = $(".numberSamples");
+        for (let i = 0; i < $numberSamples.length; i++) {
+          total += Number($($numberSamples[i]).parent().next().text());
+        }
+        $("#totalPrice").text(total);
+      });
+
+      updateInputs();
+      return false;
+    }
+  });
+
   $("#sendSample").click(ev => {
     ev.preventDefault();
     // TODO poner valores en los input hidden

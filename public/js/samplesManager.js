@@ -5,6 +5,7 @@ jQuery(document).ready($ => {
     ev.preventDefault();
     const input = document.getElementsByClassName("sampleInput");
     let sampleData = "";
+    const inputData = input[0].value;
 
     for (let i = 0; i < input.length; i++) {
       if ((i - 1) % 3 === 0 && i > 0) {
@@ -14,7 +15,7 @@ jQuery(document).ready($ => {
         if (i === input.length - 3) {
           sampleData += `
             <td>
-              <a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+              <a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
               <a href="#" class="deleteParameter">
@@ -102,10 +103,11 @@ jQuery(document).ready($ => {
       const data = getTagAndRowSpan(row);
       if ($(this).prev().attr("class") === "newParameter") {
         if (data.rowSpan > 1) {
+          const inputData = $(this).prev().attr("data-sample");
           const length = row.prev().children().length;
           const prev = $(row.prev().children()[length - 5]);
           prev.prepend(
-            `<a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+            `<a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
               <i class="fa fa-plus icon-position" aria-hidden="true"></i>
             </a>`
           );
@@ -143,6 +145,7 @@ jQuery(document).ready($ => {
     let sampleData = "";
     const parent = $("#otherParameter").parent().parent();
     const row = getTagAndRowSpan(parent);
+    const inputData = $("#otherParameter").attr("data-sample");
     $("#otherParameter").remove();
 
     for (let i = 0; i < input.length; i++) {
@@ -151,7 +154,7 @@ jQuery(document).ready($ => {
         if (i === input.length - 3) {
           sampleData += `
             <td>
-              <a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+              <a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" onclick="saveData(this)" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
               <a href="#" class="deleteOtherParameter">
@@ -206,8 +209,10 @@ jQuery(document).ready($ => {
         if (data.rowSpan > 1) {
           const length = row.prev().children().length;
           const prev = $(row.prev().children()[length - 5]);
+          const inputData = $(this).prev().attr("data-sample");
+
           prev.prepend(
-            `<a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+            `<a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
               <i class="fa fa-plus icon-position" aria-hidden="true"></i>
             </a>`
           );
@@ -272,7 +277,7 @@ jQuery(document).ready($ => {
         if (i === select.length - 1) {
           sampleData += `
               <td>
-                <a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+                <a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" data-sample="${sampleName}" data-toggle="modal" data-target="#parameterModal">
                   <i class="fa fa-plus icon-position" aria-hidden="true"></i>
                 </a>
                 <a href="#" class="deleteSearchParameter">
@@ -317,7 +322,7 @@ jQuery(document).ready($ => {
       $("#sampleInfo3").removeAttr("id");
       $(".modal").css("display", "none");
       document.getElementById("sampleSearchForm").reset();
-      count = 0;
+      countIds = 0;
 
       if ($(".sampleSearchInput").length > 1) {
         $(".deleteSearch").remove();
@@ -349,8 +354,10 @@ jQuery(document).ready($ => {
           if (data.rowSpan > 1) {
             const length = row.prev().children().length;
             const prev = $(row.prev().children()[length - 5]);
+            const inputData = $(this).prev().attr("data-sample");
+
             prev.prepend(
-              `<a href="#" id="otherParameter" class="newParameter" data-toggle="modal" data-target="#parameterModal">
+              `<a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>`
             );
@@ -388,6 +395,10 @@ jQuery(document).ready($ => {
     // TODO poner valores en los input hidden
   });
 });
+
+function saveData(input) {
+  localStorage["dataSample"] = $(input).attr("data-sample");
+}
 
 function getTagAndRowSpan(row) {
   let curr = $(row);

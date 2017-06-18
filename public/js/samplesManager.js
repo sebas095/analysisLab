@@ -19,17 +19,17 @@ jQuery(document).ready($ => {
               <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
-              <a href="#" class="deleteParameter">
+              <span class="deleteParameter" onclick="deleteParameter(this)">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-              </a>
+              </span>
               ${input[i].value}
             </td>`;
         } else {
           sampleData += `
             <td>
-              <a href="#" class="deleteParameter">
+              <span class="deleteParameter" onclick="deleteParameter(this)">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-              </a>
+              </span>
               ${input[i].value}
             </td>`;
         }
@@ -100,44 +100,6 @@ jQuery(document).ready($ => {
       $("#totalPrice").text(total);
     });
 
-    $(".deleteParameter").click(function(ev) {
-      ev.preventDefault();
-      const row = $(this).parent().parent();
-      const data = getTagAndRowSpan(row);
-      if ($(this).prev().attr("class") === "newParameter") {
-        if (data.rowSpan > 1) {
-          const inputData = $(this).prev().attr("data-sample");
-          const length = row.prev().children().length;
-          const prev = $(row.prev().children()[length - 5]);
-          prev.prepend(
-            `<a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
-              <i class="fa fa-plus icon-position" aria-hidden="true"></i>
-            </a>`
-          );
-          row.remove();
-          data.tag.children().first().attr("rowspan", data.rowSpan - 1);
-        } else {
-          data.tag.remove();
-        }
-      } else {
-        if ($(this).parent().prev().attr("rowspan")) {
-          const td = $(this).parent().prev();
-          td.attr("rowspan", data.rowSpan - 1);
-          row.next().prepend(td);
-          row.remove();
-        } else {
-          row.remove();
-          data.tag.children().first().attr("rowspan", data.rowSpan - 1);
-        }
-      }
-      let total = 0;
-      const $numberSamples = $(".numberSamples");
-      for (let i = 0; i < $numberSamples.length; i++) {
-        total += Number($($numberSamples[i]).parent().next().text());
-      }
-      $("#totalPrice").text(total);
-    });
-
     updateInputs();
     return false;
   });
@@ -160,17 +122,17 @@ jQuery(document).ready($ => {
               <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
-              <a href="#" class="deleteOtherParameter">
+              <span class="deleteParameter" onclick="deleteParameter(this)">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-              </a>
+              </span>
               ${input[i].value}
             </td>`;
         } else {
           sampleData += `
             <td>
-              <a href="#" class="deleteOtherParameter">
+              <span class="deleteParameter" onclick="deleteParameter(this)">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-              </a>
+              </span>
               ${input[i].value}
             </td>`;
         }
@@ -205,46 +167,6 @@ jQuery(document).ready($ => {
       );
       $(".sample-row").remove();
     }
-
-    $(".deleteOtherParameter").click(function(ev) {
-      ev.preventDefault();
-      const row = $(this).parent().parent();
-      const data = getTagAndRowSpan(row);
-      if ($(this).prev().attr("class") === "newParameter") {
-        if (data.rowSpan > 1) {
-          const length = row.prev().children().length;
-          const prev = $(row.prev().children()[length - 5]);
-          const inputData = $(this).prev().attr("data-sample");
-
-          prev.prepend(
-            `<a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
-              <i class="fa fa-plus icon-position" aria-hidden="true"></i>
-            </a>`
-          );
-          row.remove();
-          data.tag.children().first().attr("rowspan", data.rowSpan - 1);
-        } else {
-          data.tag.remove();
-        }
-      } else {
-        if ($(this).parent().prev().attr("rowspan")) {
-          const td = $(this).parent().prev();
-          td.attr("rowspan", data.rowSpan - 1);
-          row.next().prepend(td);
-          row.remove();
-        } else {
-          row.remove();
-          data.tag.children().first().attr("rowspan", data.rowSpan - 1);
-        }
-      }
-
-      let total = 0;
-      const $numberSamples = $(".numberSamples");
-      for (let i = 0; i < $numberSamples.length; i++) {
-        total += Number($($numberSamples[i]).parent().next().text());
-      }
-      $("#totalPrice").text(total);
-    });
 
     updateInputs();
     return false;
@@ -285,9 +207,9 @@ jQuery(document).ready($ => {
                 <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${sampleName}" data-toggle="modal" data-target="#parameterModal">
                   <i class="fa fa-plus icon-position" aria-hidden="true"></i>
                 </a>
-                <a href="#" class="deleteSearchParameter">
+                <span class="deleteParameter" onclick="deleteParameter(this)">
                   <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-                </a>
+                </span>
                 ${parameter}
               </td>
               <td>${method}</td>
@@ -295,9 +217,9 @@ jQuery(document).ready($ => {
         } else {
           sampleData += `
               <td>
-                <a href="#" class="deleteSearchParameter">
+                <span class="deleteParameter" onclick="deleteParameter(this)">
                   <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-                </a>
+                </span>
                 ${parameter}
               </td>
               <td>${method}</td>
@@ -351,45 +273,6 @@ jQuery(document).ready($ => {
         $("#totalPrice").text(total);
       });
 
-      $(".deleteSearchParameter").click(function(ev) {
-        ev.preventDefault();
-        const row = $(this).parent().parent();
-        const data = getTagAndRowSpan(row);
-        if ($(this).prev().attr("class") === "newParameter") {
-          if (data.rowSpan > 1) {
-            const length = row.prev().children().length;
-            const prev = $(row.prev().children()[length - 5]);
-            const inputData = $(this).prev().attr("data-sample");
-
-            prev.prepend(
-              `<a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
-                <i class="fa fa-plus icon-position" aria-hidden="true"></i>
-              </a>`
-            );
-            row.remove();
-            data.tag.children().first().attr("rowspan", data.rowSpan - 1);
-          } else {
-            data.tag.remove();
-          }
-        } else {
-          if ($(this).parent().prev().attr("rowspan")) {
-            const td = $(this).parent().prev();
-            td.attr("rowspan", data.rowSpan - 1);
-            row.next().prepend(td);
-            row.remove();
-          } else {
-            row.remove();
-            data.tag.children().first().attr("rowspan", data.rowSpan - 1);
-          }
-        }
-        let total = 0;
-        const $numberSamples = $(".numberSamples");
-        for (let i = 0; i < $numberSamples.length; i++) {
-          total += Number($($numberSamples[i]).parent().next().text());
-        }
-        $("#totalPrice").text(total);
-      });
-
       updateInputs();
       return false;
     }
@@ -400,6 +283,44 @@ jQuery(document).ready($ => {
     // TODO poner valores en los input hidden
   });
 });
+
+function deleteParameter(span) {
+  const row = $(span).parent().parent();
+  const data = getTagAndRowSpan(row);
+  if ($(span).prev().attr("class") === "newParameter") {
+    if (data.rowSpan > 1) {
+      const length = row.prev().children().length;
+      const prev = $(row.prev().children()[length - 5]);
+      const inputData = $(span).prev().attr("data-sample");
+
+      prev.prepend(
+        `<a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
+          <i class="fa fa-plus icon-position" aria-hidden="true"></i>
+        </a>`
+      );
+      row.remove();
+      data.tag.children().first().attr("rowspan", data.rowSpan - 1);
+    } else {
+      data.tag.remove();
+    }
+  } else {
+    if ($(span).parent().prev().attr("rowspan")) {
+      const td = $(span).parent().prev();
+      td.attr("rowspan", data.rowSpan - 1);
+      row.next().prepend(td);
+      row.remove();
+    } else {
+      row.remove();
+      data.tag.children().first().attr("rowspan", data.rowSpan - 1);
+    }
+  }
+  let total = 0;
+  const $numberSamples = $(".numberSamples");
+  for (let i = 0; i < $numberSamples.length; i++) {
+    total += Number($($numberSamples[i]).parent().next().text());
+  }
+  $("#totalPrice").text(total);
+}
 
 function saveData(input) {
   dataSample = $(input).attr("data-sample");

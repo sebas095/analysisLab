@@ -15,7 +15,7 @@ jQuery(document).ready($ => {
         }
         if (i === input.length - 3) {
           sampleData += `
-            <td>
+            <td class="capitalize">
               <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
@@ -26,7 +26,7 @@ jQuery(document).ready($ => {
             </td>`;
         } else {
           sampleData += `
-            <td>
+            <td class="capitalize">
               <span class="deleteParameter" onclick="deleteParameter(this)">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
               </span>
@@ -34,7 +34,7 @@ jQuery(document).ready($ => {
             </td>`;
         }
       } else {
-        sampleData += `<td>${input[i].value}</td>`;
+        sampleData += `<td class="capitalize">${input[i].value}</td>`;
       }
 
       if (i % 3 === 0 && i > 0) {
@@ -60,6 +60,8 @@ jQuery(document).ready($ => {
     $("#sampleInf").attr("id", "sampleInfo");
 
     let type = $("#sampleInfo3").children().first().text();
+    $("#sampleInfo3").children().first().removeClass("capitalize");
+    $("#sampleInfo3").children().first().addClass("uppercase");
     type = `<a href="#" class="removeSample">
               <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
             </a>
@@ -118,7 +120,7 @@ jQuery(document).ready($ => {
         sampleData += "<span></span>";
         if (i === input.length - 3) {
           sampleData += `
-            <td>
+            <td class="capitalize">
               <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
@@ -129,7 +131,7 @@ jQuery(document).ready($ => {
             </td>`;
         } else {
           sampleData += `
-            <td>
+            <td class="capitalize">
               <span class="deleteParameter" onclick="deleteParameter(this)">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
               </span>
@@ -137,7 +139,7 @@ jQuery(document).ready($ => {
             </td>`;
         }
       } else {
-        sampleData += `<td>${input[i].value}</td>`;
+        sampleData += `<td class="capitalize">${input[i].value}</td>`;
       }
 
       if ((i + 1) % 3 === 0 && i > 0) {
@@ -187,12 +189,12 @@ jQuery(document).ready($ => {
 
       for (let i = 0; i < select.length; i++) {
         const id = "." + $(select[i]).attr("id");
-        const parameter = $(id)[0].value;
-        const method = $(id)[1].value;
-        const price = $(id)[2].value;
+        const parameter = toCapitalize($(id)[0].value);
+        const method = toCapitalize($(id)[1].value);
+        const price = toCapitalize($(id)[2].value);
         if (i == 0) {
           sampleData += `
-            <td>
+            <td class="uppercase">
               <a href="#" class="removeSearch">
                 <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
               </a>
@@ -203,7 +205,7 @@ jQuery(document).ready($ => {
         }
         if (i === select.length - 1) {
           sampleData += `
-              <td>
+              <td class="capitalize">
                 <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${sampleName}" data-toggle="modal" data-target="#parameterModal">
                   <i class="fa fa-plus icon-position" aria-hidden="true"></i>
                 </a>
@@ -212,17 +214,17 @@ jQuery(document).ready($ => {
                 </span>
                 ${parameter}
               </td>
-              <td>${method}</td>
+              <td class"capitalize">${method}</td>
               <td>${price}</td>`;
         } else {
           sampleData += `
-              <td>
+              <td class="capitalize">
                 <span class="deleteParameter" onclick="deleteParameter(this)">
                   <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
                 </span>
                 ${parameter}
               </td>
-              <td>${method}</td>
+              <td class="capitalize">${method}</td>
               <td>${price}</td>`;
         }
 
@@ -397,12 +399,12 @@ function addParameter(id, opt) {
       <div class="col-sm-12">
         <div class="col-sm-3">
           <div class="form-group">
-            <input type="text" class="form-control ${input}" required="">
+            <input type="text" class="form-control capitalize ${input}" required="">
           </div>
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <input type="text" class="form-control ${input}" required="">
+            <input type="text" class="form-control capitalize ${input}" required="">
           </div>
         </div>
         <div class="col-sm-3">
@@ -436,8 +438,8 @@ function removeParameter(id, opt) {
         for (let i = 1; i < 4; i++) {
           $(
             `<div class="center">
-            <label>${labels[i - 1]}</label>
-          </div>`
+              <label>${labels[i - 1]}</label>
+            </div>`
           ).insertBefore($(sampleInput[i]));
         }
       } else {
@@ -445,8 +447,8 @@ function removeParameter(id, opt) {
           const prev = parent.prev().children().children().last();
           prev.prepend(
             `<span class="addParameter" onclick="addParameter('#add${count}', ${opt})" id="add${count}">
-          <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
-        </span>`
+              <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+            </span>`
           );
           parent.remove();
         } else {
@@ -489,4 +491,8 @@ function removeParameter(id, opt) {
       }
     }
   }
+}
+
+function toCapitalize(str) {
+  return str.replace(/\b\w/g, ch => ch.toUpperCase()).trim();
 }

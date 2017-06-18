@@ -301,3 +301,11 @@ textarea {
   color: #485632;
   text-decoration: none;
 }
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}

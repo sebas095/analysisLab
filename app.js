@@ -24,6 +24,7 @@ const users = require("./routes/users");
 const session = require("./routes/session");
 const account = require("./routes/account");
 const quotation = require("./routes/quotation");
+const samples = require("./routes/samples");
 
 const app = express();
 
@@ -90,6 +91,7 @@ users(app, "/users");
 account(app, "/account");
 quotation(app, "/quotation");
 session(app, "/session", passport);
+samples(app, "/samples");
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

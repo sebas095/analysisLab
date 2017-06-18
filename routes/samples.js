@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sample = require("../models/sample");
+const _ = require("underscore");
 
 module.exports = (app, mountPoint) => {
   // GET
@@ -32,6 +33,34 @@ module.exports = (app, mountPoint) => {
           console.log(err);
           res.status(500).json(err);
         } else if (data) {
+          let { parameters: params } = req.body;
+          let { parameters } = data;
+
+          for (let param of params) {
+            const index = _.findIndex(parameters, {
+              parameter: param.parameter
+            });
+            if (index !== -1) {
+              parameters[index] = param;
+            } else {
+              parameters.push(param);
+            }
+          }
+
+          req.body.parameters = parameters;
+          Sample.findOneAndUpdate(
+            { type: req.body.type },
+            req.body,
+            { new: true },
+            (err, sample) => {
+              if (err) {
+                console.log(err);
+                res.status(500).json(err);
+              } else {
+                res.status(200).json({ success: true });
+              }
+            }
+          );
         } else {
           Sample.create(req.body, (err, sample) => {
             if (err) {

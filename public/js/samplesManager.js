@@ -1,5 +1,6 @@
 let count = 0, count2 = 0;
 let rowSpan = 1, rowSpan2 = 1;
+let dataSample, parameterModalRef;
 jQuery(document).ready($ => {
   $("#sampleForm").submit(ev => {
     ev.preventDefault();
@@ -15,7 +16,7 @@ jQuery(document).ready($ => {
         if (i === input.length - 3) {
           sampleData += `
             <td>
-              <a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
+              <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
               <a href="#" class="deleteParameter">
@@ -73,10 +74,12 @@ jQuery(document).ready($ => {
     rowSpan = 1;
 
     if ($(".sampleInput").length > 4) {
-      const sampleInput = $(".sampleInput");
-      for (let i = 4; i < sampleInput.length; i += 3) {
-        $(sampleInput[i]).parent().parent().parent().parent().remove();
-      }
+      $($(".sampleInput")[3]).parent().parent().next().prepend(
+        `<span class="addParameter" onclick="addParameter('#add0', 1)" id="add0">
+          <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+        </span>`
+      );
+      $(".sample-row").remove();
     }
 
     $(".removeSample").click(function(ev) {
@@ -107,7 +110,7 @@ jQuery(document).ready($ => {
           const length = row.prev().children().length;
           const prev = $(row.prev().children()[length - 5]);
           prev.prepend(
-            `<a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
+            `<a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
               <i class="fa fa-plus icon-position" aria-hidden="true"></i>
             </a>`
           );
@@ -143,10 +146,10 @@ jQuery(document).ready($ => {
     ev.preventDefault();
     const input = document.getElementsByClassName("parameterInput");
     let sampleData = "";
-    const parent = $("#otherParameter").parent().parent();
+    const parent = $(parameterModalRef).parent().parent();
     const row = getTagAndRowSpan(parent);
-    const inputData = $("#otherParameter").attr("data-sample");
-    $("#otherParameter").remove();
+    const inputData = $(parameterModalRef).attr("data-sample");
+    $(parameterModalRef).remove();
 
     for (let i = 0; i < input.length; i++) {
       if (i % 3 === 0) {
@@ -154,7 +157,7 @@ jQuery(document).ready($ => {
         if (i === input.length - 3) {
           sampleData += `
             <td>
-              <a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" onclick="saveData(this)" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
+              <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>
               <a href="#" class="deleteOtherParameter">
@@ -195,10 +198,12 @@ jQuery(document).ready($ => {
     rowSpan2 = 1;
 
     if ($(".parameterInput").length > 3) {
-      const sampleInput = $(".parameterInput");
-      for (let i = 3; i < sampleInput.length; i += 3) {
-        $(sampleInput[i]).parent().parent().parent().parent().remove();
-      }
+      $($(".parameterInput")[2]).parent().parent().next().prepend(
+        `<span class="addParameter" onclick="addParameter('#adds0', 2)" id="adds0">
+          <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+        </span>`
+      );
+      $(".sample-row").remove();
     }
 
     $(".deleteOtherParameter").click(function(ev) {
@@ -212,7 +217,7 @@ jQuery(document).ready($ => {
           const inputData = $(this).prev().attr("data-sample");
 
           prev.prepend(
-            `<a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
+            `<a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
               <i class="fa fa-plus icon-position" aria-hidden="true"></i>
             </a>`
           );
@@ -277,7 +282,7 @@ jQuery(document).ready($ => {
         if (i === select.length - 1) {
           sampleData += `
               <td>
-                <a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" onclick="saveData(this)" data-sample="${sampleName}" data-toggle="modal" data-target="#parameterModal">
+                <a href="#" class="newParameter" onclick="saveData(this)" data-sample="${sampleName}" data-toggle="modal" data-target="#parameterModal">
                   <i class="fa fa-plus icon-position" aria-hidden="true"></i>
                 </a>
                 <a href="#" class="deleteSearchParameter">
@@ -357,7 +362,7 @@ jQuery(document).ready($ => {
             const inputData = $(this).prev().attr("data-sample");
 
             prev.prepend(
-              `<a href="#" id="otherParameter" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
+              `<a href="#" class="newParameter" onclick="saveData(this)" data-sample="${inputData}" data-toggle="modal" data-target="#parameterModal">
                 <i class="fa fa-plus icon-position" aria-hidden="true"></i>
               </a>`
             );
@@ -397,7 +402,8 @@ jQuery(document).ready($ => {
 });
 
 function saveData(input) {
-  localStorage["dataSample"] = $(input).attr("data-sample");
+  dataSample = $(input).attr("data-sample");
+  parameterModalRef = input;
 }
 
 function getTagAndRowSpan(row) {
@@ -466,7 +472,7 @@ function addParameter(id, opt) {
     remove = "removes";
   }
   $(div).append(
-    `<div class="row">
+    `<div class="row sample-row">
       <div class="col-sm-12">
         <div class="col-sm-3">
           <div class="form-group">

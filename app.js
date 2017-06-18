@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const flash = require("connect-flash");
+const cors = require("cors");
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -41,6 +42,13 @@ app.use(cookieParser());
 // app.use(partials());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
 
 app.use(
   expSession({

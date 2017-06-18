@@ -176,12 +176,111 @@ jQuery(document).ready($ => {
 
   $("#sampleSearchForm").submit(function(ev) {
     ev.preventDefault();
-    let countIds = 0;
     const searchInput = $(".sampleSearchInput");
-    let sampleName = "AGUA CRUDA";
+    const sampleName = searchInput[0].value.toUpperCase().trim();
     let sampleData = "";
+
     if (searchInput.length === 1) {
-      // TODO ajax for search samples
+      $.ajax({
+        type: "GET",
+        url: `http://localhost:3000/samples?type=${sampleName}`,
+        success: results => {
+          sampleName = results.data.type;
+          const { parameters } = results.data;
+          for (let i = 0; i < parameters.length; i++) {
+            if (i === 0) {
+              $("#searchContent").append(
+                `<hr>
+                <div class="row deleteSearch">
+                  <div class="center">
+                    <h4>Parámetros</h4>
+                  </div>
+                </div>
+                <div class="row deleteSearch">
+                  <div class="col-sm-12">
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <div class="center">
+                          <label>Parámetro</label>
+                        </div>
+                        <input type="text" class="form-control sampleSearchInput search${i} capitalize" value="${parameters[i].parameter}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <div class="center">
+                          <label>Método</label>
+                        </div>
+                        <input type="text" class="form-control sampleSearchInput search${i} capitalize" value="${parameters[i].method}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <div class="center">
+                          <label>Precio</label>
+                        </div>
+                        <input type="number" min="0" class="form-control sampleSearchInput search${i}" value="${parameters[i].price}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <label>Seleccionar</label>
+                        <div class="center">
+                          <div class="checkbox">
+                            <label><input type="checkbox" class="select" id="search${i}"></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>`
+              );
+            } else {
+              $("#searchContent").append(
+                `<div class="row deleteSearch">
+                  <div class="col-sm-12">
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <input type="text" class="form-control sampleSearchInput search${i} capitalize" value="${parameters[i].parameter}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <input type="text" class="form-control sampleSearchInput search${i} capitalize" value="${parameters[i].method}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <input type="number" min="0" class="form-control sampleSearchInput search${i}" value="${parameters[i].price}" required="">
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="center">
+                          <div class="checkbox">
+                            <label><input type="checkbox" class="select" id="search${i}"></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>`
+              );
+            }
+          }
+        },
+        error: (xhr, status, err) => {
+          $("#searchAlert").html(
+            `<br>
+            <div class="col-sm-12">
+              <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <p class="center">No se encontraron resultados</p>
+              </div>
+            </div>`
+          );
+        }
+      });
     } else {
       const select = $(".select").filter((index, input) => {
         return $(input).is(":checked");
@@ -251,7 +350,6 @@ jQuery(document).ready($ => {
       $("#sampleInfo3").removeAttr("id");
       $(".modal").css("display", "none");
       document.getElementById("sampleSearchForm").reset();
-      countIds = 0;
 
       if ($(".sampleSearchInput").length > 1) {
         $(".deleteSearch").remove();

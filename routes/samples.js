@@ -28,6 +28,8 @@ module.exports = (app, mountPoint) => {
   // POST
   router.post("/new", (req, res) => {
     if (req.body) {
+      req.body = JSON.parse(req.body.data);
+      delete req.body.data;
       Sample.findOne({ type: req.body.type }, (err, data) => {
         if (err) {
           console.log(err);

@@ -6,7 +6,7 @@ jQuery(document).ready($ => {
     ev.preventDefault();
     const input = document.getElementsByClassName("sampleInput");
     let sampleData = "";
-    const inputData = input[0].value;
+    const inputData = input[0].value.toUpperCase().trim();
 
     for (let i = 0; i < input.length; i++) {
       if ((i - 1) % 3 === 0 && i > 0) {
@@ -46,63 +46,85 @@ jQuery(document).ready($ => {
       }
     }
 
-    $(".modal").modal("hide");
-    let sampleInfo = $("#sampleInfo");
-    const sampleNew = `<tr id="sampleInf">${sampleInfo.html()}</tr>`;
-    $(sampleNew).insertAfter("#sampleInfo");
-    $("#sampleInfo").attr("id", "sampleInfo2");
-
-    sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
-    sampleData = `<tr id="sampleInfo3">${sampleData}</tr>`;
-
-    $(sampleData).insertAfter("#sampleInfo2");
-    $("#sampleInfo2").remove();
-    $("#sampleInf").attr("id", "sampleInfo");
-
-    let type = $("#sampleInfo3").children().first().text();
-    $("#sampleInfo3").children().first().removeClass("capitalize");
-    $("#sampleInfo3").children().first().addClass("uppercase");
-    type = `<a href="#" class="removeSample">
-              <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
-            </a>
-            ${type}`;
-
-    $("#sampleInfo3").children().first().html(type);
-    $("#sampleInfo3").children().first().attr("rowspan", rowSpan);
-    $("#sampleInfo3").removeAttr("id");
-    $(".modal").css("display", "none");
-    document.getElementById("sampleForm").reset();
-    count = 0;
-    rowSpan = 1;
-
-    if ($(".sampleInput").length > 4) {
-      $($(".sampleInput")[3]).parent().parent().next().prepend(
-        `<span class="addParameter" onclick="addParameter('#add0', 1)" id="add0">
-          <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
-        </span>`
-      );
-      $(".sample-row").remove();
+    let data = { type: input[0].value.toUpperCase().trim() };
+    let parameters = [];
+    for (let i = 1; i < input.length; i += 3) {
+      parameters.push({
+        parameter: toCapitalize(input[i].value),
+        method: toCapitalize(input[i + 1].value),
+        price: Number(input[i + 2].value)
+      });
     }
 
-    $(".removeSample").click(function(ev) {
-      ev.preventDefault();
-      const rowSpan = $(this).parent().attr("rowspan");
-      let row = $(this).parent().parent();
-      for (let i = 0; i < rowSpan; i++) {
-        let next = $(row).next();
-        $(row).remove();
-        row = next;
-      }
+    data.parameters = parameters;
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:3000/samples/new",
+      data: { data: JSON.stringify(data) },
+      success: response => {
+        $(".modal").modal("hide");
+        let sampleInfo = $("#sampleInfo");
+        const sampleNew = `<tr id="sampleInf">${sampleInfo.html()}</tr>`;
+        $(sampleNew).insertAfter("#sampleInfo");
+        $("#sampleInfo").attr("id", "sampleInfo2");
 
-      let total = 0;
-      const $numberSamples = $(".numberSamples");
-      for (let i = 0; i < $numberSamples.length; i++) {
-        total += Number($($numberSamples[i]).parent().next().text());
+        sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
+        sampleData = `<tr id="sampleInfo3">${sampleData}</tr>`;
+
+        $(sampleData).insertAfter("#sampleInfo2");
+        $("#sampleInfo2").remove();
+        $("#sampleInf").attr("id", "sampleInfo");
+
+        let type = $("#sampleInfo3").children().first().text();
+        $("#sampleInfo3").children().first().removeClass("capitalize");
+        $("#sampleInfo3").children().first().addClass("uppercase");
+        type = `<a href="#" class="removeSample">
+                  <i class="fa fa-minus-circle icon-red icon-position" aria-hidden="true"></i>
+                </a>
+                ${type}`;
+
+        $("#sampleInfo3").children().first().html(type);
+        $("#sampleInfo3").children().first().attr("rowspan", rowSpan);
+        $("#sampleInfo3").removeAttr("id");
+        $(".modal").css("display", "none");
+        document.getElementById("sampleForm").reset();
+        count = 0;
+        rowSpan = 1;
+
+        if ($(".sampleInput").length > 4) {
+          $($(".sampleInput")[3]).parent().parent().next().prepend(
+            `<span class="addParameter" onclick="addParameter('#add0', 1)" id="add0">
+              <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+            </span>`
+          );
+          $(".sample-row").remove();
+        }
+
+        $(".removeSample").click(function(ev) {
+          ev.preventDefault();
+          const rowSpan = $(this).parent().attr("rowspan");
+          let row = $(this).parent().parent();
+          for (let i = 0; i < rowSpan; i++) {
+            let next = $(row).next();
+            $(row).remove();
+            row = next;
+          }
+
+          let total = 0;
+          const $numberSamples = $(".numberSamples");
+          for (let i = 0; i < $numberSamples.length; i++) {
+            total += Number($($numberSamples[i]).parent().next().text());
+          }
+          $("#totalPrice").text(total);
+        });
+
+        updateInputs();
+      },
+      error: (xhr, results, err) => {
+        console.log(err);
       }
-      $("#totalPrice").text(total);
     });
 
-    updateInputs();
     return false;
   });
 
@@ -151,26 +173,45 @@ jQuery(document).ready($ => {
       }
     }
 
-    sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
-    $(sampleData).insertAfter(parent);
-    row.tag.children().first().attr("rowspan", row.rowSpan + rowSpan2);
-    $(".modal").modal("hide");
-    $(".modal").css("display", "none");
-    document.getElementById("parameterForm").reset();
-
-    count2 = 0;
-    rowSpan2 = 1;
-
-    if ($(".parameterInput").length > 3) {
-      $($(".parameterInput")[2]).parent().parent().next().prepend(
-        `<span class="addParameter" onclick="addParameter('#adds0', 2)" id="adds0">
-          <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
-        </span>`
-      );
-      $(".sample-row").remove();
+    let data = { type: inputData };
+    let parameters = [];
+    for (let i = 0; i < input.length; i += 3) {
+      parameters.push({
+        parameter: toCapitalize(input[i].value),
+        method: toCapitalize(input[i + 1].value),
+        price: Number(input[i + 2].value)
+      });
     }
 
-    updateInputs();
+    data.parameters = parameters;
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:3000/samples/new",
+      data: { data: JSON.stringify(data) },
+      success: response => {
+        sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
+        $(sampleData).insertAfter(parent);
+        row.tag.children().first().attr("rowspan", row.rowSpan + rowSpan2);
+        $(".modal").modal("hide");
+        $(".modal").css("display", "none");
+        document.getElementById("parameterForm").reset();
+
+        count2 = 0;
+        rowSpan2 = 1;
+
+        if ($(".parameterInput").length > 3) {
+          $($(".parameterInput")[2]).parent().parent().next().prepend(
+            `<span class="addParameter" onclick="addParameter('#adds0', 2)" id="adds0">
+              <i class="fa fa-plus fa-2x fix-position" aria-hidden="true"></i>
+            </span>`
+          );
+          $(".sample-row").remove();
+        }
+
+        updateInputs();
+      }
+    });
+
     return false;
   });
 
@@ -185,13 +226,11 @@ jQuery(document).ready($ => {
         type: "GET",
         url: `http://localhost:3000/samples?type=${sampleName}`,
         success: results => {
-          sampleName = results.data.type;
           const { parameters } = results.data;
           for (let i = 0; i < parameters.length; i++) {
             if (i === 0) {
               $("#searchContent").append(
-                `<hr>
-                <div class="row deleteSearch">
+                `<div class="row deleteSearch">
                   <div class="center">
                     <h4>Parámetros</h4>
                   </div>

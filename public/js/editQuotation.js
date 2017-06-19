@@ -1,35 +1,29 @@
-// Form
-const form = document.getElementById("quotation");
-const inputs = form.elements;
+jQuery(document).ready($ => {
+  $("#sendSample").css("display", "none");
+  $(".fa-plus, .fa-search, .fa-minus-circle").css("display", "none");
 
-// Buttons
-const btnEdit = document.getElementById("edit");
+  $("#edit").click(ev => {
+    const inputs = $(".edit");
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].disabled = !inputs[i].disabled;
+    }
+
+    if (inputs[0].disabled) {
+      $("#sendSample").css("display", "none");
+      $(".fa-plus, .fa-search, .fa-minus-circle").css("display", "none");
+    } else {
+      $("#sendSample").css("display", "inline-block");
+      $(".fa-plus, .fa-search, .fa-minus-circle").css(
+        "display",
+        "inline-block"
+      );
+    }
+  });
+});
+
 let btnDeactivate = null;
-
 if (document.getElementById("deactivate"))
   btnDeactivate = document.getElementById("deactivate");
-
-// Disable inputs
-for (let i = 0; i < inputs.length; i++) {
-  if (
-    !inputs[i].id.includes("edit") &&
-    !inputs[i].id.includes("export") &&
-    !inputs[i].id.includes("deactivate")
-  )
-    inputs[i].disabled = true;
-}
-
-btnEdit.addEventListener("click", ev => {
-  ev.preventDefault();
-  for (let i = 0; i < inputs.length; i++) {
-    if (
-      !inputs[i].id.includes("edit") &&
-      !inputs[i].id.includes("export") &&
-      !inputs[i].id.includes("deactivate")
-    )
-      inputs[i].disabled = !inputs[i].disabled;
-  }
-});
 
 if (btnDeactivate) {
   btnDeactivate.addEventListener("click", function(ev) {

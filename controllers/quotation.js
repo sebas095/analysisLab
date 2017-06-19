@@ -135,10 +135,10 @@ exports.create = (req, res) => {
             transporter.sendMail(mailOptions, err => {
               if (err) console.log(err);
               req.flash(
-                "indexMessage",
+                "quotationMessage",
                 "La cotización ha sido creada exitosamente"
               );
-              res.redirect("/");
+              res.redirect(`/quotation/${data._id}`);
             });
           } else {
             req.flash("indexMessage", "Hubo problemas en el servidor");

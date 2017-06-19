@@ -58,8 +58,6 @@ module.exports = (app, mountPoint) => {
     quotationController.create
   );
 
-  router.post("/samples/create", quotationController.createSample);
-
   // PUT
   router.put(
     "/approval/:id",

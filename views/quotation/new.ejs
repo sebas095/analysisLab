@@ -14,10 +14,10 @@
             </thead>
             <tbody>
               <tr>
-                <td>Telefónico: <input type="radio" name="method" class="method" aria-label="..." style="margin-left: 20px;"></td>
-                <td>Presencial: <input type="radio" name="method" aria-label="..." style="margin-left: 20px;"></td>
-                <td>Email: <input type="radio" name="method" class="method" aria-label="..." style="margin-left: 20px;"></td>
-                <td>Correspondencia: <input type="radio" name="method" class="method" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Telefónico: <input type="radio" name="method" id="t" class="method" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Presencial: <input type="radio" name="method" id="p" class="method" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Email: <input type="radio" name="method" id="e" class="method" aria-label="..." style="margin-left: 20px;"></td>
+                <td>Correspondencia: <input type="radio" name="method" id="c" class="method" aria-label="..." style="margin-left: 20px;"></td>
               </tr>
             </tbody>
           </table>
@@ -55,7 +55,7 @@
                     Razon Social:
                   </div>
                   <div class="col-xs-12 col-sm-9">
-                    <input type="text" class="form-control" name="businessName" id="businessName" placeholder="Razón Social" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control uppercase" name="businessName" id="businessName" placeholder="Razón Social" aria-describedby="basic-addon1">
                   </div>
                 </td>
                 <td class="center col-xs-6">
@@ -73,7 +73,7 @@
                     Solicitante:
                   </div>
                   <div class="col-xs-12 col-sm-9">
-                    <input type="text" class="form-control" name="applicant" id="applicant"placeholder="Solicitante" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control capitalize" name="applicant" id="applicant"placeholder="Solicitante" aria-describedby="basic-addon1">
                   </div>
                 </td>
                 <td class="center col-xs-6">
@@ -81,7 +81,7 @@
                     Cargo:
                   </div>
                   <div class="col-xs-12 col-sm-10">
-                    <input type="text" class="form-control" name="position" id="position" placeholder="Cargo" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control capitalize" name="position" id="position" placeholder="Cargo" aria-describedby="basic-addon1">
                   </div>
                 </td>
               </tr>
@@ -109,7 +109,7 @@
                     Municipio/Departamento:
                   </div>
                   <div class="col-xs-12 col-sm-7">
-                    <input type="text" class="form-control" name="city" id="city" placeholder="Municipio/Departamento" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control capitalize" name="city" id="city" placeholder="Municipio/Departamento" aria-describedby="basic-addon1">
                   </div>
                 </td>
                 <td class="center col-xs-6">
@@ -339,20 +339,20 @@
         </div>
       </div>
     </div>
-    <form action="/quotation/create" method="post">
-      <input type="hidden" name="method" value="">
-      <input type="hidden" name="date" value="">
-      <input type="hidden" name="businessName" value="">
-      <input type="hidden" name="document" value="">
-      <input type="hidden" name="applicant" value="">
-      <input type="hidden" name="position" value="">
-      <input type="hidden" name="address" value="">
-      <input type="hidden" name="phone" value="">
-      <input type="hidden" name="city" value="">
-      <input type="hidden" name="email" value="">
-      <input type="hidden" name="samples" value="">
-      <input type="hidden" name="observations" value="">
-      <input type="hidden" name="total" value="">
+    <form action="/quotation/create" method="post" id="quotationCreate">
+      <input type="hidden" name="method" id="quotationMethod" value="">
+      <input type="hidden" name="date" id="quotationDate" value="">
+      <input type="hidden" name="businessName" id="quotationBusinessName" value="">
+      <input type="hidden" name="document" id="quotationDocument" value="">
+      <input type="hidden" name="applicant" id="quotationApplicant" value="">
+      <input type="hidden" name="position" id="quotationPosition" value="">
+      <input type="hidden" name="address" id="quotationAddress" value="">
+      <input type="hidden" name="phone" id="quotationPhone" value="">
+      <input type="hidden" name="city" id="quotationCity" value="">
+      <input type="hidden" name="email" id="quotationEmail" value="">
+      <input type="hidden" name="samples" id="quotationSamples" value="">
+      <input type="hidden" name="observations" id="quotationObervations" value="">
+      <input type="hidden" name="total" id="quotationTotal" value="">
     </form>
 
 <% include ../footer.ejs %>

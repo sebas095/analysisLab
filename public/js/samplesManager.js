@@ -68,8 +68,11 @@ jQuery(document).ready($ => {
         $(sampleNew).insertAfter("#sampleInfo");
         $("#sampleInfo").attr("id", "sampleInfo2");
 
-        sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
-        sampleData = `<tr id="sampleInfo3">${sampleData}</tr>`;
+        sampleData = sampleData.replace(
+          /<span><\/span>/g,
+          "</tr><tr class='samples'>"
+        );
+        sampleData = `<tr id="sampleInfo3" class="samples">${sampleData}</tr>`;
 
         $(sampleData).insertAfter("#sampleInfo2");
         $("#sampleInfo2").remove();
@@ -189,7 +192,10 @@ jQuery(document).ready($ => {
       url: "http://localhost:3000/samples/new",
       data: { data: JSON.stringify(data) },
       success: response => {
-        sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
+        sampleData = sampleData.replace(
+          /<span><\/span>/g,
+          "</tr><tr class='samples'>"
+        );
         $(sampleData).insertAfter(parent);
         row.tag.children().first().attr("rowspan", row.rowSpan + rowSpan2);
         $(".modal").modal("hide");
@@ -378,8 +384,11 @@ jQuery(document).ready($ => {
       $(sampleNew).insertAfter("#sampleInfo");
       $("#sampleInfo").attr("id", "sampleInfo2");
 
-      sampleData = sampleData.replace(/<span><\/span>/g, "</tr><tr>");
-      sampleData = `<tr id="sampleInfo3">${sampleData}</tr>`;
+      sampleData = sampleData.replace(
+        /<span><\/span>/g,
+        "</tr><tr class='samples'>"
+      );
+      sampleData = `<tr id="sampleInfo3" class="samples">${sampleData}</tr>`;
 
       $(sampleData).insertAfter("#sampleInfo2");
       $("#sampleInfo2").remove();
@@ -419,7 +428,87 @@ jQuery(document).ready($ => {
 
   $("#sendSample").click(ev => {
     ev.preventDefault();
-    // TODO poner valores en los input hidden
+    let method = $(".method").filter((index, input) => {
+      return $(input).is(":checked");
+    });
+
+    method = method.length > 0 ? method[0].id : "";
+    const date = {
+      day: Number($("#date").children()[0].innerText),
+      month: Number($("#date").children()[1].innerText),
+      year: Number($("#date").children()[2].innerText)
+    };
+    const businessName = $("#businessName").val().toUpperCase().trim();
+    const doc = $("#document").val().trim();
+    const applicant = toCapitalize($("#applicant").val());
+    const position = toCapitalize($("#position").val());
+    const address = $("#address").val().trim();
+    const phone = $("#phone").val().trim();
+    const city = toCapitalize($("#city").val());
+    const email = $("#email").val().trim();
+    const observations = $("#observations").val().trim();
+    const total = $("#totalPrice").text();
+
+    let samples = [];
+    let samplesData = [];
+    let $samples = $(".samples");
+
+    for (let i = 0; i < $samples.length; i++) {
+      let sample = {};
+      let item = $samples[i];
+      if ($(item).children().first().attr("rowspan")) {
+        sample.type = $(item).children().first().text().trim();
+        sample.parameter = toCapitalize($($(item).children()[1]).text());
+        sample.method = toCapitalize($($(item).children()[2]).text());
+        sample.price = $($(item).children()[3]).text();
+        sample.amount = $($(item).children()[4]).children()[0].value;
+        sample.total = $($(item).children()[5]).text();
+      } else {
+        sample.parameter = toCapitalize($($(item).children()[0]).text());
+        sample.method = toCapitalize($($(item).children()[1]).text());
+        sample.price = $($(item).children()[2]).text();
+        sample.amount = $($(item).children()[3]).children()[0].value;
+        sample.total = $($(item).children()[4]).text();
+      }
+      samplesData.push(sample);
+    }
+
+    let type = "";
+    let parameters = [];
+    for (let i = 0; i < samplesData.length; i++) {
+      if (samplesData[i].type) {
+        type = samplesData[i].type;
+      }
+
+      parameters.push({
+        parameter: samplesData[i].parameter,
+        method: samplesData[i].method,
+        price: samplesData[i].price,
+        amount: samplesData[i].amount,
+        total: samplesData[i].total
+      });
+
+      if (i === samplesData.length - 1 || samplesData[i + 1].type) {
+        samples.push({ type, parameters });
+        type = "";
+        parameters = [];
+      }
+    }
+
+    $("#quotationMethod").val(method);
+    $("#quotationDate").val(JSON.stringify(date));
+    $("#quotationBusinessName").val(businessName);
+    $("#quotationDocument").val(doc);
+    $("#quotationApplicant").val(applicant);
+    $("#quotationPosition").val(position);
+    $("#quotationAddress").val(address);
+    $("#quotationPhone").val(phone);
+    $("#quotationCity").val(city);
+    $("#quotationEmail").val(email);
+    $("#quotationSamples").val(JSON.stringify(samples));
+    $("#quotationObervations").val(observations);
+    $("#quotationTotal").val(total);
+    $("#quotationCreate").submit();
   });
 });
 

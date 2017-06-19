@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport(
 /*
   Responsable Tecnico --  Crear, revisa
   Auxiliar Administrativo -- Crea
-  Director del Laboratorio -- crear, Revisa ==> falta añadir el director
+  Director del Laboratorio -- crear, Revisa
 */
 
 /**
@@ -64,36 +64,22 @@ exports.new = (req, res) => {
 // POST /quotation/create -- Create a new quotation
 exports.create = (req, res) => {
   if (isAuthorized(req.user.rol)) {
-    const applicant = {
-      uid: uuid.v4(),
-      firstname: req.body["applicant.firstname"],
-      lastname: req.body["applicant.lastname"],
-      document: req.body["applicant.document"],
-      position: req.body["applicant.position"],
-      phone: req.body["applicant.phone"],
-      email: req.body["applicant.email"]
-    };
-
-    const sample = {
-      type: req.body["sample.type"],
-      parameter: req.body["sample.parameter"],
-      method: req.body["sample.method"],
-      price: req.body["sample.price"],
-      amount: req.body["sample.amount"],
-      totalPrice: req.body["sample.totalPrice"]
-    };
-
     const quotation = {
       uid: uuid.v4(),
       createdBy: req.user._id,
-      businessName: req.body["businessName"],
-      document: req.body["document"],
-      address: req.body["address"],
-      phone: req.body["phone"],
-      email: req.body["email"],
-      applicant: applicant,
-      sample: sample,
-      total: req.body["total"]
+      method: req.body.method,
+      date: JSON.parse(req.body.date),
+      businessName: req.body.businessName,
+      document: req.body.document,
+      applicant: req.body.applicant,
+      position: req.body.position,
+      address: req.body.address,
+      phone: req.body.phone,
+      city: req.body.city,
+      email: req.body.email,
+      samples: JSON.parse(req.body.samples),
+      observations: req.body.observations,
+      total: Number(req.body.total)
     };
 
     Quotation.create(quotation, (err, data) => {
@@ -113,7 +99,10 @@ exports.create = (req, res) => {
             { rol: "responsable técnico", state: "4" },
             { rol: "director del laboratorio", state: "1" },
             { rol: "director del laboratorio", state: "2" },
-            { rol: "director del laboratorio", state: "4" }
+            { rol: "director del laboratorio", state: "4" },
+            { rol: "auxiliar administrativo", state: "1" },
+            { rol: "auxiliar administrativo", state: "2" },
+            { rol: "auxiliar administrativo", state: "4" }
           ]
         },
         (err, users) => {
@@ -145,6 +134,10 @@ exports.create = (req, res) => {
 
             transporter.sendMail(mailOptions, err => {
               if (err) console.log(err);
+              req.flash(
+                "indexMessage",
+                "La cotización ha sido creada exitosamente"
+              );
               res.redirect("/");
             });
           } else {
@@ -158,11 +151,6 @@ exports.create = (req, res) => {
     req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");
   }
-};
-
-// POST /quotation/samples/create -- Create a sample
-exports.createSample = (req, res) => {
-  // TODO
 };
 
 // GET /quotation/pending/approval -- Quotations pending for approve
@@ -336,33 +324,20 @@ exports.edit = (req, res) => {
   const { id } = req.params;
 
   if (isAuthorized(req.user.rol)) {
-    const applicant = {
-      firstname: req.body["applicant.firstname"],
-      lastname: req.body["applicant.lastname"],
-      document: req.body["applicant.document"],
-      position: req.body["applicant.position"],
-      phone: req.body["applicant.phone"],
-      email: req.body["applicant.email"]
-    };
-
-    const sample = {
-      type: req.body["sample.type"],
-      parameter: req.body["sample.parameter"],
-      method: req.body["sample.method"],
-      price: req.body["sample.price"],
-      amount: req.body["sample.amount"],
-      totalPrice: req.body["sample.totalPrice"]
-    };
-
     const quotation = {
-      businessName: req.body["businessName"],
-      document: req.body["document"],
-      address: req.body["address"],
-      phone: req.body["phone"],
-      email: req.body["email"],
-      applicant: applicant,
-      sample: sample,
-      total: req.body["total"]
+      method: req.body.method,
+      date: JSON.parse(req.body.date),
+      businessName: req.body.businessName,
+      document: req.body.document,
+      applicant: req.body.applicant,
+      position: req.body.position,
+      address: req.body.address,
+      phone: req.body.phone,
+      city: req.body.city,
+      email: req.body.email,
+      samples: JSON.parse(req.body.samples),
+      observations: req.body.observations,
+      total: Number(req.body.total)
     };
 
     Quotation.findByIdAndUpdate(id, quotation, (err, data) => {
@@ -434,10 +409,10 @@ exports.changeState = (req, res) => {
                 to: emails,
                 subject: "Eliminación de cotizaciones",
                 html: `<p>Estimado Usuario,</p><br>Se le informa que
-              hay solicitudes para la eliminación de cotizaciones, para su
-              aprobación, si deseas ingresar ve a la siguiente dirección:<br>
-              <a href="${HOST}/quotation/pending/delete">Iniciar sesión</a>
-              <br><br><br>Att,<br><br>Equipo Administrativo`
+                  hay solicitudes para la eliminación de cotizaciones, para su
+                  aprobación, si deseas ingresar ve a la siguiente dirección:<br>
+                  <a href="${HOST}/quotation/pending/delete">Iniciar sesión</a>
+                  <br><br><br>Att,<br><br>Equipo Administrativo`
               };
 
               transporter.sendMail(mailOptions, err => {

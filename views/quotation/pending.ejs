@@ -11,9 +11,12 @@
     <div class="title">
       <h1>APROBACIÓN DE COTIZACIONES</h1>
     </div>
-    <% for (let i = 0, quotation = quotations[i]; i < quotations.length; i++) { %>
-      <div class="row">
-        <div class="col-sm-6">
+    <% for (let i = 0; i < quotations.length; i++) { %>
+      <% const quotation = quotations[i]; %>
+      <% if (i % 2 === 0) { %>
+        <div class="row">
+      <% } %>
+      <div class="col-sm-6">
         <form class="form-horizontal panel panel-default" action="/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
           <div class="panel-body">
             <div class="form-group">
@@ -23,31 +26,30 @@
               </div>
               <label class="control-label col-sm-2">Fecha:</label>
               <div class="col-sm-5">
-                <span class="form-control">05/06/2017</span>
+                <span class="form-control"><%= quotation.date.day %>/<%= quotation.date.month %>/<%= quotation.date.year %></span>
               </div>
-
             </div>
 
             <div class="form-group">
               <label class="control-label col-sm-3" for="document">Nit o C.C.:</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" name="document" id="document" value="<%= quotation.document %>" placeholder="Ingresa Nit o C.C." disabled required>
+                <span class="form-control" name="document" id="document"><%= quotation.document %></span>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-sm-3" for="businessName">Razón Social:</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" name="businessName" id="businessName" value="<%= quotation.businessName %>" placeholder="Ingresa razón social" disabled required>
+                <span class="form-control" name="businessName" id="businessName"><%= quotation.businessName %></span>
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-3" for="sample.amount">Número de muestras:</label>
+              <label class="control-label col-sm-3" for="samples">Número de Muestras:</label>
               <div class="col-sm-3">
-                <input type="number" min="0" class="form-control" name="sample.amount" id="sample.amount" value="<%= quotation.sample.amount %>" placeholder="Ingresa número de muestras" disabled required>
+                <span class="form-control" name="samples" id="samples"><%= quotation.samples.length %></span>
               </div>
-              <label class="control-label col-sm-2" for="total">Valor Total:</label>
+              <label class="control-label col-sm-2" for="total">Total ($):</label>
               <div class="col-sm-4">
-                <input type="number" class="form-control" min="0" name="total" id="total" value="<%= quotation.total %>" placeholder="Ingresa total" disabled required>
+                <span class="form-control" min="0" name="total" id="total"><%= quotation.total %></span>
                 <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
               </div>
             </div>
@@ -55,25 +57,25 @@
             <div class="form-group">
               <div class="center">
                 <button class="btn btn-success accept" id="accept-<%= quotation._id %>">Aprobar</button>
-                <button class="btn btn-success btn-color-blue" id="">Ver</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Rechazar</button>
+                <a href="/quotation/pending/approval/<%= quotation._id %>" class="btn btn-success btn-color-blue">Ver</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal<%= quotation._id %>">Rechazar</button>
               </div>
             </div>
 
-          <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal fade" id="myModal<%= quotation._id %>" role="dialog">
               <div class="modal-dialog">
-
-                <!-- Modal content-->
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Justificación</h4>
+                    <div class="center">
+                      <h4 class="modal-title">Justificación</h4>
+                    </div>
                   </div>
                   <div class="modal-body">
+                    <div class="row" id="modalAlert"></div>
                     <div class="form-group">
-                      <div class="col-sm-offset-1 col-sm-10">
-                        <textarea name="justification" class="form-control" placeholder="Escribe la justificación del rechazo"></textarea>
+                      <div class="col-sm-12">
+                        <textarea name="justification" id="text-<%= quotation._id %>" class="form-control" placeholder="Escribe la justificación del rechazo" required></textarea>
                       </div>
                     </div>
                   </div>
@@ -86,8 +88,10 @@
             </div>
           </div>
         </form>
-        </div>
       </div>
+      <% if ((i + 1) % 2 === 0 || i === quotations.length - 1) { %>
+        </div>
+      <% } %>
     <% } %>
   </div>
 </div>

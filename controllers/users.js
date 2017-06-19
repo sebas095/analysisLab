@@ -242,7 +242,7 @@ exports.deactivatePendingAccount = (req, res) => {
       } else {
         req.flash(
           "indexMessage",
-          "No hay usuarios disponibles para la desactivación de cuentas"
+          "No hay más usuarios disponibles para la desactivación de cuentas"
         );
         res.redirect("/");
       }
@@ -278,7 +278,7 @@ exports.pendingUsers = (req, res) => {
         } else {
           req.flash(
             "indexMessage",
-            "No hay usuarios disponibles para la aprobación de cuentas"
+            "No hay más usuarios disponibles para la aprobación de cuentas"
           );
           res.redirect("/");
         }

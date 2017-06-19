@@ -174,7 +174,7 @@ exports.pending = (req, res) => {
       } else {
         req.flash(
           "indexMessage",
-          "No hay cotizaciones disponibles para aprobar/rechazar"
+          "No hay más cotizaciones disponibles para aprobar/rechazar"
         );
         res.redirect("/");
       }
@@ -427,7 +427,7 @@ exports.changeState = (req, res) => {
             } else {
               req.flash(
                 "indexMessage",
-                "No hay usuarios disponibles para la revisión de la solicitud"
+                "No hay más usuarios disponibles para la revisión de la solicitud"
               );
               res.redirect("/");
             }
@@ -462,7 +462,7 @@ exports.pendingDelete = (req, res) => {
       } else {
         req.flash(
           "indexMessage",
-          "No hay hay solicitudes para aprobar/rechazar"
+          "No hay hay más solicitudes para aprobar/rechazar"
         );
         res.redirect("/");
       }
@@ -672,9 +672,22 @@ exports.menu = (req, res) => {
   }
 };
 
-exports.approval = (req, res) => {
+// GET /quotation/pending/approval/:id -- approval a specific quotation
+exports.showApproval = (req, res) => {
   if (isAuthorized(req.user.rol)) {
-    res.render("quotation/approval");
+    const { id } = req.params;
+    Quotation.findById(id, (err, quotation) => {
+      if (err) {
+      } else if (quotation) {
+        res.render("quotation/approval", { quotation });
+      } else {
+        req.flash(
+          "pendingQuotations",
+          "La cotización solicitada no se encuentra disponible"
+        );
+        res.redirect("/quotation/pending/approval");
+      }
+    });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
     res.redirect("/");

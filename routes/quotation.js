@@ -34,9 +34,9 @@ module.exports = (app, mountPoint) => {
     quotationController.menu
   );
   router.get(
-    "/approval",
+    "/pending/approval/:id",
     sessionController.loginRequired,
-    quotationController.approval
+    quotationController.showApproval
   );
 
   router.get(

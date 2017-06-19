@@ -16,7 +16,10 @@
         <form class="form-horizontal panel panel-default" action="/quotation/delete/<%= quotation._id %>?_method=delete" method="post" id="form-<%= quotation._id %>">
           <div class="panel-body">
             <div class="col-sm-8">
-              <p>Solicitan la eliminación de la cotización del cliente <%= quotation.applicant.firstname %> <%= quotation.applicant.lastname %></p>
+              <p>
+                Se solicita la eliminación de la cotización <b>N°<%= quotation._id %></b> del cliente <b><%= quotation.applicant %></b> creada el <b><%= quotation.date.day %>/<%= quotation.date.month %>/<%= quotation.date.year %></b>
+                de la empresa/organización de razón social <b><%= quotation.businessName %></b> con Nit/C.C <b><%= quotation.document %></b>
+              </p>
               <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
             </div>
             <div class="col-sm-4">

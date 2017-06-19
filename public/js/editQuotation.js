@@ -17,6 +17,7 @@ jQuery(document).ready($ => {
         "display",
         "inline-block"
       );
+      updateInputs();
     }
   });
 });

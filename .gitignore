@@ -1,5 +1,5 @@
 data
-public/docs
+public/docs/.template.docx#
 # Logs
 logs
 *.log

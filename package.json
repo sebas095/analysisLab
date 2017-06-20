@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "mkdir -p public/docs",
-    "start": "npm run build && nodemon ./bin/www",
+    "start": "nodemon ./bin/www",
     "prod": "NODE_ENV='prod' npm start",
     "test": "mocha ./test"
   },
@@ -20,11 +19,12 @@
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.3",
     "debug": "~2.6.0",
+    "docxtemplater": "^3.1.3",
     "ejs": "~2.5.5",
     "express": "~4.15.2",
     "express-partials": "^0.3.0",
     "express-session": "^1.15.2",
-    "html-docx-js": "^0.3.1",
+    "jszip": "2",
     "method-override": "^2.3.8",
     "mongoose": "^4.9.4",
     "mongoose-auto-increment": "^5.0.1",

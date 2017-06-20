@@ -1,8 +1,9 @@
 const Quotation = require("../models/quotation");
 const User = require("../models/user");
-const HtmlDocx = require("html-docx-js");
-const ejs = require("ejs");
+const path = require("path");
 const fs = require("fs");
+const JSZip = require("jszip");
+const Docxtemplater = require("docxtemplater");
 const uuid = require("uuid");
 const { auth } = require("../config/email");
 const nodemailer = require("nodemailer");
@@ -645,8 +646,107 @@ exports.search = (req, res) => {
   }
 };
 
+// GET /quotation/:id/export -- Return a quotation in a docx document
 exports.exportToWord = (req, res) => {
-  res.render("quotation/word");
+  if (isAuthorized(req.user.rol)) {
+    // Load the docx file as a binary
+    // fs.unlinkSync(
+    //   path.resolve(__dirname + "/../public/docs", "cotizacion.docx")
+    // );
+    const content = fs.readFileSync(
+      path.resolve(__dirname + "/../public/docs", "template.docx"),
+      "binary"
+    );
+
+    const zip = new JSZip(content);
+    const doc = new Docxtemplater();
+    const { id } = req.params;
+    doc.loadZip(zip);
+
+    Quotation.findById(id, (err, quotation) => {
+      if (err) {
+        req.flash(
+          "quotationMessage",
+          "Hubo problemas exportando la cotización, intenta más tarde"
+        );
+        res.redirect(`/labaguasyalimentos/quotation/${id}`);
+      } else if (quotation) {
+        let { samples } = quotation;
+        let dataSamples = [];
+        samples = samples.map(sample => {
+          const { type } = sample;
+          return sample.parameters.map(param => {
+            param.type = type;
+            dataSamples.push(param);
+            return param;
+          });
+        });
+
+        let method = { t: "", p: "", e: "", c: "" };
+        method[quotation.method] = "X";
+        // set the templateVariables
+        doc.setData({
+          t: method.t,
+          p: method.p,
+          e: method.e,
+          c: method.c,
+          number: quotation._id,
+          day: quotation.date.day,
+          month: quotation.date.month,
+          year: quotation.date.year,
+          businessName: quotation.businessName,
+          document: quotation.document,
+          applicant: quotation.applicant,
+          position: quotation.position,
+          address: quotation.address,
+          phone: quotation.phone,
+          city: quotation.city,
+          email: quotation.email,
+          samples: dataSamples,
+          observations: quotation.observations,
+          total: quotation.total
+        });
+        try {
+          // render the document
+          doc.render();
+        } catch (error) {
+          const e = {
+            message: error.message,
+            name: error.name,
+            stack: error.stack,
+            properties: error.properties
+          };
+          console.log(JSON.stringify({ error: e }));
+          // The error thrown here contains additional information when logged
+          //  with JSON.stringify (it contains a property object).
+          throw error;
+          req.flash(
+            "quotationMessage",
+            "Hubo problemas exportando la cotización, intenta más tarde"
+          );
+          return res.redirect(`/labaguasyalimentos/quotation/${id}`);
+        }
+
+        const buf = doc.getZip().generate({ type: "nodebuffer" });
+        // buf is a nodejs buffer, you can either write it to a file
+        // or do anything else with it.
+        fs.writeFileSync(
+          path.resolve(__dirname + "/../public/docs", "cotizacion.docx"),
+          buf
+        );
+        res.redirect("/labaguasyalimentos/docs/cotizacion.docx");
+      } else {
+        req.flash(
+          "indexMessage",
+          "La cotización que solicitada no se encuentra registrada"
+        );
+        res.redirect("/labaguasyalimentos");
+      }
+    });
+  } else {
+    req.flash("indexMessage", "No tienes permisos para acceder");
+    res.redirect("/labaguasyalimentos");
+  }
 };
 
 exports.menu = (req, res) => {
@@ -664,6 +764,12 @@ exports.showApproval = (req, res) => {
     const { id } = req.params;
     Quotation.findById(id, (err, quotation) => {
       if (err) {
+        console.log(err);
+        req.flash(
+          "pendingQuotations",
+          "Hubo problemas con la cotización solicitada, intenta más tarde"
+        );
+        return res.redirect("/labaguasyalimentos/quotation/pending/approval");
       } else if (quotation) {
         res.render("quotation/approval", { quotation });
       } else {

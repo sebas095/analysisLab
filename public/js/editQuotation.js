@@ -17,6 +17,24 @@ jQuery(document).ready($ => {
         "display",
         "inline-block"
       );
+
+      $(".removeSample").click(function(ev) {
+        ev.preventDefault();
+        const rowSpan = $(this).parent().attr("rowspan");
+        let row = $(this).parent().parent();
+        for (let i = 0; i < rowSpan; i++) {
+          let next = $(row).next();
+          $(row).remove();
+          row = next;
+        }
+
+        let total = 0;
+        const $numberSamples = $(".numberSamples");
+        for (let i = 0; i < $numberSamples.length; i++) {
+          total += Number($($numberSamples[i]).parent().next().text());
+        }
+        $("#totalPrice").text(total);
+      });
       updateInputs();
     }
   });

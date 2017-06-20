@@ -59,7 +59,7 @@ jQuery(document).ready($ => {
     data.parameters = parameters;
     $.ajax({
       type: "POST",
-      url: "http://localhost:3000/samples/new",
+      url: "http://localhost:3000/labaguasyalimentos/samples/new",
       data: { data: JSON.stringify(data) },
       success: response => {
         $(".modal").modal("hide");
@@ -189,7 +189,7 @@ jQuery(document).ready($ => {
     data.parameters = parameters;
     $.ajax({
       type: "POST",
-      url: "http://localhost:3000/samples/new",
+      url: "http://localhost:3000/labaguasyalimentos/samples/new",
       data: { data: JSON.stringify(data) },
       success: response => {
         sampleData = sampleData.replace(
@@ -230,7 +230,7 @@ jQuery(document).ready($ => {
     if (searchInput.length === 1) {
       $.ajax({
         type: "GET",
-        url: `http://localhost:3000/samples?type=${sampleName}`,
+        url: `http://localhost:3000/labaguasyalimentos/samples?type=${sampleName}`,
         success: results => {
           const { parameters } = results.data;
           for (let i = 0; i < parameters.length; i++) {

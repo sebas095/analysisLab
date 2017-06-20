@@ -72,8 +72,8 @@ exports.createUser = (req, res) => {
             to: emails,
             subject: "Aprobación de cuentas",
             html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
-              hay cuentas pendientes para aprobar o rechazar, si deseas ingresar ve a
-               la siguiente dirección:<br>
+              hay cuentas pendientes para aprobar o rechazar. Si desea ingresar de
+               clic en el siguiente enlace:<br>
                <a href="${HOST}/users/pending/approve">Iniciar sesión</a>
                <br><br><br>Att,<br><br>Equipo Administrativo`
           };
@@ -83,8 +83,8 @@ exports.createUser = (req, res) => {
             if (req.body.state === "0") {
               req.flash(
                 "loginMessage",
-                "Pronto el administrador revisara tu solicitud de cuenta " +
-                  "y se te notificara por correo electrónico"
+                "Pronto el administrador revisara su solicitud de cuenta " +
+                  "y se le notificara por correo electrónico"
               );
             } else {
               req.flash(
@@ -323,7 +323,7 @@ exports.changeState = (req, res) => {
           subject: "Desactivación de cuentas",
           html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
             hay solicitudes para la desactivación de cuentas, para aprobar
-            o rechazar, si deseas ingresar ve a la siguiente dirección:<br>
+            o rechazar. Si desea ingresar de clic en el siguiente enlace:<br>
             <a href="${HOST}/users/pending/deactivate">Iniciar sesión</a>
             <br><br><br>Att,<br><br>Equipo Administrativo`
         };
@@ -332,8 +332,8 @@ exports.changeState = (req, res) => {
           if (err) console.log(err);
           req.flash(
             "userMessage",
-            "Pronto el administrador revisara tu solicitud " +
-              `y se te notificara al correo electrónico de ${user.email}`
+            "Pronto el administrador revisara su solicitud " +
+              `y se le notificara al correo electrónico de ${user.email}`
           );
           res.redirect("/labaguasyalimentos/profile");
         });
@@ -378,8 +378,8 @@ exports.accountApproval = (req, res) => {
               to: user.email,
               subject: "Estado de aprobación de cuenta",
               html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-              <br>Se le informa que su cuenta ha sido aprobada,
-                si deseas ingresar ve a la siguiente dirección:<br>
+              <br>Se le informa que su cuenta ha sido aprobada.
+                Si desea ingresar de clic en el siguiente enlace:<br>
                 <a href="${HOST}/session/login">Iniciar sesión</a><br><br><br>
                 Att,<br><br>Equipo Administrativo`
             };
@@ -460,7 +460,7 @@ exports.deactivateAccount = (req, res) => {
               to: user.email,
               subject: "Desactivación de cuenta",
               html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p>
-              <br>Se le informa que su cuenta ha sido desactivada exitosamente.
+              <br>Se le informa que su cuenta ha sido desactivada.
               <br><br><br>Att,<br><br>Equipo Administrativo`
             };
 

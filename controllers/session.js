@@ -93,7 +93,7 @@ exports.sendEmail = (req, res) => {
           to: user.email,
           subject: "Recuperación de contraseña",
           html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},</p><br>
-            Para una nueva contraseña deberás acceder a la siguiente dirección:
+            Para una nueva contraseña de clic al siguiente enlace:
             <br><a href="${HOST}/account/recovery/${token}">
             Recuperar Contraseña</a><br><br>Si usted no lo solicitó, ignore
             este correo electrónico y su contraseña permanecerá sin cambios.
@@ -104,7 +104,7 @@ exports.sendEmail = (req, res) => {
           if (err) console.log(err);
           req.flash(
             "loginMessage",
-            `Revisa el correo ${user.email} para completar
+            `Revise su correo ${user.email} para completar
             la recuperación de contraseña`
           );
           done(err, "done");

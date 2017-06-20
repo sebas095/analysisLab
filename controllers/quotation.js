@@ -126,8 +126,8 @@ exports.create = (req, res) => {
               to: emails,
               subject: "Aprobación de cotizaciones",
               html: `<p>Estimado Usuario,</p><br>Se le informa que
-              hay cotizaciones pendientes para aprobar o rechazar, para
-              ingresar ve a la siguiente dirección:
+              hay cotizaciones pendientes para aprobar o rechazar. Si
+              desea ingresar de clic en el siguiente enlace:
               <br><a href="${HOST}/quotation/pending/approval">
               Iniciar sesión</a><br><br><br>Att,<br><br>
               Equipo Administrativo`
@@ -218,7 +218,7 @@ exports.approval = (req, res) => {
                   subject: "Estado de aprobación de la cotización",
                   html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},
                     </p><br>Se le informa que su cotización ha sido aprobada,
-                    si deseas ingresar ve a la siguiente dirección:<br>
+                    si desea visualizarla de clic en el siguiente enlace:<br>
                     <a href="${HOST}/quotation/${data._id}">Iniciar sesión
                     </a><br><br><br>Att,<br><br>Equipo Administrativo`
                 };
@@ -264,7 +264,7 @@ exports.approval = (req, res) => {
                 subject: "Estado de aprobación de la cotización",
                 html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},
                   </p><br>Se le informa que su cotización ha sido rechazada,
-                  la justificación es la siguiente:<br><br>
+                  el motivo es el siguiente:<br><br>
                   ${req.body.justification}<br><br><br>Att,<br><br>
                   Equipo Administrativo`
               };
@@ -413,7 +413,7 @@ exports.changeState = (req, res) => {
                 subject: "Eliminación de cotizaciones",
                 html: `<p>Estimado Usuario,</p><br>Se le informa que
                   hay solicitudes para la eliminación de cotizaciones, para
-                  aprobar o rechazar, si deseas ingresar ve a la siguiente dirección:<br>
+                  aprobar o rechazar. Si desea ingresar de clic en el siguiente enlace:<br>
                   <a href="${HOST}/quotation/pending/delete">Iniciar sesión</a>
                   <br><br><br>Att,<br><br>Equipo Administrativo`
               };
@@ -503,7 +503,7 @@ exports.delete = (req, res) => {
                 subject: "Eliminación de cotización",
                 html: `<p>Estimado Usuario ${user.firstname} ${user.lastname},
                   </p><br>Se le informa que solicitud de eliminación de la
-                  cotización ha sido aprobada exitosamente.
+                  cotización ha sido aprobada.
                   <br><br><br>Att,<br><br>Equipo Administrativo`
               };
 

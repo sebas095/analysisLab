@@ -125,7 +125,7 @@ exports.create = (req, res) => {
               to: emails,
               subject: "Aprobación de cotizaciones",
               html: `<p>Estimado Usuario,</p><br>Se le informa que
-              hay cotizaciones pendientes para su aprobación, si deseas
+              hay cotizaciones pendientes para aprobar o rechazar, para
               ingresar ve a la siguiente dirección:
               <br><a href="${HOST}/quotation/pending/approval">
               Iniciar sesión</a><br><br><br>Att,<br><br>
@@ -409,8 +409,8 @@ exports.changeState = (req, res) => {
                 to: emails,
                 subject: "Eliminación de cotizaciones",
                 html: `<p>Estimado Usuario,</p><br>Se le informa que
-                  hay solicitudes para la eliminación de cotizaciones, para su
-                  aprobación, si deseas ingresar ve a la siguiente dirección:<br>
+                  hay solicitudes para la eliminación de cotizaciones, para
+                  aprobar o rechazar, si deseas ingresar ve a la siguiente dirección:<br>
                   <a href="${HOST}/quotation/pending/delete">Iniciar sesión</a>
                   <br><br><br>Att,<br><br>Equipo Administrativo`
               };

@@ -438,16 +438,16 @@ jQuery(document).ready($ => {
       month: Number($("#date").children()[1].innerText),
       year: Number($("#date").children()[2].innerText)
     };
-    const businessName = $("#businessName").val().toUpperCase().trim();
-    const doc = $("#document").val().trim();
-    const applicant = toCapitalize($("#applicant").val());
+    const businessName = $("#businessName").val().toUpperCase().trim() || "";
+    const doc = $("#document").val().trim() || "";
+    const applicant = toCapitalize($("#applicant").val()) || "";
     const position = toCapitalize($("#position").val());
-    const address = $("#address").val().trim();
-    const phone = $("#phone").val().trim();
-    const city = toCapitalize($("#city").val());
-    const email = $("#email").val().trim();
-    const observations = $("#observations").val().trim();
-    const total = $("#totalPrice").text();
+    const address = $("#address").val().trim() || "";
+    const phone = $("#phone").val().trim() || "";
+    const city = toCapitalize($("#city").val()) || "";
+    const email = $("#email").val().trim() || "";
+    const observations = $("#observations").val().trim() || "";
+    const total = $("#totalPrice").text() || "0";
 
     let samples = [];
     let samplesData = [];

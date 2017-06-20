@@ -72,7 +72,7 @@ exports.createUser = (req, res) => {
             to: emails,
             subject: "Aprobación de cuentas",
             html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
-              hay cuentas pendientes para su aprobación, si deseas ingresar ve a
+              hay cuentas pendientes para aprobar o rechazar, si deseas ingresar ve a
                la siguiente dirección:<br>
                <a href="${HOST}/users/pending/approve">Iniciar sesión</a>
                <br><br><br>Att,<br><br>Equipo Administrativo`
@@ -322,8 +322,8 @@ exports.changeState = (req, res) => {
           to: emails,
           subject: "Desactivación de cuentas",
           html: `<p>Estimado Usuario administrador,</p><br>Se le informa que
-            hay solicitudes para la desactivación de cuentas, para su
-            aprobación, si deseas ingresar ve a la siguiente dirección:<br>
+            hay solicitudes para la desactivación de cuentas, para aprobar
+            o rechazar, si deseas ingresar ve a la siguiente dirección:<br>
             <a href="${HOST}/users/pending/deactivate">Iniciar sesión</a>
             <br><br><br>Att,<br><br>Equipo Administrativo`
         };

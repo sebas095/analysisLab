@@ -457,7 +457,7 @@ jQuery(document).ready($ => {
       let sample = {};
       let item = $samples[i];
       if ($(item).children().first().attr("rowspan")) {
-        sample.type = $(item).children().first().text().trim();
+        sample.type = $(item).children().first().text().toUpperCase().trim();
         sample.parameter = toCapitalize($($(item).children()[1]).text());
         sample.method = toCapitalize($($(item).children()[2]).text());
         sample.price = $($(item).children()[3]).text();
@@ -477,7 +477,7 @@ jQuery(document).ready($ => {
     let parameters = [];
     for (let i = 0; i < samplesData.length; i++) {
       if (samplesData[i].type) {
-        type = samplesData[i].type;
+        type = samplesData[i].type.toUpperCase().trim();
       }
 
       parameters.push({

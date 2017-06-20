@@ -673,13 +673,14 @@ exports.exportToWord = (req, res) => {
       } else if (quotation) {
         let { samples } = quotation;
         let dataSamples = [];
-        samples = samples.map(sample => {
+        samples.map(sample => {
           const { type } = sample;
-          return sample.parameters.map(param => {
-            param.type = type;
-            dataSamples.push(param);
-            return param;
-          });
+          dataSamples.push(
+            ...sample.parameters.map(param => {
+              param.type = type;
+              return param;
+            })
+          );
         });
 
         let method = { t: "", p: "", e: "", c: "" };

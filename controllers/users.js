@@ -15,7 +15,7 @@ exports.newUser = (req, res) => {
           "indexMessage",
           "Hubo problemas con el servidor, intenta de nuevo"
         );
-        return res.redirect("/");
+        return res.redirect("/labaguasyalimentos");
       } else if (users.length === 0) {
         res.render("users/new");
       } else {
@@ -23,7 +23,7 @@ exports.newUser = (req, res) => {
       }
     });
   } else {
-    res.redirect("/profile");
+    res.redirect("/labaguasyalimentos/profile");
   }
 };
 
@@ -36,7 +36,7 @@ exports.createUser = (req, res) => {
         "indexMessage",
         "Hubo problemas en el registro, intenta de nuevo"
       );
-      return res.redirect("/");
+      return res.redirect("/labaguasyalimentos");
     } else if (users.length === 0) {
       req.body.state = "1";
     } else {
@@ -50,7 +50,7 @@ exports.createUser = (req, res) => {
           "loginMessage",
           "Hubo problemas en el registro, intenta de nuevo"
         );
-        return res.redirect("/session/login");
+        return res.redirect("/labaguasyalimentos/session/login");
       }
       User.find({ state: "1" }, (err, users) => {
         if (err) {
@@ -59,7 +59,7 @@ exports.createUser = (req, res) => {
             "loginMessage",
             "Hubo problemas en el registro, intenta de nuevo"
           );
-          return res.redirect("/session/login");
+          return res.redirect("/labaguasyalimentos/session/login");
         } else if (users.length > 0) {
           let emails = "";
           for (let i = 0; i < users.length; i++) {
@@ -93,11 +93,11 @@ exports.createUser = (req, res) => {
                   "y tienes permisos de administrador"
               );
             }
-            res.redirect("/session/login");
+            res.redirect("/labaguasyalimentos/session/login");
           });
         } else {
           req.flash("loginMessage", "Hubo problemas en el servidor");
-          res.redirect("/session/login");
+          res.redirect("/labaguasyalimentos/session/login");
         }
       });
     });
@@ -124,17 +124,17 @@ exports.updateUser = (req, res) => {
           "indexMessage",
           "Hubo problemas actualizando los datos, intenta de nuevo"
         );
-        return res.redirect("/");
+        return res.redirect("/labaguasyalimentos");
       } else {
         req.flash(
           "adminMessage",
           "Los datos han sido actualizados exitosamente"
         );
-        res.redirect("/users/admin");
+        res.redirect("/labaguasyalimentos/users/admin");
       }
     });
   } else {
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -149,10 +149,10 @@ exports.updateProfile = (req, res) => {
         "indexMessage",
         "Hubo problemas actualizando los datos, intenta de nuevo"
       );
-      return res.redirect("/");
+      return res.redirect("/labaguasyalimentos");
     } else {
       req.flash("userMessage", "Sus datos han sido actualizados exitosamente");
-      res.redirect("/profile");
+      res.redirect("/labaguasyalimentos/profile");
     }
   });
 };
@@ -174,15 +174,15 @@ exports.deleteUser = (req, res) => {
             "indexMessage",
             "Hubo problemas desactivando la cuenta, intenta de nuevo"
           );
-          return res.redirect("/");
+          return res.redirect("/labaguasyalimentos");
         }
         req.flash("adminMessage", "El estado de la cuenta ha sido actualizada");
-        res.redirect("/users/admin");
+        res.redirect("/labaguasyalimentos/users/admin");
       }
     );
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -202,7 +202,7 @@ exports.getUsers = (req, res) => {
             "Hubo problemas obteniendo los datos de los usuarios, " +
               "intenta de nuevo"
           );
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         } else if (users.length > 0) {
           res.render("users/admin", {
             users: users,
@@ -211,13 +211,13 @@ exports.getUsers = (req, res) => {
           });
         } else {
           req.flash("indexMessage", "No hay usuarios disponibles");
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         }
       }
     );
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -232,7 +232,7 @@ exports.deactivatePendingAccount = (req, res) => {
           "Hubo problemas obteniendo los datos de los usuarios, " +
             "intenta de nuevo"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       } else if (users.length > 0) {
         res.render("users/deactivate", {
           users: users,
@@ -244,12 +244,12 @@ exports.deactivatePendingAccount = (req, res) => {
           "indexMessage",
           "No hay más usuarios disponibles para la desactivación de cuentas"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       }
     });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -268,7 +268,7 @@ exports.pendingUsers = (req, res) => {
             "Hubo problemas obteniendo los datos de los usuarios, " +
               "intenta de nuevo"
           );
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         } else if (users.length > 0) {
           res.render("users/pending", {
             users: users,
@@ -280,13 +280,13 @@ exports.pendingUsers = (req, res) => {
             "indexMessage",
             "No hay más usuarios disponibles para la aprobación de cuentas"
           );
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         }
       }
     );
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -300,7 +300,7 @@ exports.changeState = (req, res) => {
         "indexMessage",
         "Hubo problemas en la solicitud de desactivación de la cuenta"
       );
-      return res.redirect("/");
+      return res.redirect("/labaguasyalimentos");
     }
     User.find({ state: "1" }, (err, users) => {
       if (err) {
@@ -309,7 +309,7 @@ exports.changeState = (req, res) => {
           "indexMessage",
           "Hubo problemas para notificar al administrador"
         );
-        return res.redirect("/");
+        return res.redirect("/labaguasyalimentos");
       } else if (users.length > 0) {
         let emails = "";
         for (let i = 0; i < users.length; i++) {
@@ -335,11 +335,11 @@ exports.changeState = (req, res) => {
             "Pronto el administrador revisara tu solicitud " +
               `y se te notificara al correo electrónico de ${user.email}`
           );
-          res.redirect("/profile");
+          res.redirect("/labaguasyalimentos/profile");
         });
       } else {
         req.flash("indexMessage", "No hay administradores disponibles");
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       }
     });
   });
@@ -371,7 +371,7 @@ exports.accountApproval = (req, res) => {
               "indexMessage",
               "Hubo problemas notificando la aprobación de cuenta del usuario"
             );
-            res.redirect("/");
+            res.redirect("/labaguasyalimentos");
           } else if (user) {
             const mailOptions = {
               from: "Administración",
@@ -386,14 +386,14 @@ exports.accountApproval = (req, res) => {
 
             transporter.sendMail(mailOptions, err => {
               if (err) console.log(err);
-              res.redirect("/users/pending/approve");
+              res.redirect("/labaguasyalimentos/users/pending/approve");
             });
           } else {
             req.flash(
               "pendingUsers",
               `No existe el usuario con el correo ${email}`
             );
-            res.redirect("/users/pending/approve");
+            res.redirect("/labaguasyalimentos/users/pending/approve");
           }
         }
       );
@@ -405,7 +405,7 @@ exports.accountApproval = (req, res) => {
             "indexMessage",
             "Hubo problemas rechazando la cuenta del usuario"
           );
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         } else if (user) {
           const mailOptions = {
             from: "Administración",
@@ -418,20 +418,20 @@ exports.accountApproval = (req, res) => {
 
           transporter.sendMail(mailOptions, err => {
             if (err) console.log(err);
-            res.redirect("/users/pending/approve");
+            res.redirect("/labaguasyalimentos/users/pending/approve");
           });
         } else {
           req.flash(
             "pendingUsers",
             `No existe el usuario con el correo ${email}`
           );
-          res.redirect("users/accountApproval");
+          res.redirect("/labaguasyalimentos/users/accountApproval");
         }
       });
     }
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -453,7 +453,7 @@ exports.deactivateAccount = (req, res) => {
               "indexMessage",
               "Hubo problemas desactivando la cuenta del usuario"
             );
-            res.redirect("/");
+            res.redirect("/labaguasyalimentos");
           } else if (user) {
             const mailOptions = {
               from: "Administración",
@@ -466,14 +466,14 @@ exports.deactivateAccount = (req, res) => {
 
             transporter.sendMail(mailOptions, err => {
               if (err) console.log(err);
-              res.redirect("/users/pending/deactivate");
+              res.redirect("/labaguasyalimentos/users/pending/deactivate");
             });
           } else {
             req.flash(
               "pendingDeactivateUsers",
               `No existe el usuario con el correo ${email}`
             );
-            res.redirect("/users/pending/deactivate");
+            res.redirect("/labaguasyalimentos/users/pending/deactivate");
           }
         }
       );
@@ -491,7 +491,7 @@ exports.deactivateAccount = (req, res) => {
               "indexMessage",
               "Hubo problemas con la cuenta del usuario"
             );
-            res.redirect("/");
+            res.redirect("/labaguasyalimentos");
           } else if (user) {
             const mailOptions = {
               from: "Administración",
@@ -504,21 +504,21 @@ exports.deactivateAccount = (req, res) => {
 
             transporter.sendMail(mailOptions, err => {
               if (err) console.log(err);
-              res.redirect("/users/pending/deactivate");
+              res.redirect("/labaguasyalimentos/users/pending/deactivate");
             });
           } else {
             req.flash(
               "pendingDeactivateUsers",
               `No existe el usuario con el correo ${email}`
             );
-            res.redirect("/users/pending/deactivate");
+            res.redirect("/labaguasyalimentos/users/pending/deactivate");
           }
         }
       );
     }
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -527,6 +527,6 @@ exports.menu = (req, res) => {
     res.render("users/menu");
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };

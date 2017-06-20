@@ -13,7 +13,7 @@
       </div>
       <% for (let usr of users) { %>
         <div class="row">
-          <form class="form-horizontal panel panel-default" action="/users/deactivateAccount?_method=put" method="post" id="form-<%= usr._id %>">
+          <form class="form-horizontal panel panel-default" action="/labaguasyalimentos/users/deactivateAccount?_method=put" method="post" id="form-<%= usr._id %>">
             <div class="panel-body">
               <div class="col-sm-9">
                 <p>El usuario <strong><%= usr.firstname %> <%= usr.lastname %></strong> con el cargo de <strong><%= usr.rol %></strong> solicita la desactivación de la cuenta</p>
@@ -30,10 +30,10 @@
       <% } %>
     </div>
   </div>
-    <script src="/bootstrap/js/jquery-3.2.1.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/js/navbar.js"></script>
-    <script src="/js/deactivate.js"></script>
+    <script src="/labaguasyalimentos/bootstrap/js/jquery-3.2.1.min.js"></script>
+    <script src="/labaguasyalimentos/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/labaguasyalimentos/js/navbar.js"></script>
+    <script src="/labaguasyalimentos/js/deactivate.js"></script>
     <script type="text/javascript">
       $("#menu-toggle").click(function(e) {
         e.preventDefault();

@@ -24,7 +24,7 @@
             <% } else { %>
               <% rol = "disabled"; %>
             <% } %>
-            <form class="adminForm form-horizontal panel panel-default" action="/users/<%= usr._id %>/<%= rol %>?_method=put" method="post" id="form-<%= usr._id %>">
+            <form class="adminForm form-horizontal panel panel-default" action="/labaguasyalimentos/users/<%= usr._id %>/<%= rol %>?_method=put" method="post" id="form-<%= usr._id %>">
               <div class="panel-body">
                 <div class="form-group">
                   <div class="col-xs-12 col-sm-12 col-lg-12">
@@ -100,7 +100,7 @@
           <% if ((i + 1) % 2 === 0 || i == users.length - 1) { %>
             </div>
           <% } %>
-          <form action="/users/<%= usr._id %>?_method=delete" method="post" id="deactivateForm-<%= usr._id %>">
+          <form action="/labaguasyalimentos/users/<%= usr._id %>?_method=delete" method="post" id="deactivateForm-<%= usr._id %>">
             <input type="hidden" name="status" id="status-<%= usr._id %>">
           </form>
         <% } %>
@@ -108,7 +108,7 @@
     </div>
   </div>
   <% include ../footer.ejs %>
-    <script src="/js/management.js"></script>
+    <script src="/labaguasyalimentos/js/management.js"></script>
     <script type="text/javascript">
       $("#menu-toggle").click(function(e) {
         e.preventDefault();

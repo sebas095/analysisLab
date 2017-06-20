@@ -10,13 +10,13 @@ const transporter = nodemailer.createTransport(
 
 exports.loginRequired = (req, res, next) => {
   if (req.isAuthenticated()) return next();
-  res.redirect("/session/login");
+  res.redirect("/labaguasyalimentos/session/login");
 };
 
 // GET /login -- Login form
 exports.new = (req, res) => {
   if (req.isAuthenticated())
-    res.redirect("/profile");
+    res.redirect("/labaguasyalimentos/profile");
   else
     res.render("session/new", {
       message: req.flash("loginMessage")
@@ -42,7 +42,7 @@ exports.recoveryPassword = (req, res) => {
           "El token para resetear la contraseña " +
             "es invalido o ya ha expirado"
         );
-        res.redirect("/account/newPassword");
+        res.redirect("/labaguasyalimentos/account/newPassword");
       }
       res.render("session/recovery", {
         token: req.params.token,
@@ -71,13 +71,13 @@ exports.sendEmail = (req, res) => {
               "loginMessage",
               "Hubo problemas para iniciar sesión, intenta de nuevo"
             );
-            return res.redirect("/session/login");
+            return res.redirect("/labaguasyalimentos/session/login");
           } else if (!user) {
             req.flash(
               "loginMessage",
               `La cuenta con el correo ${email} no se encuentra registrada`
             );
-            return res.redirect("/session/login");
+            return res.redirect("/labaguasyalimentos/session/login");
           } else {
             user.resetPasswordToken = token;
             user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
@@ -105,7 +105,7 @@ exports.sendEmail = (req, res) => {
           req.flash(
             "loginMessage",
             `Revisa el correo ${user.email} para completar
-          la recuperación de contraseña`
+            la recuperación de contraseña`
           );
           done(err, "done");
         });
@@ -113,7 +113,7 @@ exports.sendEmail = (req, res) => {
     ],
     err => {
       if (err) console.log(err);
-      res.redirect("/session/login");
+      res.redirect("/labaguasyalimentos/session/login");
     }
   );
 };
@@ -123,7 +123,7 @@ exports.changePassword = (req, res) => {
   const token = req.params.token;
   if (req.body.password !== req.body.cpassword) {
     req.flash("recoveryMessage", "Las contraseñas no coinciden");
-    res.redirect(`/account/recovery/${token}`);
+    res.redirect(`/labaguasyalimentos/account/recovery/${token}`);
   } else {
     User.findOne(
       {
@@ -137,7 +137,7 @@ exports.changePassword = (req, res) => {
             "recoveryMessage",
             "Hubo problemas para cambiar la contraseña, intenta de nuevo"
           );
-          return res.redirect(`/account/recovery/${token}`);
+          return res.redirect(`/labaguasyalimentos/account/recovery/${token}`);
         }
         usr.comparePassword(req.body.password, (err, isMatch) => {
           if (err) {
@@ -146,14 +146,18 @@ exports.changePassword = (req, res) => {
               "recoveryMessage",
               "Hubo problemas para cambiar la contraseña, intenta de nuevo"
             );
-            return res.redirect(`/account/recovery/${token}`);
+            return res.redirect(
+              `/labaguasyalimentos/account/recovery/${token}`
+            );
           } else if (isMatch) {
             req.flash(
               "recoveryMessage",
               "Esa contraseña era la que tenias anteriormente, " +
                 "por favor intenta de nuevo con otra contraseña"
             );
-            return res.redirect(`/account/recovery/${token}`);
+            return res.redirect(
+              `/labaguasyalimentos/account/recovery/${token}`
+            );
           } else {
             async.waterfall(
               [
@@ -208,9 +212,11 @@ exports.changePassword = (req, res) => {
                     "Hubo problemas para cambiar la contraseña," +
                       " intenta de nuevo"
                   );
-                  return res.redirect(`/account/recovery/${token}`);
+                  return res.redirect(
+                    `/labaguasyalimentos/account/recovery/${token}`
+                  );
                 }
-                res.redirect("/session/login");
+                res.redirect("/labaguasyalimentos/session/login");
               }
             );
           }
@@ -224,5 +230,5 @@ exports.changePassword = (req, res) => {
 exports.destroy = (req, res) => {
   req.logout();
   delete req.session.passport;
-  res.redirect("/");
+  res.redirect("/labaguasyalimentos");
 };

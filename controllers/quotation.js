@@ -50,7 +50,7 @@ exports.new = (req, res) => {
           "indexMessage",
           "Hubo problemas en el servidor, intenta de nuevo"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       } else if (data.length > 0) {
         res.render("quotation/new", { id: data[data.length - 1]._id + 1 });
       } else {
@@ -58,7 +58,7 @@ exports.new = (req, res) => {
       }
     });
   } else
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
 };
 
 // POST /quotation/create -- Create a new quotation
@@ -89,7 +89,7 @@ exports.create = (req, res) => {
           "indexMessage",
           "Hubo problemas creando la cotización, intenta de nuevo"
         );
-        return res.redirect("/");
+        return res.redirect("/labaguasyalimentos");
       }
       User.find(
         {
@@ -112,7 +112,7 @@ exports.create = (req, res) => {
               "indexMessage",
               "Hubo problemas para notificar por correo"
             );
-            return res.redirect("/");
+            return res.redirect("/labaguasyalimentos");
           } else if (users.length > 0) {
             let emails = "";
             for (let i = 0; i < users.length; i++) {
@@ -138,18 +138,18 @@ exports.create = (req, res) => {
                 "quotationMessage",
                 "La cotización ha sido creada exitosamente"
               );
-              res.redirect(`/quotation/${data._id}`);
+              res.redirect(`/labaguasyalimentos/quotation/${data._id}`);
             });
           } else {
             req.flash("indexMessage", "Hubo problemas en el servidor");
-            res.redirect("/");
+            res.redirect("/labaguasyalimentos");
           }
         }
       );
     });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -164,7 +164,7 @@ exports.pending = (req, res) => {
           "Hubo problemas obteniendo los datos de las cotizaciones, " +
             "intenta de nuevo"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       } else if (data.length > 0) {
         res.render("quotation/pending", {
           quotations: data,
@@ -176,12 +176,12 @@ exports.pending = (req, res) => {
           "indexMessage",
           "No hay más cotizaciones disponibles para aprobar/rechazar"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       }
     });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -201,7 +201,7 @@ exports.approval = (req, res) => {
           if (err) {
             console.log("Error: ", err);
             req.flash("indexMessage", "Hubo problemas aprobando la cotización");
-            res.redirect("/");
+            res.redirect("/labaguasyalimentos");
           } else if (data) {
             User.findById(data.createdBy, (err, user) => {
               if (err) {
@@ -209,7 +209,7 @@ exports.approval = (req, res) => {
                   "indexMessage",
                   "Hubo problemas aprobando la cotización"
                 );
-                res.redirect("/");
+                res.redirect("/labaguasyalimentos");
               } else if (user) {
                 const mailOptions = {
                   from: "Administración",
@@ -224,19 +224,21 @@ exports.approval = (req, res) => {
 
                 transporter.sendMail(mailOptions, err => {
                   if (err) console.log(err);
-                  res.redirect("/quotation/pending/approval");
+                  res.redirect(
+                    "/labaguasyalimentos/quotation/pending/approval"
+                  );
                 });
               } else {
                 req.flash(
                   "pendingQuotations",
                   "No usuario no se encuentra registrado"
                 );
-                res.redirect("/quotation/pending/approval");
+                res.redirect("/labaguasyalimentos/quotation/pending/approval");
               }
             });
           } else {
             req.flash("pendingQuotations", "No existe la cotización");
-            res.redirect("/quotation/pending/approval");
+            res.redirect("/labaguasyalimentos/quotation/pending/approval");
           }
         }
       );
@@ -245,7 +247,7 @@ exports.approval = (req, res) => {
         if (err) {
           console.log("Error: ", err);
           req.flash("indexMessage", "Hubo problemas rechazando la cotización");
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         } else if (data) {
           User.findById(data.createdBy, (err, user) => {
             if (err) {
@@ -253,7 +255,7 @@ exports.approval = (req, res) => {
                 "indexMessage",
                 "Hubo problemas aprobando la cotización"
               );
-              res.redirect("/");
+              res.redirect("/labaguasyalimentos");
             } else if (user) {
               const mailOptions = {
                 from: "Administración",
@@ -268,25 +270,25 @@ exports.approval = (req, res) => {
 
               transporter.sendMail(mailOptions, err => {
                 if (err) console.log(err);
-                res.redirect("/quotation/pending/approval");
+                res.redirect("/labaguasyalimentos/quotation/pending/approval");
               });
             } else {
               req.flash(
                 "pendingQuotations",
                 "No usuario no se encuentra registrado"
               );
-              res.redirect("/quotation/pending/approval");
+              res.redirect("/labaguasyalimentos/quotation/pending/approval");
             }
           });
         } else {
           req.flash("pendingQuotations", "No existe la cotización");
-          res.redirect("/quotation/pending/approval");
+          res.redirect("/labaguasyalimentos/quotation/pending/approval");
         }
       });
     }
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -302,7 +304,7 @@ exports.getQuotation = (req, res) => {
           "Hubo problemas obteniendo los datos de la cotización, " +
             "intenta de nuevo"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       } else if (data) {
         res.render("quotation/edit", {
           quotation: data,
@@ -310,12 +312,12 @@ exports.getQuotation = (req, res) => {
         });
       } else {
         req.flash("indexMessage", "La cotización no se encuentra disponible");
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       }
     });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -347,17 +349,17 @@ exports.edit = (req, res) => {
           "indexMessage",
           "Hubo problemas actualizando los datos, intenta de nuevo"
         );
-        return res.redirect("/");
+        return res.redirect("/labaguasyalimentos");
       }
       req.flash(
         "quotationMessage",
         "Sus datos han sido actualizados exitosamente"
       );
-      res.redirect(`/quotation/${id}`);
+      res.redirect(`/labaguasyalimentos/quotation/${id}`);
     });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -376,7 +378,7 @@ exports.changeState = (req, res) => {
             "indexMessage",
             "Hubo problemas en la solicitud de eliminación de la cotización"
           );
-          return res.redirect("/");
+          return res.redirect("/labaguasyalimentos");
         }
         User.find(
           {
@@ -396,7 +398,7 @@ exports.changeState = (req, res) => {
                 "indexMessage",
                 "Hubo problemas para notificar la revisión de la solicitud"
               );
-              return res.redirect("/");
+              return res.redirect("/labaguasyalimentos");
             } else if (users.length > 0) {
               let emails = "";
               for (let i = 0; i < users.length; i++) {
@@ -422,14 +424,14 @@ exports.changeState = (req, res) => {
                   "Pronto el administrador revisara tu solicitud " +
                     `y se te notificara al correo electrónico ${req.user.email}`
                 );
-                res.redirect(`/quotation/${id}`);
+                res.redirect(`/labaguasyalimentos/quotation/${id}`);
               });
             } else {
               req.flash(
                 "indexMessage",
                 "No hay más usuarios disponibles para la revisión de la solicitud"
               );
-              res.redirect("/");
+              res.redirect("/labaguasyalimentos");
             }
           }
         );
@@ -437,7 +439,7 @@ exports.changeState = (req, res) => {
     );
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -452,7 +454,7 @@ exports.pendingDelete = (req, res) => {
           "Hubo problemas obteniendo los datos de las cotizaciones, " +
             "intenta de nuevo"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       } else if (data.length > 0) {
         res.render("quotation/deactivate", {
           quotations: data,
@@ -464,12 +466,12 @@ exports.pendingDelete = (req, res) => {
           "indexMessage",
           "No hay hay más solicitudes para aprobar/rechazar"
         );
-        res.redirect("/");
+        res.redirect("/labaguasyalimentos");
       }
     });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -482,7 +484,7 @@ exports.delete = (req, res) => {
         if (err) {
           console.log("Error: ", err);
           req.flash("indexMessage", "Hubo problemas eliminando la cotización");
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         } else if (data) {
           User.findById(data.createdBy, (err, user) => {
             if (err) {
@@ -492,7 +494,7 @@ exports.delete = (req, res) => {
                 "Hubo problemas notificando la aprobación " +
                   "de eliminación de cotización al usuario"
               );
-              res.redirect("/");
+              res.redirect("/labaguasyalimentos");
             } else if (user) {
               const mailOptions = {
                 from: "Administración",
@@ -506,19 +508,19 @@ exports.delete = (req, res) => {
 
               transporter.sendMail(mailOptions, err => {
                 if (err) console.log(err);
-                res.redirect("/quotation/pending/delete");
+                res.redirect("/labaguasyalimentos/quotation/pending/delete");
               });
             } else {
               req.flash(
                 "deactivateQuotations",
                 "El usuario no se encuentra registrado"
               );
-              res.redirect("/quotation/pending/delete");
+              res.redirect("/labaguasyalimentos/quotation/pending/delete");
             }
           });
         } else {
           req.flash("deactivateQuotations", "No existe la cotización");
-          res.redirect("/quotation/pending/delete");
+          res.redirect("/labaguasyalimentos/quotation/pending/delete");
         }
       });
     } else {
@@ -526,7 +528,7 @@ exports.delete = (req, res) => {
         if (err) {
           console.log("Error: ", err);
           req.flash("indexMessage", "Hubo problemas rechazando la solicitud");
-          res.redirect("/");
+          res.redirect("/labaguasyalimentos");
         } else if (data) {
           User.findById(data.createdBy, (err, user) => {
             if (err) {
@@ -535,7 +537,7 @@ exports.delete = (req, res) => {
                 "Hubo problemas notificando el rechazo " +
                   "de eliminación de cotización al usuario"
               );
-              res.redirect("/");
+              res.redirect("/labaguasyalimentos");
             } else if (user) {
               const mailOptions = {
                 from: "Administración",
@@ -549,25 +551,25 @@ exports.delete = (req, res) => {
 
               transporter.sendMail(mailOptions, err => {
                 if (err) console.log(err);
-                res.redirect("/quotation/pending/delete");
+                res.redirect("/labaguasyalimentos/quotation/pending/delete");
               });
             } else {
               req.flash(
                 "deactivateQuotations",
                 "El usuario no se encuentra registrado"
               );
-              res.redirect("/quotation/pending/delete");
+              res.redirect("/labaguasyalimentos/quotation/pending/delete");
             }
           });
         } else {
           req.flash("pendingQuotations", "No existe la cotización");
-          res.redirect("/quotation/pending/delete");
+          res.redirect("/labaguasyalimentos/quotation/pending/delete");
         }
       });
     }
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -639,28 +641,12 @@ exports.search = (req, res) => {
     }
   else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
 exports.exportToWord = (req, res) => {
   res.render("quotation/word");
-  // ejs.renderFile("views/quotation/word.ejs", (err, html) => {
-  //   const options = {
-  //     orientation: "portrait",
-  //     margins: {
-  //       top: "3cm",
-  //       right: "2.09cm",
-  //       bottom: "2.5cm",
-  //       left: "1.75cm"
-  //     }
-  //   };
-  //   const docx = HtmlDocx.asBlob(html, options);
-  //   fs.writeFile(`${__dirname}/../public/docs/cotizacion.docx`, docx, err => {
-  //     if (err) console.log(err);
-  //     res.redirect("/docs/cotizacion.docx");
-  //   });
-  // });
 };
 
 exports.menu = (req, res) => {
@@ -668,7 +654,7 @@ exports.menu = (req, res) => {
     res.render("quotation/menu");
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };
 
@@ -685,11 +671,11 @@ exports.showApproval = (req, res) => {
           "pendingQuotations",
           "La cotización solicitada no se encuentra disponible"
         );
-        res.redirect("/quotation/pending/approval");
+        res.redirect("/labaguasyalimentos/quotation/pending/approval");
       }
     });
   } else {
     req.flash("indexMessage", "No tienes permisos para acceder");
-    res.redirect("/");
+    res.redirect("/labaguasyalimentos");
   }
 };

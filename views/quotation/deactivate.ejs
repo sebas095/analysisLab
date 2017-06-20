@@ -13,7 +13,7 @@
     </div>
     <% for (let quotation of quotations) { %>
       <div class="row" style="margin: 15px;">
-        <form class="form-horizontal panel panel-default" action="/quotation/delete/<%= quotation._id %>?_method=delete" method="post" id="form-<%= quotation._id %>">
+        <form class="form-horizontal panel panel-default" action="/labaguasyalimentos/quotation/delete/<%= quotation._id %>?_method=delete" method="post" id="form-<%= quotation._id %>">
           <div class="panel-body">
             <div class="col-sm-8">
               <p>
@@ -32,10 +32,10 @@
     <% } %>
   </div>
 </div>
-    <script src="/bootstrap/js/jquery-3.2.1.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/js/navbar.js"></script>
-    <script src="/js/deactivateQuotation.js"></script>
+    <script src="/labaguasyalimentos/bootstrap/js/jquery-3.2.1.min.js"></script>
+    <script src="/labaguasyalimentos/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/labaguasyalimentos/js/navbar.js"></script>
+    <script src="/labaguasyalimentos/js/deactivateQuotation.js"></script>
     <script type="text/javascript">
       $("#menu-toggle").click(function(e) {
         e.preventDefault();

@@ -12,7 +12,7 @@
       <% } %>
     </div>
     <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-lg-offset-3 col-lg-6">
-      <form class="form-horizontal panel panel-default" action="/profile?_method=put" id="profile" method="post">
+      <form class="form-horizontal panel panel-default" action="/labaguasyalimentos/profile?_method=put" id="profile" method="post">
         <div class="panel-body">
           <div class="form-group">
             <div class="col-xs-12 col-sm-12 col-lg-12">
@@ -58,14 +58,14 @@
         </div>
       </form>
       <% if (user.state === '2') { %>
-        <form class="" action="/users/<%= user._id %>/deactiveAccount?_method=put" id="deactivateForm" method="post">
+        <form class="" action="/labaguasyalimentos/users/<%= user._id %>/deactiveAccount?_method=put" id="deactivateForm" method="post">
         </form>
       <% } %>
     </div>
   </div>
 </div>
 <% include ../footer.ejs %>
-    <script src="/js/editProfile.js"></script>
+    <script src="/labaguasyalimentos/js/editProfile.js"></script>
     <script type="text/javascript">
       $("#menu-toggle").click(function(e) {
         e.preventDefault();

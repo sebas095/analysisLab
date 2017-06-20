@@ -10,8 +10,8 @@ module.exports = (app, mountPoint, passport) => {
   router.post(
     "/login",
     passport.authenticate("local-login", {
-      successRedirect: "/",
-      failureRedirect: "/session/login",
+      successRedirect: "/labaguasyalimentos",
+      failureRedirect: "/labaguasyalimentos/session/login",
       failureFlash: true
     })
   );

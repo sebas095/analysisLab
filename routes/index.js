@@ -10,7 +10,7 @@ module.exports = (app, mountPoint) => {
         message: req.flash("indexMessage")
       });
     } else {
-      res.redirect("/session/login");
+      res.redirect("/labaguasyalimentos/session/login");
     }
   });
 

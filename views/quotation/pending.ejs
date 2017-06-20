@@ -17,7 +17,7 @@
         <div class="row">
       <% } %>
       <div class="col-sm-6">
-        <form class="form-horizontal panel panel-default" action="/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
+        <form class="form-horizontal panel panel-default" action="/labaguasyalimentos/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
           <div class="panel-body">
             <div class="form-group">
               <label class="control-label col-sm-2">N°:</label>
@@ -57,7 +57,7 @@
             <div class="form-group">
               <div class="center">
                 <button class="btn btn-success accept" id="accept-<%= quotation._id %>">Aprobar</button>
-                <a href="/quotation/pending/approval/<%= quotation._id %>" class="btn btn-success btn-color-blue">Ver</a>
+                <a href="/labaguasyalimentos/quotation/pending/approval/<%= quotation._id %>" class="btn btn-success btn-color-blue">Ver</a>
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal<%= quotation._id %>">Rechazar</button>
               </div>
             </div>
@@ -95,10 +95,10 @@
     <% } %>
   </div>
 </div>
-    <script src="/bootstrap/js/jquery-3.2.1.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/js/navbar.js"></script>
-    <script src="/js/quotation.js"></script>
+    <script src="/labaguasyalimentos/bootstrap/js/jquery-3.2.1.min.js"></script>
+    <script src="/labaguasyalimentos/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/labaguasyalimentos/js/navbar.js"></script>
+    <script src="/labaguasyalimentos/js/quotation.js"></script>
     <script type="text/javascript">
       $("#menu-toggle").click(function(e) {
         e.preventDefault();

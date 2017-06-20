@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(partials());
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/labaguasyalimentos", express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 
 app.use(
@@ -94,12 +94,12 @@ app.use((req, res, next) => {
 });
 
 // routes
-index(app, "/");
-users(app, "/users");
-account(app, "/account");
-quotation(app, "/quotation");
-session(app, "/session", passport);
-samples(app, "/samples");
+index(app, "/labaguasyalimentos");
+users(app, "/labaguasyalimentos/users");
+account(app, "/labaguasyalimentos/account");
+quotation(app, "/labaguasyalimentos/quotation");
+session(app, "/labaguasyalimentos/session", passport);
+samples(app, "/labaguasyalimentos/samples");
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

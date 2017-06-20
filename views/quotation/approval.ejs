@@ -184,7 +184,7 @@
             </tbody>
           </table>
         </div>
-        <form action="/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
+        <form action="/labaguasyalimentos/quotation/approval/<%= quotation._id %>?_method=put" method="post" id="form-<%= quotation._id %>">
           <div class="row space-bottom center">
             <input type="hidden" name="veredict" id="veredict-<%= quotation._id %>">
             <button class="btn btn-success accept btn-lg" id="accept-<%= quotation._id %>">Aprobar</button>
@@ -229,7 +229,7 @@
     </div>
 
 <% include ../footer.ejs %>
-    <script src="/js/quotation.js"></script>
+    <script src="/labaguasyalimentos/js/quotation.js"></script>
     <script type="text/javascript">
       $("#menu-toggle").click(function(e) {
         e.preventDefault();

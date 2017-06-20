@@ -8,7 +8,7 @@
   <% } %>
   <div class="container-fluid">
     <div class="col-xs-12">
-      <form class="form-horizontal space-bottom" action="/quotation/search" method="get">
+      <form class="form-horizontal space-bottom" action="/labaguasyalimentos/quotation/search" method="get">
         <div class="input-group">
           <input type="text" class="form-control" name="id" placeholder="Ingresa número de la cotización o el Nit/C.C. de la empresa..." name="id">
           <div class="input-group-btn">
@@ -39,7 +39,7 @@
                 <p class="text-muted"><%= quotation.document %> - <%= quotation.businessName %></p>
               </div>
               <div class="col-xs-1 icon-align">
-                <a href="/quotation/<%= quotation._id %>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                <a href="/labaguasyalimentos/quotation/<%= quotation._id %>"><i class="fa fa-eye" aria-hidden="true"></i></a>
               </div>
             </div>
           </div>

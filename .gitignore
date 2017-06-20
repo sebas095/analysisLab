@@ -1,5 +1,7 @@
 data
 public/docs/.template.docx#
+public/docs/cotizacion.docx
+
 # Logs
 logs
 *.log
